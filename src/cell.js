@@ -39,6 +39,8 @@ Cell.prototype.init = function(tableOptions, x, y){
   this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
   this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
 
+  this.drawRight = x + this.colSpan == tableOptions.colWidths.length;
+
   this.x = x;
   this.y = y;
 };
@@ -70,9 +72,9 @@ Cell.prototype.drawEmpty = function(drawRight){
   return left + content + right;
 };
 
-Cell.prototype.draw = function(lineNum,drawRight){
-  if(lineNum == 'top') return this.drawTop(drawRight);
-  if(lineNum == 'bottom') return this.drawBottom(drawRight);
+Cell.prototype.draw = function(lineNum){
+  if(lineNum == 'top') return this.drawTop(this.drawRight);
+  if(lineNum == 'bottom') return this.drawBottom(this.drawRight);
   var padLen = Math.max(this.height - this.lines.length, 0);
   var padTop;
   switch (this.vAlign){
@@ -86,10 +88,10 @@ Cell.prototype.draw = function(lineNum,drawRight){
       padTop = Math.ceil(padLen / 2);
   }
   if( (lineNum < padTop) || (lineNum >= (padTop + this.lines.length))){
-    return this.drawEmpty(drawRight);
+    return this.drawEmpty(this.drawRight);
   }
   var forceTruncation = (this.lines.length > this.height) && (lineNum + 1 >= this.height);
-  return this.drawLine(lineNum - padTop, drawRight, forceTruncation);
+  return this.drawLine(lineNum - padTop, this.drawRight, forceTruncation);
 };
 
 Cell.prototype.drawBottom = function(drawRight){
@@ -99,4 +101,18 @@ Cell.prototype.drawBottom = function(drawRight){
   return left + content + right;
 };
 
+function NoOpCell(){}
+
+NoOpCell.prototype.draw = function(){
+  return '';
+};
+
+NoOpCell.init = function(){
+};
+
+function RowSpanCell(originalCell){
+  this.originalCell = originalCell;
+}
+
 module.exports = Cell;
+module.exports.NoOp = NoOpCell;

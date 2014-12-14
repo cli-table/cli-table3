@@ -190,6 +190,59 @@ describe('Cell',function(){
       });
     });
 
+    describe('drawRight', function(){
+      var tableOptions;
+
+      beforeEach(function(){
+        tableOptions = defaultOptions();
+        tableOptions.colWidths = [20,20,20];
+      });
+
+      it('col 1 of 3, with default colspan',function(){
+        var cell = new Cell();
+        cell.init(tableOptions,0,0);
+        expect(cell.drawRight).to.equal(false);
+      });
+
+      it('col 2 of 3, with default colspan',function(){
+        var cell = new Cell();
+        cell.init(tableOptions,1,0);
+        expect(cell.drawRight).to.equal(false);
+      });
+
+      it('col 3 of 3, with default colspan',function(){
+        var cell = new Cell();
+        cell.init(tableOptions,2,0);
+        expect(cell.drawRight).to.equal(true);
+      });
+
+      it('col 3 of 4, with default colspan',function(){
+        var cell = new Cell();
+        tableOptions.colWidths = [20,20,20,20];
+        cell.init(tableOptions,2,0);
+        expect(cell.drawRight).to.equal(false);
+      });
+
+      it('col 2 of 3, with colspan of 2',function(){
+        var cell = new Cell({colSpan:2});
+        cell.init(tableOptions,1,0);
+        expect(cell.drawRight).to.equal(true);
+      });
+
+      it('col 1 of 3, with colspan of 3',function(){
+        var cell = new Cell({colSpan:3});
+        cell.init(tableOptions,0,0);
+        expect(cell.drawRight).to.equal(true);
+      });
+
+      it('col 1 of 3, with colspan of 2',function(){
+        var cell = new Cell({colSpan:2});
+        cell.init(tableOptions,0,0);
+        expect(cell.drawRight).to.equal(false);
+      });
+
+    });
+
     describe('style.padding-left', function () {
       it('if unset will be copied from tableOptions.style', function () {
         var cell = new Cell();
@@ -288,28 +341,32 @@ describe('Cell',function(){
       it('will draw the top left corner when x=0,y=0',function(){
         cell.x = cell.y = 0;
         expect(cell.draw('top')).to.equal('┌───────');
-        expect(cell.draw('top',true)).to.equal('┌───────┐');
+        cell.drawRight = true;
+        expect(cell.draw('top')).to.equal('┌───────┐');
       });
 
       it('will draw the top mid corner when x=1,y=0',function(){
         cell.x = 1;
         cell.y = 0;
         expect(cell.draw('top')).to.equal('┬───────');
-        expect(cell.draw('top',true)).to.equal('┬───────┐');
+        cell.drawRight = true;
+        expect(cell.draw('top')).to.equal('┬───────┐');
       });
 
       it('will draw the left mid corner when x=0,y=1',function(){
         cell.x = 0;
         cell.y = 1;
         expect(cell.draw('top')).to.equal('├───────');
-        expect(cell.draw('top',true)).to.equal('├───────┤');
+        cell.drawRight = true;
+        expect(cell.draw('top')).to.equal('├───────┤');
       });
 
       it('will draw the mid mid corner when x=1,y=1',function(){
         cell.x = 1;
         cell.y = 1;
         expect(cell.draw('top')).to.equal('┼───────');
-        expect(cell.draw('top',true)).to.equal('┼───────┤');
+        cell.drawRight = true;
+        expect(cell.draw('top')).to.equal('┼───────┤');
       });
     });
 
@@ -318,14 +375,16 @@ describe('Cell',function(){
         cell.x = 0;
         cell.y = 1;
         expect(cell.draw('bottom')).to.equal('└───────');
-        expect(cell.draw('bottom',true)).to.equal('└───────┘');
+        cell.drawRight = true;
+        expect(cell.draw('bottom')).to.equal('└───────┘');
       });
 
       it('will draw the bottom left corner if x=1',function(){
         cell.x = 1;
         cell.y = 1;
         expect(cell.draw('bottom')).to.equal('┴───────');
-        expect(cell.draw('bottom',true)).to.equal('┴───────┘');
+        cell.drawRight = true;
+        expect(cell.draw('bottom')).to.equal('┴───────┘');
       });
     });
 
@@ -337,27 +396,31 @@ describe('Cell',function(){
       it('will draw left side if x=0',function(){
         cell.x = 0;
         expect(cell.draw(0)).to.equal('L  hello  ');
-        expect(cell.draw(0,true)).to.equal('L  hello  R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('L  hello  R');
       });
 
       it('will draw mid side if x=1',function(){
         cell.x = 1;
         expect(cell.draw(0)).to.equal('M  hello  ');
-        expect(cell.draw(0,true)).to.equal('M  hello  R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('M  hello  R');
       });
 
       it('will align left',function(){
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(0)).to.equal('M hello   ');
-        expect(cell.draw(0,true)).to.equal('M hello   R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('M hello   R');
       });
 
       it('will align right',function(){
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(0)).to.equal('M   hello ');
-        expect(cell.draw(0,true)).to.equal('M   hello R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('M   hello R');
       });
     });    
     
@@ -369,27 +432,31 @@ describe('Cell',function(){
       it('will draw left side if x=0',function(){
         cell.x = 0;
         expect(cell.draw(1)).to.equal('L  howdy  ');
-        expect(cell.draw(1,true)).to.equal('L  howdy  R');
+        cell.drawRight = true;
+        expect(cell.draw(1)).to.equal('L  howdy  R');
       });
 
       it('will draw mid side if x=1',function(){
         cell.x = 1;
         expect(cell.draw(1)).to.equal('M  howdy  ');
-        expect(cell.draw(1,true)).to.equal('M  howdy  R');
+        cell.drawRight = true;
+        expect(cell.draw(1)).to.equal('M  howdy  R');
       });
 
       it('will align left',function(){
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(1)).to.equal('M howdy   ');
-        expect(cell.draw(1,true)).to.equal('M howdy   R');
+        cell.drawRight = true;
+        expect(cell.draw(1)).to.equal('M howdy   R');
       });
 
       it('will align right',function(){
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(1)).to.equal('M   howdy ');
-        expect(cell.draw(1,true)).to.equal('M   howdy R');
+        cell.drawRight = true;
+        expect(cell.draw(1)).to.equal('M   howdy R');
       });
     });    
     
@@ -401,27 +468,31 @@ describe('Cell',function(){
       it('will draw left side if x=0',function(){
         cell.x = 0;
         expect(cell.draw(2)).to.equal('L goodni… ');
-        expect(cell.draw(2,true)).to.equal('L goodni… R');
+        cell.drawRight = true;
+        expect(cell.draw(2)).to.equal('L goodni… R');
       });
 
       it('will draw mid side if x=1',function(){
         cell.x = 1;
         expect(cell.draw(2)).to.equal('M goodni… ');
-        expect(cell.draw(2,true)).to.equal('M goodni… R');
+        cell.drawRight = true;
+        expect(cell.draw(2)).to.equal('M goodni… R');
       });
 
       it('will not change when aligned left',function(){
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(2)).to.equal('M goodni… ');
-        expect(cell.draw(2,true)).to.equal('M goodni… R');
+        cell.drawRight = true;
+        expect(cell.draw(2)).to.equal('M goodni… R');
       });
 
       it('will not change when aligned right',function(){
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(2)).to.equal('M goodni… ');
-        expect(cell.draw(2,true)).to.equal('M goodni… R');
+        cell.drawRight = true;
+        expect(cell.draw(2)).to.equal('M goodni… R');
       });
     });
 
@@ -439,13 +510,15 @@ describe('Cell',function(){
         expect(cell.draw(4)).to.equal('L       ');
 
         cell.vAlign = null; //center is the default
-        expect(cell.draw(0,true)).to.equal('L       R');
-        expect(cell.draw(1,true)).to.equal('L hello R');
-        expect(cell.draw(2,true)).to.equal('L howdy R');
-        expect(cell.draw(3,true)).to.equal('L good… R');
-        expect(cell.draw(4,true)).to.equal('L       R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('L       R');
+        expect(cell.draw(1)).to.equal('L hello R');
+        expect(cell.draw(2)).to.equal('L howdy R');
+        expect(cell.draw(3)).to.equal('L good… R');
+        expect(cell.draw(4)).to.equal('L       R');
 
         cell.x = 1;
+        cell.drawRight = false;
         expect(cell.draw(0)).to.equal('M       ');
         expect(cell.draw(1)).to.equal('M hello ');
         expect(cell.draw(2)).to.equal('M howdy ');
@@ -461,13 +534,15 @@ describe('Cell',function(){
         expect(cell.draw(3)).to.equal('L       ');
         expect(cell.draw(4)).to.equal('L       ');
 
-        expect(cell.draw(0,true)).to.equal('L hello R');
-        expect(cell.draw(1,true)).to.equal('L howdy R');
-        expect(cell.draw(2,true)).to.equal('L good… R');
-        expect(cell.draw(3,true)).to.equal('L       R');
-        expect(cell.draw(4,true)).to.equal('L       R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('L hello R');
+        expect(cell.draw(1)).to.equal('L howdy R');
+        expect(cell.draw(2)).to.equal('L good… R');
+        expect(cell.draw(3)).to.equal('L       R');
+        expect(cell.draw(4)).to.equal('L       R');
 
         cell.x = 1;
+        cell.drawRight = false;
         expect(cell.draw(0)).to.equal('M hello ');
         expect(cell.draw(1)).to.equal('M howdy ');
         expect(cell.draw(2)).to.equal('M good… ');
@@ -483,13 +558,15 @@ describe('Cell',function(){
         expect(cell.draw(3)).to.equal('L howdy ');
         expect(cell.draw(4)).to.equal('L good… ');
 
-        expect(cell.draw(0,true)).to.equal('L       R');
-        expect(cell.draw(1,true)).to.equal('L       R');
-        expect(cell.draw(2,true)).to.equal('L hello R');
-        expect(cell.draw(3,true)).to.equal('L howdy R');
-        expect(cell.draw(4,true)).to.equal('L good… R');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('L       R');
+        expect(cell.draw(1)).to.equal('L       R');
+        expect(cell.draw(2)).to.equal('L hello R');
+        expect(cell.draw(3)).to.equal('L howdy R');
+        expect(cell.draw(4)).to.equal('L good… R');
 
         cell.x = 1;
+        cell.drawRight = false;
         expect(cell.draw(0)).to.equal('M       ');
         expect(cell.draw(1)).to.equal('M       ');
         expect(cell.draw(2)).to.equal('M hello ');
