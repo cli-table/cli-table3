@@ -1,42 +1,18 @@
 describe('Cell',function(){
   var chai = require('chai');
   var expect = chai.expect;
+  var sinon = require('sinon');
+  var sinonChai = require("sinon-chai");
+  chai.use(sinonChai);
 
   var Cell = require('../src/cell');
+  var RowSpanCell = Cell.RowSpan;
+  var NoOpCell = Cell.NoOp;
+  var mergeOptions = require('../src/utils').mergeOptions;
 
   function defaultOptions(){
-    return {
-      chars: {
-        'top': '─'
-        , 'top-mid': '┬'
-        , 'top-left': '┌'
-        , 'top-right': '┐'
-        , 'bottom': '─'
-        , 'bottom-mid': '┴'
-        , 'bottom-left': '└'
-        , 'bottom-right': '┘'
-        , 'left': '│'
-        , 'left-mid': '├'
-        , 'mid': '─'
-        , 'mid-mid': '┼'
-        , 'right': '│'
-        , 'right-mid': '┤'
-        , 'middle': '│'
-      }
-      , truncate: '…'
-      , colWidths: []
-      , rowHeights: []
-      , colAligns: []
-      , rowAligns: []
-      , style: {
-        'padding-left': 1
-        , 'padding-right': 1
-        , head: []
-        , border: []
-        , compact : false
-      }
-      , head: []
-    };
+    //overwrite coloring of head and border by default for easier testing.
+    return mergeOptions({style:{head:[],border:[]}});
   }
 
   describe('init',function(){
@@ -609,6 +585,82 @@ describe('Cell',function(){
       cell.lines = cell.content.split("\n");
       expect(cell.draw(0)).to.equal('L hello ');
       expect(cell.draw(1)).to.equal('L ho... ');
+    });
+  });
+
+  describe("NoOp",function(){
+    it('has an init function',function(){
+       expect(new NoOpCell()).to.respondTo('init');
+    });
+
+    it('draw returns an empty string',function(){
+      expect(new NoOpCell().draw('top')).to.equal('');
+      expect(new NoOpCell().draw('bottom')).to.equal('');
+      expect(new NoOpCell().draw(1)).to.equal('');
+    });
+  });
+
+  describe("RowSpan",function(){
+    var original, tableOptions;
+
+    beforeEach(function () {
+      original = {
+        rowSpan:3,
+        y:0,
+        draw:sinon.spy()
+      };
+      tableOptions = {
+        rowHeights:[2,3,4,5]
+      }
+    });
+
+    it('drawing top of the next row',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,1);
+      spanner.draw('top');
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(2);
+    });
+
+    it('drawing line 0 of the next row',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,1);
+      spanner.draw(0);
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(3);
+    });
+
+    it('drawing line 1 of the next row',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,1);
+      spanner.draw(1);
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(4);
+    });
+
+    it('drawing top of two rows below',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,2);
+      spanner.draw('top');
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(6);
+    });
+
+    it('drawing line 0 of two rows below',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,2);
+      spanner.draw(0);
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(7);
+    });
+
+    it('drawing line 1 of two rows below',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,2);
+      spanner.draw(1);
+      expect(original.draw).to.have.been.calledOnce.and.calledWith(8);
+    });
+
+    it('drawing bottom',function(){
+      var spanner = new RowSpanCell(original);
+      spanner.init(tableOptions,0,1);
+      spanner.draw('bottom');
+      expect(original.draw).to.have.been.calledOnce.and.calledWith('bottom');
     });
   });
 });
