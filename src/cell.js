@@ -49,19 +49,15 @@ Cell.prototype.drawTop = function(drawRight){
 };
 
 Cell.prototype.drawLine = function(lineNum,drawRight){
-  if(lineNum == 0){
-    return this.drawTop(drawRight);
-  } else {
-    var left = this.chars[this.x == 0 ? 'left' : 'middle'];
-    var leftPadding = utils.repeat(' ', this.paddingLeft);
-    var right = (drawRight ? this.chars['right'] : '');
-    var rightPadding = utils.repeat(' ', this.paddingRight);
-    var line = this.content.split('\n')[lineNum -1];
-    var len = this.width - (this.paddingLeft + this.paddingRight);
-    var content = utils.pad(line, len, ' ', this.hAlign);
-    content = utils.truncate(content,len);
-    return left + leftPadding + content + rightPadding + right;
-  }
+  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  var leftPadding = utils.repeat(' ', this.paddingLeft);
+  var right = (drawRight ? this.chars['right'] : '');
+  var rightPadding = utils.repeat(' ', this.paddingRight);
+  var line = this.content.split('\n')[lineNum];
+  var len = this.width - (this.paddingLeft + this.paddingRight);
+  var content = utils.pad(line, len, ' ', this.hAlign);
+  content = utils.truncate(content,len);
+  return left + leftPadding + content + rightPadding + right;
 };
 
 Cell.prototype.drawBottom = function(drawRight){
