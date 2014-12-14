@@ -29,8 +29,8 @@ Cell.prototype.init = function(tableOptions, x, y){
   }
 
   this.height = tableOptions.rowHeights[y];
-  for(var i = 1; i < this.rowSpan; i++){
-    this.height += 1 + tableOptions.rowHeights[y + i];
+  for(var j = 1; j < this.rowSpan; j++){
+    this.height += 1 + tableOptions.rowHeights[y + j];
   }
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
