@@ -6,6 +6,7 @@ function Cell(options){
   options.style = options.style || {};
   this.options = options;
   this.colSpan = options.colSpan || 1;
+  this.rowSpan = options.rowSpan || 1;
 }
 
 Cell.prototype.init = function(tableOptions, x, y){
@@ -21,6 +22,11 @@ Cell.prototype.init = function(tableOptions, x, y){
   this.width = tableOptions.colWidths[x];
   for(var i = 1; i < this.colSpan; i++){
     this.width += 1 + tableOptions.colWidths[x + i];
+  }
+
+  this.height = tableOptions.rowHeights[y];
+  for(var i = 1; i < this.rowSpan; i++){
+    this.height += 1 + tableOptions.rowHeights[y + i];
   }
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];

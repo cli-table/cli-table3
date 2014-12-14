@@ -25,6 +25,7 @@ describe('Cell',function(){
       }
       , truncate: '…'
       , colWidths: []
+      , rowHeights: []
       , colAligns: []
       , style: {
         'padding-left': 1
@@ -125,6 +126,36 @@ describe('Cell',function(){
         cell = new Cell({colSpan:3});
         cell.init(tableOptions,0);
         expect(cell.width).to.equal(32);
+      });
+    });
+
+    describe('height', function(){
+      it('will match rowHeight of x',function(){
+        var cell = new Cell();
+        var tableOptions = defaultOptions();
+        tableOptions.rowHeights = [5,10,15];
+        cell.init(tableOptions,0,0);
+        expect(cell.height).to.equal(5);
+        cell = new Cell();
+        cell.init(tableOptions,0,1);
+        expect(cell.height).to.equal(10);
+        cell = new Cell();
+        cell.init(tableOptions,0,2);
+        expect(cell.height).to.equal(15);
+      });
+
+      it('will add rowHeights if rowSpan > 1',function(){
+        var cell = new Cell({rowSpan:2});
+        var tableOptions = defaultOptions();
+        tableOptions.rowHeights = [5,10,15];
+        cell.init(tableOptions,0,0);
+        expect(cell.height).to.equal(16);
+        cell = new Cell({rowSpan:2});
+        cell.init(tableOptions,0,1);
+        expect(cell.height).to.equal(26);
+        cell = new Cell({rowSpan:3});
+        cell.init(tableOptions,0,0);
+        expect(cell.height).to.equal(32);
       });
     });
 
