@@ -13,9 +13,15 @@ function Cell(options){
 }
 
 Cell.prototype.setOptions = function(options){
+  options = options || {};
+  if(_.isString(options)){
+    options = {content:options};
+  }
   this.options = options;
-  this.colSpan = (options && options.colSpan) || 1;
-  this.rowSpan = (options && options.rowSpan) || 1;
+  this.content = options.content || '';
+  this.lines = this.content.split('\n');
+  this.colSpan = options.colSpan || 1;
+  this.rowSpan = options.rowSpan || 1;
 };
 
 /**

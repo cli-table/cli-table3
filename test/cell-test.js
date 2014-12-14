@@ -15,6 +15,38 @@ describe('Cell',function(){
     return mergeOptions({style:{head:[],border:[]}});
   }
 
+  describe('constructor',function(){
+    it('colSpan and rowSpan default to 1',function(){
+      var cell = new Cell();
+      expect(cell.colSpan).to.equal(1);
+      expect(cell.rowSpan).to.equal(1);
+    });
+
+    it('colSpan and rowSpan can be set via constructor',function(){
+      var cell = new Cell({rowSpan:2,colSpan:3});
+      expect(cell.rowSpan).to.equal(2);
+      expect(cell.colSpan).to.equal(3);
+    });
+
+    it('content can be set as a string',function(){
+      var cell = new Cell('hello\nworld');
+      expect(cell.content).to.equal('hello\nworld');
+      expect(cell.lines).to.eql(['hello','world']);
+    });
+
+    it('content can be set as a options property',function(){
+      var cell = new Cell({content:'hello\nworld'});
+      expect(cell.content).to.equal('hello\nworld');
+      expect(cell.lines).to.eql(['hello','world']);
+    });
+
+    it('default content is an empty string',function(){
+      var cell = new Cell();
+      expect(cell.content).to.equal('');
+      expect(cell.lines).to.eql(['']);
+    });
+  });
+
   describe('init',function(){
     describe('chars',function(){
       it('unset chars take on value of table',function(){
