@@ -37,7 +37,6 @@ Cell.prototype.setOptions = function(options){
  * @param y - The row this cell is in (with row 0 being at the top).
  */
 Cell.prototype.init = function(tableOptions, x, y){
-  this.options = this.options || {};
   this.options.style = this.options.style || {};
   if(this.options.chars){
     this.chars = _.extend({},tableOptions.chars,this.options.chars);

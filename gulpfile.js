@@ -22,7 +22,7 @@ function coverageTask(cb){
     .pipe(istanbul.hookRequire()) // Force `require` to return covered files
     .on('error', logMochaError)
     .on('finish', function () {
-      gulp.src(['tests/*.js'])
+      gulp.src(['test/*.js'])
         .pipe(mocha(mochaOpts))
         .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', cb || function(){});

@@ -622,7 +622,8 @@ describe('Cell',function(){
 
   describe("NoOp",function(){
     it('has an init function',function(){
-       expect(new NoOpCell()).to.respondTo('init');
+      expect(new NoOpCell()).to.respondTo('init');
+      new NoOpCell().init(); // nothing happens.
     });
 
     it('draw returns an empty string',function(){
