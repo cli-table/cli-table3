@@ -6,8 +6,8 @@ describe('Cell',function(){
   chai.use(sinonChai);
 
   var Cell = require('../src/cell');
-  var RowSpanCell = Cell.RowSpan;
-  var NoOpCell = Cell.NoOp;
+  var RowSpanCell = Cell.RowSpanCell;
+  var NoOpCell = Cell.NoOpCell;
   var mergeOptions = require('../src/utils').mergeOptions;
 
   function defaultOptions(){

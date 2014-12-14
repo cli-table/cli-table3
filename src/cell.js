@@ -196,5 +196,5 @@ function findDimension(dimensionTable, startingIndex, span){
 }
 
 module.exports = Cell;
-module.exports.NoOp = NoOpCell;
-module.exports.RowSpan = RowSpanCell;
+module.exports.NoOpCell = NoOpCell;
+module.exports.RowSpanCell = RowSpanCell;
