@@ -22,7 +22,7 @@
     "sinon-chai": "^2.6.0"
   },
   "scripts": {
-    "test": "gulp mocha"
+    "test": "gulp coverage"
   },
   "repository": {
     "type": "git",
