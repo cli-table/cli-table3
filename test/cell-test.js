@@ -377,14 +377,14 @@ describe('Cell',function(){
         expect(cell.drawLine(2,true)).to.equal('M goodni… R');
       });
 
-      it('will align left',function(){
+      it('will not change when aligned left',function(){
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.drawLine(2)).to.equal('M goodni… ');
         expect(cell.drawLine(2,true)).to.equal('M goodni… R');
       });
 
-      it('will align right',function(){
+      it('will not change when aligned right',function(){
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.drawLine(2)).to.equal('M goodni… ');

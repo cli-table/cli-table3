@@ -9,6 +9,10 @@ function Cell(options){
   this.rowSpan = options.rowSpan || 1;
 }
 
+function findOption(objA,objB,nameA,nameB){
+  return objA[nameA] || objA[nameB] || objB[nameA] || objB[nameB];
+}
+
 Cell.prototype.init = function(tableOptions, x, y){
   if(this.options.chars){
     this.chars = _.extend({},tableOptions.chars,this.options.chars);
@@ -31,11 +35,8 @@ Cell.prototype.init = function(tableOptions, x, y){
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
 
-  this.paddingLeft = (this.options.style.paddingLeft || this.options.style['padding-left'] ||
-  tableOptions.style.paddingLeft || tableOptions.style['padding-left']);
-
-  this.paddingRight = (this.options.style.paddingRight || this.options.style['padding-right'] ||
-  tableOptions.style.paddingRight || tableOptions.style['padding-right']);
+  this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
+  this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
 
   this.x = x;
   this.y = y;
