@@ -128,6 +128,37 @@ function truncate(str, desiredLength, truncateChar){
 }
 
 
+var options = {
+  chars: {
+    'top': '─'
+    , 'top-mid': '┬'
+    , 'top-left': '┌'
+    , 'top-right': '┐'
+    , 'bottom': '─'
+    , 'bottom-mid': '┴'
+    , 'bottom-left': '└'
+    , 'bottom-right': '┘'
+    , 'left': '│'
+    , 'left-mid': '├'
+    , 'mid': '─'
+    , 'mid-mid': '┼'
+    , 'right': '│'
+    , 'right-mid': '┤'
+    , 'middle': '│'
+  }
+  , truncate: '…'
+  , colWidths: []
+  , colAligns: []
+  , style: {
+    'padding-left': 1
+    , 'padding-right': 1
+    , head: ['red']
+    , border: ['grey']
+    , compact : false
+  }
+  , head: []
+};
+
 module.exports = {
   strlen:strlen,
   repeat:repeat,
