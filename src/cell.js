@@ -49,16 +49,46 @@ Cell.prototype.drawTop = function(drawRight){
   return left + content + right;
 };
 
-Cell.prototype.drawLine = function(lineNum,drawRight){
+Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   var leftPadding = utils.repeat(' ', this.paddingLeft);
   var right = (drawRight ? this.chars['right'] : '');
   var rightPadding = utils.repeat(' ', this.paddingRight);
-  var line = this.content.split('\n')[lineNum];
+  var line = this.lines[lineNum];
   var len = this.width - (this.paddingLeft + this.paddingRight);
-  var content = utils.pad(line, len, ' ', this.hAlign);
-  content = utils.truncate(content,len);
+  if(forceTruncationSymbol) line += this.truncate || '…';
+  var content = utils.truncate(line,len,this.truncate);
+  content = utils.pad(content, len, ' ', this.hAlign);
   return left + leftPadding + content + rightPadding + right;
+};
+
+Cell.prototype.drawEmpty = function(drawRight){
+  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  var right = (drawRight ? this.chars['right'] : '');
+  var content = utils.repeat(' ',this.width);
+  return left + content + right;
+};
+
+Cell.prototype.draw = function(lineNum,drawRight){
+  if(lineNum == 'top') return this.drawTop(drawRight);
+  if(lineNum == 'bottom') return this.drawBottom(drawRight);
+  var padLen = Math.max(this.height - this.lines.length, 0);
+  var padTop;
+  switch (this.vAlign){
+    case 'top':
+      padTop = 0;
+      break;
+    case 'bottom':
+      padTop = padLen;
+      break;
+    default :
+      padTop = Math.ceil(padLen / 2);
+  }
+  if( (lineNum < padTop) || (lineNum >= (padTop + this.lines.length))){
+    return this.drawEmpty(drawRight);
+  }
+  var forceTruncation = (this.lines.length > this.height) && (lineNum + 1 >= this.height);
+  return this.drawLine(lineNum - padTop, drawRight, forceTruncation);
 };
 
 Cell.prototype.drawBottom = function(drawRight){

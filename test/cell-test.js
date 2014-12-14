@@ -30,8 +30,8 @@ describe('Cell',function(){
       , style: {
         'padding-left': 1
         , 'padding-right': 1
-        , head: ['red']
-        , border: ['grey']
+        , head: []
+        , border: []
         , compact : false
       }
       , head: []
@@ -242,12 +242,14 @@ describe('Cell',function(){
       cell.chars = defaultOptions().chars;
       cell.paddingLeft = cell.paddingRight = 1;
       cell.width = 7;
-      cell.height = 2;
+      cell.height = 3;
       cell.hAlign = 'center';
+      cell.vAlign = 'center';
       cell.chars.left = 'L';
       cell.chars.right = 'R';
       cell.chars.middle = 'M';
       cell.content = 'hello\nhowdy\ngoodnight';
+      cell.lines = cell.content.split('\n');
       cell.x = cell.y = 0;
     });
 
@@ -390,6 +392,115 @@ describe('Cell',function(){
         expect(cell.drawLine(2)).to.equal('M goodni… ');
         expect(cell.drawLine(2,true)).to.equal('M goodni… R');
       });
+    });
+
+    describe('vAlign',function(){
+      beforeEach(function () {
+        cell.height = '5';
+      });
+
+      it('center',function(){
+        cell.vAlign = 'center';
+        expect(cell.draw(0)).to.equal('L       ');
+        expect(cell.draw(1)).to.equal('L hello ');
+        expect(cell.draw(2)).to.equal('L howdy ');
+        expect(cell.draw(3)).to.equal('L good… ');
+        expect(cell.draw(4)).to.equal('L       ');
+
+        cell.vAlign = null; //center is the default
+        expect(cell.draw(0,true)).to.equal('L       R');
+        expect(cell.draw(1,true)).to.equal('L hello R');
+        expect(cell.draw(2,true)).to.equal('L howdy R');
+        expect(cell.draw(3,true)).to.equal('L good… R');
+        expect(cell.draw(4,true)).to.equal('L       R');
+
+        cell.x = 1;
+        expect(cell.draw(0)).to.equal('M       ');
+        expect(cell.draw(1)).to.equal('M hello ');
+        expect(cell.draw(2)).to.equal('M howdy ');
+        expect(cell.draw(3)).to.equal('M good… ');
+        expect(cell.draw(4)).to.equal('M       ');
+      });
+
+      it('top',function(){
+        cell.vAlign = 'top';
+        expect(cell.draw(0)).to.equal('L hello ');
+        expect(cell.draw(1)).to.equal('L howdy ');
+        expect(cell.draw(2)).to.equal('L good… ');
+        expect(cell.draw(3)).to.equal('L       ');
+        expect(cell.draw(4)).to.equal('L       ');
+
+        expect(cell.draw(0,true)).to.equal('L hello R');
+        expect(cell.draw(1,true)).to.equal('L howdy R');
+        expect(cell.draw(2,true)).to.equal('L good… R');
+        expect(cell.draw(3,true)).to.equal('L       R');
+        expect(cell.draw(4,true)).to.equal('L       R');
+
+        cell.x = 1;
+        expect(cell.draw(0)).to.equal('M hello ');
+        expect(cell.draw(1)).to.equal('M howdy ');
+        expect(cell.draw(2)).to.equal('M good… ');
+        expect(cell.draw(3)).to.equal('M       ');
+        expect(cell.draw(4)).to.equal('M       ');
+      });
+
+      it('center',function(){
+        cell.vAlign = 'bottom';
+        expect(cell.draw(0)).to.equal('L       ');
+        expect(cell.draw(1)).to.equal('L       ');
+        expect(cell.draw(2)).to.equal('L hello ');
+        expect(cell.draw(3)).to.equal('L howdy ');
+        expect(cell.draw(4)).to.equal('L good… ');
+
+        expect(cell.draw(0,true)).to.equal('L       R');
+        expect(cell.draw(1,true)).to.equal('L       R');
+        expect(cell.draw(2,true)).to.equal('L hello R');
+        expect(cell.draw(3,true)).to.equal('L howdy R');
+        expect(cell.draw(4,true)).to.equal('L good… R');
+
+        cell.x = 1;
+        expect(cell.draw(0)).to.equal('M       ');
+        expect(cell.draw(1)).to.equal('M       ');
+        expect(cell.draw(2)).to.equal('M hello ');
+        expect(cell.draw(3)).to.equal('M howdy ');
+        expect(cell.draw(4)).to.equal('M good… ');
+      });
+    });
+
+    it('vertically truncated will show truncation on last visible line',function(){
+      cell.height = 2;
+      expect(cell.draw(0)).to.equal('L hello ');
+      expect(cell.draw(1)).to.equal('L howd… ');
+    });
+
+    it("won't vertically truncate if the lines just fit",function(){
+      cell.height = 2;
+      cell.content = "hello\nhowdy";
+      cell.lines = cell.content.split("\n");
+      expect(cell.draw(0)).to.equal('L hello ');
+      expect(cell.draw(1)).to.equal('L howdy ');
+    });
+
+    it("will vertically truncate even if last line is short",function(){
+      cell.height = 2;
+      cell.content = "hello\nhi\nhowdy";
+      cell.lines = cell.content.split("\n");
+      expect(cell.draw(0)).to.equal('L hello ');
+      expect(cell.draw(1)).to.equal('L  hi…  ');
+    });
+
+    it("allows custom truncation",function(){
+      cell.height = 2;
+      cell.truncate = '...';
+      cell.content = "hello\nhi\nhowdy";
+      cell.lines = cell.content.split("\n");
+      expect(cell.draw(0)).to.equal('L hello ');
+      expect(cell.draw(1)).to.equal('L hi... ');
+
+      cell.content = "hello\nhowdy\nhi";
+      cell.lines = cell.content.split("\n");
+      expect(cell.draw(0)).to.equal('L hello ');
+      expect(cell.draw(1)).to.equal('L ho... ');
     });
   });
 });
