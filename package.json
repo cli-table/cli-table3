@@ -7,18 +7,20 @@
     "test": "test"
   },
   "dependencies": {
-    "chai": "^1.10.0",
-    "gulp-istanbul": "^0.5.0",
-    "gulp": "^3.8.10",
-    "gulp-util": "^3.0.1",
-    "gulp-mocha": "^2.0.0",
-    "lodash": "^2.4.1",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.6.0",
     "colors": "^1.0.3",
-    "growl": "^1.8.1"
+    "lodash": "^2.4.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "coveralls": "^2.11.2",
+    "growl": "^1.8.1",
+    "gulp": "^3.8.10",
+    "gulp-istanbul": "^0.5.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-util": "^3.0.1",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0"
+  },
   "scripts": {
     "test": "gulp mocha"
   },
