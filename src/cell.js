@@ -12,18 +12,6 @@ function Cell(options){
   this.setOptions(options);
 }
 
-function findOption(objA,objB,nameA,nameB){
-  return objA[nameA] || objA[nameB] || objB[nameA] || objB[nameB];
-}
-
-function findDimension(dimensionTable, startingIndex, span){
-  var ret = dimensionTable[startingIndex];
-  for(var i = 1; i < span; i++){
-    ret += 1 + dimensionTable[startingIndex + i];
-  }
-  return ret;
-}
-
 Cell.prototype.setOptions = function(options){
   this.options = options;
   this.colSpan = (options && options.colSpan) || 1;
@@ -68,33 +56,6 @@ Cell.prototype.init = function(tableOptions, x, y){
   this.y = y;
 };
 
-Cell.prototype.drawTop = function(drawRight){
-  var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
-  var content = utils.repeat(this.chars.top,this.width);
-  var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
-  return left + content + right;
-};
-
-Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
-  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
-  var leftPadding = utils.repeat(' ', this.paddingLeft);
-  var right = (drawRight ? this.chars['right'] : '');
-  var rightPadding = utils.repeat(' ', this.paddingRight);
-  var line = this.lines[lineNum];
-  var len = this.width - (this.paddingLeft + this.paddingRight);
-  if(forceTruncationSymbol) line += this.truncate || '…';
-  var content = utils.truncate(line,len,this.truncate);
-  content = utils.pad(content, len, ' ', this.hAlign);
-  return left + leftPadding + content + rightPadding + right;
-};
-
-Cell.prototype.drawEmpty = function(drawRight){
-  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
-  var right = (drawRight ? this.chars['right'] : '');
-  var content = utils.repeat(' ',this.width);
-  return left + content + right;
-};
-
 /**
  * Draws the given line of the cell.
  * @param lineNum - can be `top`, `bottom` or a numerical line number.
@@ -122,6 +83,26 @@ Cell.prototype.draw = function(lineNum){
   return this.drawLine(lineNum - padTop, this.drawRight, forceTruncation);
 };
 
+Cell.prototype.drawTop = function(drawRight){
+  var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
+  var content = utils.repeat(this.chars.top,this.width);
+  var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
+  return left + content + right;
+};
+
+Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
+  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  var leftPadding = utils.repeat(' ', this.paddingLeft);
+  var right = (drawRight ? this.chars['right'] : '');
+  var rightPadding = utils.repeat(' ', this.paddingRight);
+  var line = this.lines[lineNum];
+  var len = this.width - (this.paddingLeft + this.paddingRight);
+  if(forceTruncationSymbol) line += this.truncate || '…';
+  var content = utils.truncate(line,len,this.truncate);
+  content = utils.pad(content, len, ' ', this.hAlign);
+  return left + leftPadding + content + rightPadding + right;
+};
+
 Cell.prototype.drawBottom = function(drawRight){
   var left = this.chars[this.x == 0 ? 'bottom-left' : 'bottom-mid'];
   var content = utils.repeat(this.chars.bottom,this.width);
@@ -129,6 +110,12 @@ Cell.prototype.drawBottom = function(drawRight){
   return left + content + right;
 };
 
+Cell.prototype.drawEmpty = function(drawRight){
+  var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  var right = (drawRight ? this.chars['right'] : '');
+  var content = utils.repeat(' ',this.width);
+  return left + content + right;
+};
 
 /**
  * A Cell that doesn't do anything. It just draws empty lines.
@@ -167,6 +154,19 @@ RowSpanCell.prototype.draw = function(lineNum){
   }
   return this.originalCell.draw(this.offset + 1 + lineNum);
 };
+
+// HELPER FUNCTIONS
+function findOption(objA,objB,nameA,nameB){
+  return objA[nameA] || objA[nameB] || objB[nameA] || objB[nameB];
+}
+
+function findDimension(dimensionTable, startingIndex, span){
+  var ret = dimensionTable[startingIndex];
+  for(var i = 1; i < span; i++){
+    ret += 1 + dimensionTable[startingIndex + i];
+  }
+  return ret;
+}
 
 module.exports = Cell;
 module.exports.NoOp = NoOpCell;
