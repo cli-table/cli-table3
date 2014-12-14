@@ -128,7 +128,7 @@ function truncate(str, desiredLength, truncateChar){
 }
 
 
-var options = {
+var defaultOptions = {
   chars: {
     'top': '─'
     , 'top-mid': '┬'
@@ -148,7 +148,9 @@ var options = {
   }
   , truncate: '…'
   , colWidths: []
+  , rowHeights: []
   , colAligns: []
+  , rowAligns: []
   , style: {
     'padding-left': 1
     , 'padding-right': 1
@@ -159,10 +161,20 @@ var options = {
   , head: []
 };
 
+function mergeOptions(options,defaults){
+  options = options || {};
+  defaults = defaults || defaultOptions;
+  var ret = _.extend({}, defaults, options);
+  ret.chars = _.extend({}, defaults.chars, options.chars);
+  ret.style = _.extend({}, defaults.style, options.style);
+  return ret;
+}
+
 module.exports = {
   strlen:strlen,
   repeat:repeat,
   pad:pad,
-  truncate:truncate
+  truncate:truncate,
+  mergeOptions:mergeOptions
 };
 

@@ -8,6 +8,7 @@ describe('utils',function(){
   var repeat = utils.repeat;
   var pad = utils.pad;
   var truncate = utils.truncate;
+  var mergeOptions = utils.mergeOptions;
 
   describe('strlen',function(){
     it('length of "hello" is 5',function(){
@@ -137,6 +138,73 @@ describe('utils',function(){
       var original = colors.red.bgGreen(colors.zebra('hello world'));
       var expected = colors.red.bgGreen(colors.zebra('hello wor')) + '…';
       expect(truncate(original,10)).to.equal(expected);
+    });
+  });
+
+  function defaultOptions(){
+    return {
+      chars: {
+        'top': '─'
+        , 'top-mid': '┬'
+        , 'top-left': '┌'
+        , 'top-right': '┐'
+        , 'bottom': '─'
+        , 'bottom-mid': '┴'
+        , 'bottom-left': '└'
+        , 'bottom-right': '┘'
+        , 'left': '│'
+        , 'left-mid': '├'
+        , 'mid': '─'
+        , 'mid-mid': '┼'
+        , 'right': '│'
+        , 'right-mid': '┤'
+        , 'middle': '│'
+      }
+      , truncate: '…'
+      , colWidths: []
+      , rowHeights: []
+      , colAligns: []
+      , rowAligns: []
+      , style: {
+        'padding-left': 1
+        , 'padding-right': 1
+        , head: ['red']
+        , border: ['grey']
+        , compact : false
+      }
+      , head: []
+    };
+  }
+
+  describe('mergeOptions',function(){
+    it('allows you to override chars',function(){
+      expect(mergeOptions()).to.eql(defaultOptions());
+    });
+
+    it('chars will be merged deeply',function(){
+      var expected = defaultOptions();
+      expected.chars.left = 'L';
+      expect(mergeOptions({chars:{left:'L'}})).to.eql(expected);
+    });
+
+    it('style will be merged deeply',function(){
+      var expected = defaultOptions();
+      expected.style['padding-left'] = 2;
+      expect(mergeOptions({style:{'padding-left':2}})).to.eql(expected);
+    });
+
+    it('head will be overwritten',function(){
+      var expected = defaultOptions();
+      expected.style.head = [];
+      //we can't use lodash's `merge()` in implementation because it would deeply copy array.
+      expect(mergeOptions({style:{'head':[]}})).to.eql(expected);
+    });
+
+    it('border will be overwritten',function(){
+      var expected = defaultOptions();
+      expected.style.border = [];
+      //we can't use lodash's `merge()` in implementation because it would deeply copy array.
+      expect(mergeOptions({style:{'border':[]}})).to.eql(expected);
     });
   });
 });
