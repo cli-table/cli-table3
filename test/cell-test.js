@@ -27,6 +27,7 @@ describe('Cell',function(){
       , colWidths: []
       , rowHeights: []
       , colAligns: []
+      , rowAligns: []
       , style: {
         'padding-left': 1
         , 'padding-right': 1
@@ -96,6 +97,36 @@ describe('Cell',function(){
         cell = new Cell({hAlign:'right'});
         cell.init(tableOptions,2);
         expect(cell.hAlign).to.equal('right');
+      });
+    });
+
+    describe('vAlign',function(){
+      it('if unset takes rowAlign value from tableOptions',function(){
+        var tableOptions = defaultOptions();
+        tableOptions.rowAligns = ['top','bottom','center'];
+        var cell = new Cell();
+        cell.init(tableOptions,0,0);
+        expect(cell.vAlign).to.equal('top');
+        cell = new Cell();
+        cell.init(tableOptions,0,1);
+        expect(cell.vAlign).to.equal('bottom');
+        cell = new Cell();
+        cell.init(tableOptions,0,2);
+        expect(cell.vAlign).to.equal('center');
+      });
+
+      it('if set overrides tableOptions',function(){
+        var tableOptions = defaultOptions();
+        tableOptions.rowAligns = ['top','bottom','center'];
+        var cell = new Cell({vAlign:'bottom'});
+        cell.init(tableOptions,0,0);
+        expect(cell.vAlign).to.equal('bottom');
+        cell = new Cell({vAlign:'top'});
+        cell.init(tableOptions,0,1);
+        expect(cell.vAlign).to.equal('top');
+        cell = new Cell({vAlign:'center'});
+        cell.init(tableOptions,0,2);
+        expect(cell.vAlign).to.equal('center');
       });
     });
 

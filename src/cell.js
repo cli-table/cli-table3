@@ -34,6 +34,7 @@ Cell.prototype.init = function(tableOptions, x, y){
   }
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
+  this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
 
   this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
   this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
