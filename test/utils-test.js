@@ -46,32 +46,32 @@ describe('utils',function(){
   });
 
   describe('pad',function(){
-    it("pad('hello',6,' ', left) == ' hello'", function () {
-      expect(pad('hello',6,' ','left')).to.equal(' hello');
+    it("pad('hello',6,' ', right) == ' hello'", function () {
+      expect(pad('hello',6,' ','right')).to.equal(' hello');
     });
 
-    it("pad('hello',7,' ', right) == 'hello  '", function () {
-      expect(pad('hello',7,' ','right')).to.equal('hello  ');
+    it("pad('hello',7,' ', left) == 'hello  '", function () {
+      expect(pad('hello',7,' ','left')).to.equal('hello  ');
     });
 
-    it("pad('hello',8,' ', both) == ' hello  '", function () {
-      expect(pad('hello',8,' ','both')).to.equal(' hello  ');
+    it("pad('hello',8,' ', center) == ' hello  '", function () {
+      expect(pad('hello',8,' ','center')).to.equal(' hello  ');
     });
 
-    it("pad('hello',9,' ', both) == '  hello  '", function () {
-      expect(pad('hello',9,' ','both')).to.equal('  hello  ');
+    it("pad('hello',9,' ', center) == '  hello  '", function () {
+      expect(pad('hello',9,' ','center')).to.equal('  hello  ');
     });
 
-    it("pad('yo',4,' ', both) == ' yo '", function () {
-      expect(pad('yo',4,' ','both')).to.equal(' yo ');
+    it("pad('yo',4,' ', center) == ' yo '", function () {
+      expect(pad('yo',4,' ','center')).to.equal(' yo ');
     });
 
     it('pad red(hello)', function(){
-      expect(pad(colors.red('hello'),7,' ','left')).to.equal('  ' + colors.red('hello'));
+      expect(pad(colors.red('hello'),7,' ','right')).to.equal('  ' + colors.red('hello'));
     });
 
-    it("pad('hello', 2, ' ', left) == 'hello'", function(){
-      expect(pad('hello', 2, ' ', 'left')).to.equal('hello');
+    it("pad('hello', 2, ' ', right) == 'hello'", function(){
+      expect(pad('hello', 2, ' ', 'right')).to.equal('hello');
     });
   });
 

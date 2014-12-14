@@ -16,18 +16,18 @@ function pad(str, len, pad, dir) {
   if (len + 1 >= length) {
     var padlen = len - length;
     switch (dir) {
-      case 'left':
+      case 'right':
         str = repeat(pad, padlen) + str;
         break;
 
-      case 'both':
-        var right = Math.ceil((padlen) / 2);
-        var left = padlen - right;
-        str = repeat(pad, left) + str + repeat(pad, right);
+      case 'left':
+        str = str + repeat(pad,padlen);
         break;
 
       default:
-        str = str + repeat(pad,padlen);
+        var right = Math.ceil((padlen) / 2);
+        var left = padlen - right;
+        str = repeat(pad, left) + str + repeat(pad, right);
     }
   }
   return str;

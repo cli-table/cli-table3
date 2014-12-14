@@ -242,6 +242,12 @@ describe('Cell',function(){
       cell.chars = defaultOptions().chars;
       cell.paddingLeft = cell.paddingRight = 1;
       cell.width = 7;
+      cell.height = 2;
+      cell.hAlign = 'center';
+      cell.chars.left = 'L';
+      cell.chars.right = 'R';
+      cell.chars.middle = 'M';
+      cell.content = 'hello\nhowdy';
       cell.x = cell.y = 0;
     });
 
@@ -287,6 +293,70 @@ describe('Cell',function(){
         cell.y = 1;
         expect(cell.drawBottom()).to.equal('┴───────');
         expect(cell.drawBottom(true)).to.equal('┴───────┘');
+      });
+    });
+
+    describe('first line of text',function(){
+      beforeEach(function () {
+        cell.width = 9;
+      });
+
+      it('will draw left side if x=0',function(){
+        cell.x = 0;
+        expect(cell.drawLine(1)).to.equal('L  hello  ');
+        expect(cell.drawLine(1,true)).to.equal('L  hello  R');
+      });
+
+      it('will draw mid side if x=1',function(){
+        cell.x = 1;
+        expect(cell.drawLine(1)).to.equal('M  hello  ');
+        expect(cell.drawLine(1,true)).to.equal('M  hello  R');
+      });
+
+      it('will align left',function(){
+        cell.x = 1;
+        cell.hAlign = 'left';
+        expect(cell.drawLine(1)).to.equal('M hello   ');
+        expect(cell.drawLine(1,true)).to.equal('M hello   R');
+      });
+
+      it('will align right',function(){
+        cell.x = 1;
+        cell.hAlign = 'right';
+        expect(cell.drawLine(1)).to.equal('M   hello ');
+        expect(cell.drawLine(1,true)).to.equal('M   hello R');
+      });
+    });    
+    
+    describe('second line of text',function(){
+      beforeEach(function () {
+        cell.width = 9;
+      });
+
+      it('will draw left side if x=0',function(){
+        cell.x = 0;
+        expect(cell.drawLine(2)).to.equal('L  howdy  ');
+        expect(cell.drawLine(2,true)).to.equal('L  howdy  R');
+      });
+
+      it('will draw mid side if x=1',function(){
+        cell.x = 1;
+        expect(cell.drawLine(2)).to.equal('M  howdy  ');
+        expect(cell.drawLine(2,true)).to.equal('M  howdy  R');
+      });
+
+      it('will align left',function(){
+        cell.x = 1;
+        cell.hAlign = 'left';
+        expect(cell.drawLine(2)).to.equal('M howdy   ');
+        expect(cell.drawLine(2,true)).to.equal('M howdy   R');
+      });
+
+      it('will align right',function(){
+        cell.x = 1;
+        cell.hAlign = 'right';
+        expect(cell.drawLine(2)).to.equal('M   howdy ');
+        expect(cell.drawLine(2,true)).to.equal('M   howdy R');
       });
     });
   });
