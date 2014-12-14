@@ -247,7 +247,7 @@ describe('Cell',function(){
       cell.chars.left = 'L';
       cell.chars.right = 'R';
       cell.chars.middle = 'M';
-      cell.content = 'hello\nhowdy';
+      cell.content = 'hello\nhowdy\ngoodnight';
       cell.x = cell.y = 0;
     });
 
@@ -358,8 +358,39 @@ describe('Cell',function(){
         expect(cell.drawLine(2)).to.equal('M   howdy ');
         expect(cell.drawLine(2,true)).to.equal('M   howdy R');
       });
+    });    
+    
+    describe('truncated line of text',function(){
+      beforeEach(function () {
+        cell.width = 9;
+      });
+
+      it('will draw left side if x=0',function(){
+        cell.x = 0;
+        expect(cell.drawLine(3)).to.equal('L goodni… ');
+        expect(cell.drawLine(3,true)).to.equal('L goodni… R');
+      });
+
+      it('will draw mid side if x=1',function(){
+        cell.x = 1;
+        expect(cell.drawLine(3)).to.equal('M goodni… ');
+        expect(cell.drawLine(3,true)).to.equal('M goodni… R');
+      });
+
+      it('will align left',function(){
+        cell.x = 1;
+        cell.hAlign = 'left';
+        expect(cell.drawLine(3)).to.equal('M goodni… ');
+        expect(cell.drawLine(3,true)).to.equal('M goodni… R');
+      });
+
+      it('will align right',function(){
+        cell.x = 1;
+        cell.hAlign = 'right';
+        expect(cell.drawLine(3)).to.equal('M goodni… ');
+        expect(cell.drawLine(3,true)).to.equal('M goodni… R');
+      });
     });
   });
-
 });
 

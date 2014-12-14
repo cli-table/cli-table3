@@ -57,7 +57,9 @@ Cell.prototype.drawLine = function(lineNum,drawRight){
     var right = (drawRight ? this.chars['right'] : '');
     var rightPadding = utils.repeat(' ', this.paddingRight);
     var line = this.content.split('\n')[lineNum -1];
-    var content = utils.pad(line, this.width - (this.paddingLeft + this.paddingRight), ' ', this.hAlign);
+    var len = this.width - (this.paddingLeft + this.paddingRight);
+    var content = utils.pad(line, len, ' ', this.hAlign);
+    content = utils.truncate(content,len);
     return left + leftPadding + content + rightPadding + right;
   }
 };

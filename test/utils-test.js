@@ -76,6 +76,10 @@ describe('utils',function(){
   });
 
   describe('truncate',function(){
+    it('truncate("hello", 5) === "hello"',function(){
+      expect(truncate('hello',5)).to.equal('hello');
+    });
+
     it('truncate("hello sir", 7, "…") == "hello …"',function(){
       expect(truncate('hello sir', 7, '…')).to.equal('hello …');
     });
@@ -125,7 +129,7 @@ describe('utils',function(){
 
     it('red-on-green( zebra (hello world) ) truncated to 11 chars',function(){
       var original = colors.red.bgGreen(colors.zebra('hello world'));
-      var expected = colors.red.bgGreen(colors.zebra('hello worl')) + '…';
+      var expected = colors.red.bgGreen(colors.zebra('hello world'));
       expect(truncate(original,11)).to.equal(expected);
     });
 

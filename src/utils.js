@@ -91,7 +91,7 @@ function unwindState(state,ret){
 function truncate(str, desiredLength, truncateChar){
   truncateChar = truncateChar || '…';
   var lengthOfStr = strlen(str);
-  if(lengthOfStr < desiredLength){
+  if(lengthOfStr <= desiredLength){
     return str;
   }
   desiredLength -= truncateChar.length;
