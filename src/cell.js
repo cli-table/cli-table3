@@ -20,6 +20,7 @@ Cell.prototype.setOptions = function(options){
 
 /**
  * Initializes the Cells data structure.
+ *
  * @param tableOptions - A fully populated set of tableOptions.
  * In addition to the standard default values, tableOptions must be populated with the actual
  * `colWidths` and `rowWidths`. Both arrays must have lengths equal to the number of columns
@@ -58,6 +59,7 @@ Cell.prototype.init = function(tableOptions, x, y){
 
 /**
  * Draws the given line of the cell.
+ * This default implementation differs to methods `drawTop`, `drawBottom`, `drawLine` and `drawEmpty`.
  * @param lineNum - can be `top`, `bottom` or a numerical line number.
  * @returns {String} The representation of this line.
  */
@@ -83,6 +85,11 @@ Cell.prototype.draw = function(lineNum){
   return this.drawLine(lineNum - padTop, this.drawRight, forceTruncation);
 };
 
+/**
+ * Renders the top line of the cell.
+ * @param drawRight - true if this method should render the right edge of the cell.
+ * @returns {String}
+ */
 Cell.prototype.drawTop = function(drawRight){
   var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
   var content = utils.repeat(this.chars.top,this.width);
@@ -90,6 +97,16 @@ Cell.prototype.drawTop = function(drawRight){
   return left + content + right;
 };
 
+/**
+ * Renders a line of text.
+ * @param lineNum - Which line of text to render. This is not necessarily the line within the cell.
+ * There may be top-padding above the first line of text.
+ * @param drawRight - true if this method should render the right edge of the cell.
+ * @param forceTruncationSymbol - `true` if the rendered text should end with the truncation symbol even
+ * if the text fits. This is used when the cell is vertically truncated. If `false` the text should
+ * only include the truncation symbol if the text will not fit horizontally within the cell width.
+ * @returns {String}
+ */
 Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   var leftPadding = utils.repeat(' ', this.paddingLeft);
@@ -103,6 +120,11 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
   return left + leftPadding + content + rightPadding + right;
 };
 
+/**
+ * Renders the bottom line of the cell.
+ * @param drawRight - true if this method should render the right edge of the cell
+ * @returns {String}
+ */
 Cell.prototype.drawBottom = function(drawRight){
   var left = this.chars[this.x == 0 ? 'bottom-left' : 'bottom-mid'];
   var content = utils.repeat(this.chars.bottom,this.width);
@@ -110,6 +132,11 @@ Cell.prototype.drawBottom = function(drawRight){
   return left + content + right;
 };
 
+/**
+ * Renders a blank line of text within the cell. Used for top and/or bottom padding.
+ * @param drawRight - true if this method should render the right edge of the cell
+ * @returns {String}
+ */
 Cell.prototype.drawEmpty = function(drawRight){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   var right = (drawRight ? this.chars['right'] : '');
