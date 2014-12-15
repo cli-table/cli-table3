@@ -47,17 +47,18 @@ describe('Cell',function(){
     });
   });
 
-  describe('init',function(){
+  describe('mergeTableOptions',function(){
     describe('chars',function(){
       it('unset chars take on value of table',function(){
         var cell = new Cell();
-        cell.init(defaultOptions());
+        var tableOptions = defaultOptions();
+        cell.mergeTableOptions(tableOptions);
         expect(cell.chars).to.eql(defaultOptions().chars);
       });
 
       it('set chars override the value of table',function(){
         var cell = new Cell({chars:{top:'='}});
-        cell.init(defaultOptions());
+        cell.mergeTableOptions(defaultOptions());
         var options = defaultOptions();
         options.chars.top = '=';
         expect(cell.chars).to.eql(options.chars);
@@ -67,28 +68,94 @@ describe('Cell',function(){
     describe('truncate',function(){
       it('if unset takes on value of table',function(){
         var cell = new Cell();
-        cell.init(defaultOptions());
+        cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).to.equal('…');
       });
 
       it('if set overrides value of table',function(){
         var cell = new Cell({truncate:'...'});
-        cell.init(defaultOptions());
+        cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).to.equal('...');
       });
     });
 
+    describe('style.padding-left', function () {
+      it('if unset will be copied from tableOptions.style', function () {
+        var cell = new Cell();
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingLeft).to.equal(1);
+
+        cell = new Cell();
+        var tableOptions = defaultOptions();
+        tableOptions.style['padding-left'] = 2;
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.paddingLeft).to.equal(2);
+
+        cell = new Cell();
+        tableOptions = defaultOptions();
+        tableOptions.style.paddingLeft = 3;
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.paddingLeft).to.equal(3);
+      });
+
+      it('if set will override tableOptions.style', function () {
+        var cell = new Cell({style:{'padding-left':2}});
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingLeft).to.equal(2);
+
+        cell = new Cell({style:{paddingLeft:3}});
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingLeft).to.equal(3);
+      });
+    });
+
+    describe('style.padding-right', function () {
+      it('if unset will be copied from tableOptions.style', function () {
+        var cell = new Cell();
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingRight).to.equal(1);
+
+        cell = new Cell();
+        var tableOptions = defaultOptions();
+        tableOptions.style['padding-right'] = 2;
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.paddingRight).to.equal(2);
+
+        cell = new Cell();
+        tableOptions = defaultOptions();
+        tableOptions.style.paddingRight = 3;
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.paddingRight).to.equal(3);
+      });
+
+      it('if set will override tableOptions.style', function () {
+        var cell = new Cell({style:{'padding-right':2}});
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingRight).to.equal(2);
+
+        cell = new Cell({style:{paddingRight:3}});
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.paddingRight).to.equal(3);
+      });
+    });
+
+  });
+
+  describe('init',function(){
     describe('hAlign',function(){
       it('if unset takes colAlign value from tableOptions',function(){
         var tableOptions = defaultOptions();
         tableOptions.colAligns = ['left','right','both'];
         var cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0);
         expect(cell.hAlign).to.equal('left');
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1);
         expect(cell.hAlign).to.equal('right');
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,2);
         expect(cell.hAlign).to.equal('both');
       });
@@ -97,12 +164,15 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.colAligns = ['left','right','both'];
         var cell = new Cell({hAlign:'right'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0);
         expect(cell.hAlign).to.equal('right');
         cell = new Cell({hAlign:'left'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1);
         expect(cell.hAlign).to.equal('left');
         cell = new Cell({hAlign:'right'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,2);
         expect(cell.hAlign).to.equal('right');
       });
@@ -113,12 +183,15 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top','bottom','center'];
         var cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.vAlign).to.equal('top');
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,1);
         expect(cell.vAlign).to.equal('bottom');
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,2);
         expect(cell.vAlign).to.equal('center');
       });
@@ -127,12 +200,15 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top','bottom','center'];
         var cell = new Cell({vAlign:'bottom'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.vAlign).to.equal('bottom');
         cell = new Cell({vAlign:'top'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,1);
         expect(cell.vAlign).to.equal('top');
         cell = new Cell({vAlign:'center'});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,2);
         expect(cell.vAlign).to.equal('center');
       });
@@ -143,12 +219,15 @@ describe('Cell',function(){
         var cell = new Cell();
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [5,10,15];
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0);
         expect(cell.width).to.equal(5);
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1);
         expect(cell.width).to.equal(10);
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,2);
         expect(cell.width).to.equal(15);
       });
@@ -157,12 +236,15 @@ describe('Cell',function(){
         var cell = new Cell({colSpan:2});
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [5,10,15];
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0);
         expect(cell.width).to.equal(16);
         cell = new Cell({colSpan:2});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1);
         expect(cell.width).to.equal(26);
         cell = new Cell({colSpan:3});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0);
         expect(cell.width).to.equal(32);
       });
@@ -173,12 +255,15 @@ describe('Cell',function(){
         var cell = new Cell();
         var tableOptions = defaultOptions();
         tableOptions.rowHeights = [5,10,15];
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.height).to.equal(5);
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,1);
         expect(cell.height).to.equal(10);
         cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,2);
         expect(cell.height).to.equal(15);
       });
@@ -187,12 +272,15 @@ describe('Cell',function(){
         var cell = new Cell({rowSpan:2});
         var tableOptions = defaultOptions();
         tableOptions.rowHeights = [5,10,15];
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.height).to.equal(16);
         cell = new Cell({rowSpan:2});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,1);
         expect(cell.height).to.equal(26);
         cell = new Cell({rowSpan:3});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.height).to.equal(32);
       });
@@ -208,18 +296,21 @@ describe('Cell',function(){
 
       it('col 1 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 2 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1,0);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 3 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,2,0);
         expect(cell.drawRight).to.equal(true);
       });
@@ -227,98 +318,44 @@ describe('Cell',function(){
       it('col 3 of 4, with default colspan',function(){
         var cell = new Cell();
         tableOptions.colWidths = [20,20,20,20];
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,2,0);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 2 of 3, with colspan of 2',function(){
         var cell = new Cell({colSpan:2});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,1,0);
         expect(cell.drawRight).to.equal(true);
       });
 
       it('col 1 of 3, with colspan of 3',function(){
         var cell = new Cell({colSpan:3});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.drawRight).to.equal(true);
       });
 
       it('col 1 of 3, with colspan of 2',function(){
         var cell = new Cell({colSpan:2});
+        cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,0);
         expect(cell.drawRight).to.equal(false);
-      });
-
-    });
-
-    describe('style.padding-left', function () {
-      it('if unset will be copied from tableOptions.style', function () {
-        var cell = new Cell();
-        cell.init(defaultOptions());
-        expect(cell.paddingLeft).to.equal(1);
-
-        cell = new Cell();
-        var tableOptions = defaultOptions();
-        tableOptions.style['padding-left'] = 2;
-        cell.init(tableOptions);
-        expect(cell.paddingLeft).to.equal(2);
-
-        cell = new Cell();
-        tableOptions = defaultOptions();
-        tableOptions.style.paddingLeft = 3;
-        cell.init(tableOptions);
-        expect(cell.paddingLeft).to.equal(3);
-      });
-
-      it('if set will override tableOptions.style', function () {
-        var cell = new Cell({style:{'padding-left':2}});
-        cell.init(defaultOptions());
-        expect(cell.paddingLeft).to.equal(2);
-
-        cell = new Cell({style:{paddingLeft:3}});
-        cell.init(defaultOptions());
-        expect(cell.paddingLeft).to.equal(3);
-      });
-    });
-    
-    describe('style.padding-right', function () {
-      it('if unset will be copied from tableOptions.style', function () {
-        var cell = new Cell();
-        cell.init(defaultOptions());
-        expect(cell.paddingRight).to.equal(1);
-
-        cell = new Cell();
-        var tableOptions = defaultOptions();
-        tableOptions.style['padding-right'] = 2;
-        cell.init(tableOptions);
-        expect(cell.paddingRight).to.equal(2);
-
-        cell = new Cell();
-        tableOptions = defaultOptions();
-        tableOptions.style.paddingRight = 3;
-        cell.init(tableOptions);
-        expect(cell.paddingRight).to.equal(3);
-      });
-
-      it('if set will override tableOptions.style', function () {
-        var cell = new Cell({style:{'padding-right':2}});
-        cell.init(defaultOptions());
-        expect(cell.paddingRight).to.equal(2);
-
-        cell = new Cell({style:{paddingRight:3}});
-        cell.init(defaultOptions());
-        expect(cell.paddingRight).to.equal(3);
       });
     });
 
     it('will set x and y',function(){
-       var cell = new Cell();
-      cell.init(defaultOptions(),0,0);
+      var cell = new Cell();
+      var tableOptions = defaultOptions();
+      cell.mergeTableOptions(tableOptions);
+      cell.init(tableOptions,0,0);
       expect(cell.x).to.equal(0);
       expect(cell.y).to.equal(0);
 
       cell = new Cell();
-      cell.init(defaultOptions(),3,4);
+      cell.mergeTableOptions(tableOptions);
+      cell.init(tableOptions,3,4);
       expect(cell.x).to.equal(3);
       expect(cell.y).to.equal(4);
     });

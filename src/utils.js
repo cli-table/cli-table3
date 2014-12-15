@@ -177,4 +177,3 @@ module.exports = {
   truncate:truncate,
   mergeOptions:mergeOptions
 };
-

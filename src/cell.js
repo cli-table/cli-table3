@@ -24,6 +24,22 @@ Cell.prototype.setOptions = function(options){
   this.rowSpan = options.rowSpan || 1;
 };
 
+Cell.prototype.mergeTableOptions = function(tableOptions){
+  this.options.style = this.options.style || {};
+
+  if(this.options.chars){
+    this.chars = _.extend({},tableOptions.chars,this.options.chars);
+  }
+  else {
+    this.chars = tableOptions.chars;
+  }
+
+  this.truncate = this.options.truncate || tableOptions.truncate;
+
+  this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
+  this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
+};
+
 /**
  * Initializes the Cells data structure.
  *
@@ -37,24 +53,11 @@ Cell.prototype.setOptions = function(options){
  * @param y - The row this cell is in (with row 0 being at the top).
  */
 Cell.prototype.init = function(tableOptions, x, y){
-  this.options.style = this.options.style || {};
-  if(this.options.chars){
-    this.chars = _.extend({},tableOptions.chars,this.options.chars);
-  }
-  else {
-    this.chars = tableOptions.chars;
-  }
-
-  this.truncate = this.options.truncate || tableOptions.truncate;
-
   this.width = findDimension(tableOptions.colWidths, x, this.colSpan);
   this.height = findDimension(tableOptions.rowHeights, y, this.rowSpan);
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
   this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
-
-  this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
-  this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
 
   this.drawRight = x + this.colSpan == tableOptions.colWidths.length;
 
