@@ -3,6 +3,7 @@ describe('tableLayout', function () {
   var tableLayout = require('../src/table-layout');
   var makeTableLayout = tableLayout.makeTableLayout;
   var maxWidth = tableLayout.maxWidth;
+  var fillInTable = tableLayout.fillInTable;
   var chai = require('chai');
   var expect = chai.expect;
   var _ = require('lodash');
@@ -98,6 +99,67 @@ describe('tableLayout', function () {
     expect(maxWidth([[1],[1,2,3],[]])).to.equal(3);
     expect(maxWidth([[1,2,3,4],[1,2],[]])).to.equal(4);
     expect(maxWidth([[1],[1,2],[1,2,3,4,5]])).to.equal(5);
+  });
+
+  describe('fillInTable',function(){
+    function mc(opts){
+      return new Cell(opts);
+    }
+
+    it('will blank out individual cells',function(){
+      var cells = [
+        [null, mc('a')],
+        [mc('b'), null]
+      ];
+      fillInTable(cells);
+
+      checkLayout(cells,[
+        ['', 'a'],
+        ['b', '']
+      ]);
+    });
+
+    it('will autospan to the right',function(){
+      var cells = [
+        [null, null],
+        [null, mc('a')]
+      ];
+      fillInTable(cells);
+
+      checkLayout(cells,[
+        [{content:'',colSpan:2}, null],
+        ['', 'a']
+      ]);
+    });
+
+    it('will autospan down',function(){
+      var cells = [
+        [null, mc('a')],
+        [null, null]
+      ];
+      fillInTable(cells);
+
+      checkLayout(cells,[
+        [{content:'',rowSpan:2}, 'a'],
+        [{spannerFor:[0,0]}, '']
+      ]);
+    });
+
+    it('will autospan right and down',function(){
+      var cells = [
+        [null,  null,    mc('a')],
+        [null,  null,    null],
+        [null,  mc('b'), null]
+      ];
+      fillInTable(cells);
+
+      checkLayout(cells,[
+        [{content:'',colSpan:2, rowSpan:2}, null, 'a'],
+        [{spannerFor:[0,0]}, null, {content:'', colSpan:1, rowSpan:2}],
+        ['','b',{spannerFor:[1,2]}]
+      ]);
+    });
+
   });
 
   /**
