@@ -1,6 +1,8 @@
-describe('Table', function () {
+describe('tableLayout', function () {
   var Cell = require('../src/cell');
-  var makeTableLayout = require('../src/table-layout');
+  var tableLayout = require('../src/table-layout');
+  var makeTableLayout = tableLayout.makeTableLayout;
+  var maxWidth = tableLayout.maxWidth;
   var chai = require('chai');
   var expect = chai.expect;
   var _ = require('lodash');
@@ -89,6 +91,13 @@ describe('Table', function () {
     ];
 
     checkLayout(actual,expected);
+  });
+
+  it('maxWidth finds the maximum width of a 2d array',function(){
+    expect(maxWidth([[1],[1,2],[]])).to.equal(2);
+    expect(maxWidth([[1],[1,2,3],[]])).to.equal(3);
+    expect(maxWidth([[1,2,3,4],[1,2],[]])).to.equal(4);
+    expect(maxWidth([[1],[1,2],[1,2,3,4,5]])).to.equal(5);
   });
 
   /**

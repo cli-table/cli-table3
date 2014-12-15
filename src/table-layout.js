@@ -36,4 +36,13 @@ function generateCells(rows){
   });
 }
 
-module.exports = makeTableLayout;
+function maxWidth(rows){
+  return _.reduce(rows,function(maxWidth,row){
+    return Math.max(maxWidth,row.length);
+  },0);
+}
+
+module.exports = {
+  makeTableLayout:makeTableLayout,
+  maxWidth:maxWidth
+};
