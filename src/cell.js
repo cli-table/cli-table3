@@ -38,6 +38,9 @@ Cell.prototype.mergeTableOptions = function(tableOptions){
 
   this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
   this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
+
+  this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
+  this.desiredHeight = this.lines.length;
 };
 
 /**

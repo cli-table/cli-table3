@@ -139,6 +139,47 @@ describe('Cell',function(){
       });
     });
 
+    describe('desiredWidth',function(){
+      it('content(hello) padding(1,1) == 7',function(){
+        var cell = new Cell('hello');
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.desiredWidth).to.equal(7);
+      });
+
+      it('content(hi) padding(1,2) == 5',function(){
+        var cell = new Cell({content:'hi',style:{paddingRight:2}});
+        var tableOptions = defaultOptions();
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.desiredWidth).to.equal(5);
+      });
+
+      it('content(hi) padding(3,2) == 7',function(){
+        var cell = new Cell({content:'hi',style:{paddingLeft:3,paddingRight:2}});
+        var tableOptions = defaultOptions();
+        cell.mergeTableOptions(tableOptions);
+        expect(cell.desiredWidth).to.equal(7);
+      });
+    });
+
+    describe('desiredHeight',function(){
+      it('1 lines of text',function(){
+        var cell = new Cell('hi');
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.desiredHeight).to.equal(1);
+      });
+
+      it('2 lines of text',function(){
+        var cell = new Cell('hi\nbye');
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.desiredHeight).to.equal(2);
+      });
+
+      it('2 lines of text',function(){
+        var cell = new Cell('hi\nbye\nyo');
+        cell.mergeTableOptions(defaultOptions());
+        expect(cell.desiredHeight).to.equal(3);
+      });
+    });
   });
 
   describe('init',function(){
