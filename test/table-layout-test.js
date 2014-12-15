@@ -4,6 +4,8 @@ describe('tableLayout', function () {
   var makeTableLayout = tableLayout.makeTableLayout;
   var maxWidth = tableLayout.maxWidth;
   var fillInTable = tableLayout.fillInTable;
+  var computeWidths = tableLayout.computeWidths;
+  var computeHeights = tableLayout.computeHeights;
   var chai = require('chai');
   var expect = chai.expect;
   var _ = require('lodash');
@@ -159,7 +161,192 @@ describe('tableLayout', function () {
         ['','b',{spannerFor:[1,2]}]
       ]);
     });
+  });
 
+  describe('computeWidths',function() {
+    function mc(desiredWidth, colSpan) {
+      return {desiredWidth: desiredWidth, colSpan: colSpan};
+    }
+
+    it('finds the maximum desired width of each column', function () {
+      var widths = [];
+      var cells = [
+        [mc(7), mc(3), mc(5)],
+        [mc(8), mc(5), mc(2)],
+        [mc(6), mc(9), mc(1)]
+      ];
+
+      computeWidths(widths, cells);
+
+      expect(widths).to.eql([8, 9, 5]);
+    });
+
+    it('won\'t touch hard coded values', function () {
+      var widths = [null, 3];
+      var cells = [
+        [mc(7), mc(3), mc(5)],
+        [mc(8), mc(5), mc(2)],
+        [mc(6), mc(9), mc(1)]
+      ];
+
+      computeWidths(widths, cells);
+
+      expect(widths).to.eql([8, 3, 5]);
+    });
+
+    it('assumes undefined desiredWidth is 0', function () {
+      var widths = [];
+      var cells = [[{}], [{}], [{}]];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([0])
+    });
+
+    it('takes into account colSpan and wont over expand', function () {
+      var widths = [];
+      var cells = [
+        [mc(10, 2), mc(5), mc(5)],
+        [mc(5), mc(3), mc(2)],
+        [mc(4), mc(2), mc(1)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([5, 5, 5]);
+    });
+
+    it('will expand rows involved in colSpan in a balanced way', function () {
+      var widths = [];
+      var cells = [
+        [mc(13, 2), mc(), mc(5)],
+        [mc(5), mc(5), mc(2)],
+        [mc(4), mc(2), mc(1)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([6, 6, 5]);
+    });
+
+    it('expands across 3 cols', function () {
+      var widths = [];
+      var cells = [
+        [mc(25, 3), mc(), mc()],
+        [mc(5), mc(5), mc(2)],
+        [mc(4), mc(2), mc(1)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([9, 9, 5]);
+    });
+
+    it('multiple spans in same table', function () {
+      var widths = [];
+      var cells = [
+        [mc(25, 3), mc(), mc()],
+        [mc(30, 3), mc(), mc()],
+        [mc(4), mc(2), mc(1)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([11, 9, 8]);
+    });
+
+    it('spans will only edit uneditable tables',function(){
+      var widths = [null, 3];
+      var cells = [
+        [mc(20,3),mc(),mc()],
+        [mc(4),mc(20),mc(5)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([7,3,8])
+    });
+
+    it('spans will only edit uneditable tables - first column uneditable',function(){
+      var widths = [3];
+      var cells = [
+        [mc(20,3),mc(), mc()],
+        [mc(4),   mc(3), mc(5)]
+      ];
+      computeWidths(widths, cells);
+      expect(widths).to.eql([3,7,8])
+    });
+  });
+    
+  describe('computeHeights',function(){
+    function mc(desiredHeight,colSpan){
+      return {desiredHeight:desiredHeight,rowSpan:colSpan};
+    }
+
+    it('finds the maximum desired height of each row',function(){
+      var heights = [];
+      var cells = [
+        [mc(7), mc(3), mc(5)],
+        [mc(8), mc(5), mc(2)],
+        [mc(6), mc(9), mc(1)]
+      ];
+
+      computeHeights(heights,cells);
+
+      expect(heights).to.eql([7,8,9]);
+    });
+
+    it('won\'t touch hard coded values',function(){
+      var heights = [null,3];
+      var cells = [
+        [mc(7), mc(3), mc(5)],
+        [mc(8), mc(5), mc(2)],
+        [mc(6), mc(9), mc(1)]
+      ];
+
+      computeHeights(heights,cells);
+
+      expect(heights).to.eql([7,3,9]);
+    });
+
+    it('assumes undefined desiredHeight is 0',function(){
+      var heights = [];
+      var cells = [[{},{},{}]];
+      computeHeights(heights,cells);
+      expect(heights).to.eql([0])
+    });
+
+    it('takes into account rowSpan and wont over expand',function(){
+      var heights = [];
+      var cells = [
+        [mc(10,2), mc(5), mc(5)],
+        [mc(5),    mc(3), mc(2)],
+        [mc(4),    mc(2), mc(1)]
+      ];
+      computeHeights(heights,cells);
+      expect(heights).to.eql([5,5,4]);
+    });
+
+    it('will expand rows involved in rowSpan in a balanced way',function(){
+      var heights = [];
+      var cells = [
+        [mc(13,2), mc(), mc(5)],
+        [mc(5),    mc(5), mc(2)],
+        [mc(4),    mc(2), mc(1)]
+      ];
+      computeHeights(heights,cells);
+      expect(heights).to.eql([6,6,4]);
+    });
+
+    it('expands across 3 rows',function(){
+      var heights = [];
+      var cells = [
+        [mc(25,3), mc(5), mc(4)],
+        [mc(),    mc(5), mc(2)],
+        [mc(),    mc(2), mc(1)]
+      ];
+      computeHeights(heights,cells);
+      expect(heights).to.eql([9,9,5]);
+    });
+
+    it('multiple spans in same table',function(){
+      var heights = [];
+      var cells = [
+        [mc(25,3), mc(30,3), mc(4)],
+        [mc(),     mc(),     mc(2)],
+        [mc(),     mc(),     mc(1)]
+      ];
+      computeHeights(heights,cells);
+      expect(heights).to.eql([11,9,8]);
+    });
   });
 
   /**

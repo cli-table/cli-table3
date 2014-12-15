@@ -1,10 +1,12 @@
 var _ = require('lodash');
-var Cell = require('./cell');
+(function(){
 
+var Cell = require('./cell');
 
 function makeTableLayout(rows){
   var cellRows = generateCells(rows);
   expandCells(cellRows);
+  fillInTable(cellRows);
   return cellRows;
 }
 
@@ -82,8 +84,91 @@ function maxWidth(rows){
   },0);
 }
 
+function iterateColumn(rows,col,fn,ctx){
+  for(var i = 0; i < rows.length; i++){
+    fn.call(ctx,rows[i][col],i);
+  }
+}
+  function getCell(rows,y,x){
+    return rows[y][x];
+  }
+
+  function getCellPivot(rows,x,y){
+    return rows[y][x];
+  }
+
+  function iterateRow(rows,row,fn,ctx){
+    var columns = rows[row];
+    for(var i = 0; i < columns.length; i++){
+      fn.call(ctx,columns[i],i);
+    }
+  }
+  function maxHeight(rows){
+    return rows.length;
+  }
+
 module.exports = {
   makeTableLayout:makeTableLayout,
   maxWidth:maxWidth,
-  fillInTable:fillInTable
+  fillInTable:fillInTable,
+  computeWidths:makeComputeWidths(iterateColumn,maxWidth,'colSpan','desiredWidth',getCell),
+  computeHeights:makeComputeWidths(iterateRow,maxHeight,'rowSpan','desiredHeight',getCellPivot)
 };
+
+})();
+
+function makeComputeWidths(iterateColumn,maxWidth,colSpan,desiredWidth,getCell){
+  return function (vals,rows){
+    var width = maxWidth(rows);
+    var result = [];
+    var spanners = [];
+    for(var columnIndex = 0; columnIndex < width; columnIndex++){
+      if(!_.isNumber(vals[columnIndex])){
+        var maxDesired = 0;
+        iterateColumn(rows,columnIndex,function(cell,rowIndex){
+          if(cell[colSpan] && cell[colSpan] > 1){
+            spanners.push({row:rowIndex,column:columnIndex});
+          }
+          else {
+            maxDesired = Math.max(maxDesired,cell[desiredWidth] || 0);
+          }
+        });
+        result[columnIndex] = maxDesired;
+      }
+      else {
+        result[columnIndex] = vals[columnIndex];
+        iterateColumn(rows,columnIndex,function(cell,rowIndex) {
+          if (cell[colSpan] && cell[colSpan] > 1) {
+            spanners.push({row: rowIndex, column: columnIndex});
+          }
+        });
+      }
+    }
+    while(spanners.length){
+      var coords = spanners.pop();
+      var cell = getCell(rows,coords.row,coords.column);
+      var span = cell[colSpan];
+      var existingWidth = result[coords.column];
+      var editableCols = _.isNumber(vals[coords.column]) ? 0 : 1;
+      for(var i = 1; i < span; i ++){
+        existingWidth += 1 + result[coords.column + i];
+        if(!_.isNumber(vals[coords.column + i])){
+          editableCols++;
+        }
+      }
+      if(cell[desiredWidth] > existingWidth){
+        i = 0;
+        while(editableCols > 0 && cell[desiredWidth] > existingWidth){
+          if(!_.isNumber(vals[coords.column+i])){
+            var dif = Math.round( (cell[desiredWidth] - existingWidth) / editableCols );
+            existingWidth += dif;
+            result[coords.column + i] += dif;
+            editableCols--;
+          }
+          i++;
+        }
+      }
+    }
+    _.extend(vals,result);
+  }
+}
