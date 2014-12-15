@@ -166,8 +166,6 @@ NoOpCell.prototype.draw = function(){
   return '';
 };
 
-NoOpCell.prototype.init = function(){};
-
 /**
  * A placeholder Cell for a Cell that spans multiple rows.
  * It delegates rendering to the original cell, but adds the appropriate offset.
@@ -192,6 +190,10 @@ RowSpanCell.prototype.draw = function(lineNum){
   }
   return this.originalCell.draw(this.offset + 1 + lineNum);
 };
+
+NoOpCell.prototype.init =
+NoOpCell.prototype.mergeTableOptions =
+RowSpanCell.prototype.mergeTableOptions = function(){};
 
 // HELPER FUNCTIONS
 function findOption(objA,objB,nameA,nameB){

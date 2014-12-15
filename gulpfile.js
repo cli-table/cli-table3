@@ -16,6 +16,10 @@ gulp.task('watch-coverage',function(){
   coverageTask();
 });
 
+gulp.task('example',function(){
+  require('./examples/examples')();
+});
+
 function coverageTask(cb){
   gulp.src(['src/*.js'])
     .pipe(istanbul()) // Covering files
