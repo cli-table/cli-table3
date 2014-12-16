@@ -86,6 +86,50 @@ describe('Table', function () {
     expect(table.toString()).to.equal(expected.join('\n'));
   });
 
+  it('rowSpan to the right of a colspan',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup'},{rowSpan:3,content:'hi'}],
+      [{content:'howdy',colSpan:2}],
+      ['o','k','','']
+    );
+
+    var expected = [
+        '┌───────┬─────┬────┐'
+      , '│ hello │ sup │ hi │'
+      , '├───────┤     │    │'
+      , '│ howdy │     │    │'
+      , '├───┬───┼──┬──┤    │'
+      , '│ o │ k │  │  │    │'
+      , '└───┴───┴──┴──┴────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('rowSpan to the right of a non-empty line',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup\nsup'},{rowSpan:3,content:'hi\nhi'}],
+      [{content:'howdy',colSpan:2}],
+      ['o','k','','']
+    );
+
+    var expected = [
+        '┌───────┬─────┬────┐'
+      , '│ hello │ sup │ hi │'
+      , '├───────┤ sup │ hi │'
+      , '│ howdy │     │    │'
+      , '├───┬───┼──┬──┤    │'
+      , '│ o │ k │  │  │    │'
+      , '└───┴───┴──┴──┴────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
   it('rowSpan to the right - multiline content',function(){
     var table = new Table({style:{head:[],border:[]}});
 

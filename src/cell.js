@@ -180,6 +180,9 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spann
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   if(this.x && spanningCell && this.cells){
     var cellLeft = this.cells[this.y+spanningCell][this.x-1];
+    while(cellLeft instanceof NoOpCell){
+      cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
+    }
     if(!(cellLeft instanceof RowSpanCell)){
       left = this.chars['right-mid'];
     }
@@ -222,6 +225,9 @@ Cell.prototype.drawEmpty = function(drawRight,spanningCell){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   if(this.x && spanningCell && this.cells){
     var cellLeft = this.cells[this.y+spanningCell][this.x-1];
+    while(cellLeft instanceof NoOpCell){
+      cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
+    }
     if(!(cellLeft instanceof RowSpanCell)){
       left = this.chars['right-mid'];
     }
@@ -241,6 +247,12 @@ function NoOpCell(){}
 NoOpCell.prototype.draw = function(){
   return '';
 };
+
+NoOpCell.prototype.init = function(tableOptions, x, y){
+  this.x = x;
+  this.y = y;
+};
+
 
 /**
  * A placeholder Cell for a Cell that spans multiple rows.
@@ -268,7 +280,6 @@ RowSpanCell.prototype.draw = function(lineNum){
   return this.originalCell.draw(this.offset + 1 + lineNum);
 };
 
-NoOpCell.prototype.init =
 NoOpCell.prototype.mergeTableOptions =
 RowSpanCell.prototype.mergeTableOptions = function(){};
 
