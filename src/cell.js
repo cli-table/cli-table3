@@ -139,9 +139,13 @@ Cell.prototype._topLeftChar = function(offset){
     else {
       leftChar = offset == 0 ? 'mid-mid' : 'bottom-mid';
       if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
-        var cellAbove = this.cells[this.y-1][x];
-        if(cellAbove instanceof Cell.NoOpCell){
+        var spanAbove = this.cells[this.y-1][x] instanceof Cell.NoOpCell;
+        var spanLeft = offset == 0 && this.cells[this.y][x-1] instanceof Cell.RowSpanCell;
+        if(spanAbove){
           leftChar = offset == 0 ? 'top-mid' : 'mid';
+        }
+        if(spanLeft){
+          leftChar = 'left-mid';
         }
       }
     }
