@@ -26,11 +26,10 @@ function coverageTask(cb){
     .pipe(istanbul.hookRequire()) // Force `require` to return covered files
     .on('error', logMochaError)
     .on('finish', function () {
+      var opts = process.env.TRAVIS ? {} : {grep:'original-cli-table', invert:true};
+
       gulp.src(['test/*.js'])
-        .pipe(mocha({
-          grep:'original-cli-table',
-          invert:true
-        }))
+        .pipe(mocha(opts))
         .on('error',function(err){
           logMochaError(err);
           if(cb) cb(err);
