@@ -113,7 +113,7 @@ Cell.prototype.drawTop = function(drawRight){
 Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
   if(this[styleProperty] && this[styleProperty].length){
     var colors = require('colors/safe');
-    for(var i = 0; i < this[styleProperty].length; i++){
+    for(var i = this[styleProperty].length - 1; i >= 0; i--){
       colors = colors[this[styleProperty][i]];
     }
     return colors(content);

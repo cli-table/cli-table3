@@ -546,6 +546,14 @@ describe('Cell',function(){
         expect(cell.draw(0)).to.equal('L' + colors.red('  hello  ') + 'R');
       });
 
+      it('text will NOT be drawn in color of head style if y == 1',function(){
+        cell.head = ['red'];
+        cell.x = cell.y = 1;
+        expect(cell.draw(0)).to.equal('M  hello  ');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('M  hello  R');
+      });
+
       it('head and border colors together',function(){
         cell.border = ['gray'];
         cell.head = ['red'];

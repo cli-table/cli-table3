@@ -24,6 +24,34 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
+  it('cross table',function(){
+    var actual = makeTableLayout([
+      {'1.0':['yes','no']},
+      {'2.0':['hello','goodbye']}
+    ]);
+
+    var expected = [
+      ['1.0','yes','no'],
+      ['2.0','hello','goodbye']
+    ];
+
+    checkLayout(actual,expected);
+  });
+
+  it('vertical table',function(){
+    var actual = makeTableLayout([
+      {'1.0':'yes'},
+      {'2.0':'hello'}
+    ]);
+
+    var expected = [
+      ['1.0','yes'],
+      ['2.0','hello']
+    ];
+
+    checkLayout(actual,expected);
+  });
+
   it('colSpan adds NoOpCells to the right',function(){
     var actual = makeTableLayout([
       [{content:'hello',colSpan:2}],

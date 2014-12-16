@@ -27,15 +27,26 @@ function coverageTask(cb){
     .on('error', logMochaError)
     .on('finish', function () {
       gulp.src(['test/*.js'])
-        .pipe(mocha(mochaOpts))
-        .pipe(istanbul.writeReports()) // Creating the reports after tests runned
-        .on('end', cb || function(){});
+        .pipe(mocha({
+          grep:'original-cli-table',
+          invert:true
+        }))
+        .on('error',function(err){
+          logMochaError(err);
+          if(cb) cb(err);
+        })
+        .pipe(istanbul.writeReports()) // Creating the reports after tests run
+        .on('end', function(){
+          if(cb) cb();
+        });
     });
 }
 
 function mochaTask(){
   return gulp.src(['test/*.js'],{read:false})
-    .pipe(mocha(mochaOpts))
+    .pipe(mocha({
+      growl:true
+    }))
     .on('error',logMochaError);
 }
 
@@ -46,7 +57,3 @@ function logMochaError(err){
     gutil.log.apply(gutil,arguments);
   }
 }
-
-var mochaOpts = {
-  growl:true
-};

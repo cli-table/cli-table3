@@ -11,11 +11,15 @@ Table.prototype.__proto__ = Array.prototype;
 
 Table.prototype.toString = function(){
   var array = this;
-  if(this.options.head && this.options.head.length){
+  var headersPresent = this.options.head && this.options.head.length;
+  if(headersPresent){
     array = [this.options.head];
     if(this.length){
       array.push.apply(array,this);
     }
+  }
+  else {
+    this.options.style.head=[];
   }
 
   var cells = tableLayout.makeTableLayout(array);
@@ -41,7 +45,7 @@ Table.prototype.toString = function(){
     var row = cells[rowIndex];
     var heightOfRow = this.options.rowHeights[rowIndex];
 
-    if(rowIndex === 0 || !this.options.style.compact){
+    if(rowIndex === 0 || !this.options.style.compact || (rowIndex == 1 && headersPresent)){
       doDraw(row,'top',result);
     }
 
