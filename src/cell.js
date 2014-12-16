@@ -103,7 +103,7 @@ Cell.prototype.draw = function(lineNum){
  */
 Cell.prototype.drawTop = function(drawRight){
   var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
-  var content = utils.repeat(this.chars.top,this.width);
+  var content = utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width);
   var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
   return left + content + right;
 };

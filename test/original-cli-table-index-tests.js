@@ -114,7 +114,7 @@ describe('original inex tests',function(){
       expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test custom chars', function (){
+    it('test custom chars', function (){
       var table = new Table({
         chars: {
           'top': '═'
@@ -142,14 +142,14 @@ describe('original inex tests',function(){
       );
 
       var expected = [
-        '╔══════╤═════╤══════╗'
+          '╔══════╤═════╤══════╗'
         , '║ foo  │ bar │ baz  ║'
         , '╟──────┼─────┼──────╢'
         , '║ frob │ bar │ quuz ║'
         , '╚══════╧═════╧══════╝'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
     xit('test compact shortand', function (){
