@@ -60,8 +60,10 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
  * @param y - The row this cell is in (with row 0 being at the top).
  */
 Cell.prototype.init = function(tableOptions, x, y){
-  this.width = findDimension(tableOptions.colWidths, x, this.colSpan);
-  this.height = findDimension(tableOptions.rowHeights, y, this.rowSpan);
+  this.widths = tableOptions.colWidths.slice(x, x + this.colSpan);
+  this.heights = tableOptions.rowHeights.slice(y, y + this.rowSpan);
+  this.width = _.reduce(this.widths,sumPlusOne);
+  this.height = _.reduce(this.heights,sumPlusOne);
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
   this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
@@ -106,27 +108,45 @@ Cell.prototype.draw = function(lineNum){
  * @returns {String}
  */
 Cell.prototype.drawTop = function(drawRight){
+  var content = [];
+  if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
+    _.forEach(this.widths,function(width,index){
+      content.push(this._topLeftChar(index));
+      content.push(
+        utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],width)
+      );
+    },this);
+  }
+  else {
+    content.push(this._topLeftChar(0));
+    content.push(utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width));
+  }
+  if(drawRight){
+    content.push(this.chars[this.y == 0 ? 'top-right' : 'right-mid']);
+  }
+  return this.wrapWithStyleColors('border',content.join(''));
+};
+
+Cell.prototype._topLeftChar = function(offset){
+  var x = this.x+offset;
   var leftChar;
   if(this.y == 0){
-    leftChar = this.x == 0 ? 'top-left' : 'top-mid';
+    leftChar = x == 0 ? 'top-left' : (offset == 0 ? 'top-mid' : 'top');
   } else  {
-    if(this.x == 0){
+    if(x == 0){
       leftChar = 'left-mid';
     }
     else {
-      leftChar = 'mid-mid';
+      leftChar = offset == 0 ? 'mid-mid' : 'bottom-mid';
       if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
-        var cellAbove = this.cells[this.y-1][this.x];
+        var cellAbove = this.cells[this.y-1][x];
         if(cellAbove instanceof Cell.NoOpCell){
-          leftChar = 'top-mid';
+          leftChar = offset == 0 ? 'top-mid' : 'mid';
         }
       }
     }
   }
-  var left = this.chars[leftChar];
-  var content = utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width);
-  var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
-  return this.wrapWithStyleColors('border',left + content + right);
+  return this.chars[leftChar];
 };
 
 Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
@@ -246,6 +266,10 @@ function findDimension(dimensionTable, startingIndex, span){
     ret += 1 + dimensionTable[startingIndex + i];
   }
   return ret;
+}
+
+function sumPlusOne(a,b){
+  return a+b+1;
 }
 
 module.exports = Cell;
