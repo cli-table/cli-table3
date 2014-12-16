@@ -152,7 +152,7 @@ describe('original inex tests',function(){
       expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test compact shortand', function (){
+    it('test compact shortand', function (){
       var table = new Table({
         style: {
           head: []
@@ -245,7 +245,7 @@ describe('original inex tests',function(){
       expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test with null/undefined as values or column names', function (){
+    it('test with null/undefined as values or column names', function (){
       var table = new Table({
         style: {
           head: []

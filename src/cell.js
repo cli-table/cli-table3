@@ -13,10 +13,10 @@ function Cell(options){
 }
 
 Cell.prototype.setOptions = function(options){
-  options = options || {};
-  if(_.isString(options)){
-    options = {content:options};
+  if(_.isString(options) || _.isNumber(options)){
+    options = {content:''+options};
   }
+  options = options || {};
   this.options = options;
   this.content = options.content || '';
   this.lines = this.content.split('\n');

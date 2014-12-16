@@ -41,7 +41,9 @@ Table.prototype.toString = function(){
     var row = cells[rowIndex];
     var heightOfRow = this.options.rowHeights[rowIndex];
 
-    doDraw(row,'top',result);
+    if(rowIndex === 0 || !this.options.style.compact){
+      doDraw(row,'top',result);
+    }
 
     for(var lineNum = 0; lineNum < heightOfRow; lineNum++){
       doDraw(row,lineNum,result);

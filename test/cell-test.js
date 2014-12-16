@@ -45,6 +45,16 @@ describe('Cell',function(){
       expect(cell.content).to.equal('');
       expect(cell.lines).to.eql(['']);
     });
+
+    it('new Cell(null) will have empty string content',function(){
+      var cell = new Cell(null);
+      expect(cell.content).to.equal('');
+    });
+
+    it('new Cell(0) will have "0" as content',function(){
+      var cell = new Cell(0);
+      expect(cell.content).to.equal('0');
+    });
   });
 
   describe('mergeTableOptions',function(){
