@@ -10,7 +10,15 @@ function Table(options){
 Table.prototype.__proto__ = Array.prototype;
 
 Table.prototype.toString = function(){
-  var cells = tableLayout.makeTableLayout(this);
+  var array = this;
+  if(this.options.head && this.options.head.length){
+    array = [this.options.head];
+    if(this.length){
+      array.push.apply(array,this);
+    }
+  }
+
+  var cells = tableLayout.makeTableLayout(array);
 
   _.forEach(cells,function(row){
     _.forEach(row,function(cell){
@@ -48,12 +56,16 @@ Table.prototype.toString = function(){
 };
 
 function doDraw(row,lineNum){
-  console.log('drawing lineNum',lineNum);
   var line = [];
   _.forEach(row,function(cell){
     line.push(cell.draw(lineNum));
   });
   return line.join('');
 }
+
+Table.prototype.__defineGetter__('width', function (){
+  var str = this.toString().split("\n");
+  return str[0].length;
+});
 
 module.exports = Table;

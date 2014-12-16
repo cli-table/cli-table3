@@ -80,14 +80,14 @@ Cell.prototype.draw = function(lineNum){
   var padLen = Math.max(this.height - this.lines.length, 0);
   var padTop;
   switch (this.vAlign){
-    case 'top':
-      padTop = 0;
+    case 'center':
+      padTop = Math.ceil(padLen / 2);
       break;
     case 'bottom':
       padTop = padLen;
       break;
     default :
-      padTop = Math.ceil(padLen / 2);
+      padTop = 0;
   }
   if( (lineNum < padTop) || (lineNum >= (padTop + this.lines.length))){
     return this.drawEmpty(this.drawRight);

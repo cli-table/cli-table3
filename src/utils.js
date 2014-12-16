@@ -20,14 +20,15 @@ function pad(str, len, pad, dir) {
         str = repeat(pad, padlen) + str;
         break;
 
-      case 'left':
-        str = str + repeat(pad,padlen);
-        break;
-
-      default:
+      case 'center':
         var right = Math.ceil((padlen) / 2);
         var left = padlen - right;
         str = repeat(pad, left) + str + repeat(pad, right);
+        break;
+
+      default :
+        str = str + repeat(pad,padlen);
+        break;
     }
   }
   return str;
@@ -128,42 +129,44 @@ function truncate(str, desiredLength, truncateChar){
 }
 
 
-var defaultOptions = {
-  chars: {
-    'top': '─'
-    , 'top-mid': '┬'
-    , 'top-left': '┌'
-    , 'top-right': '┐'
-    , 'bottom': '─'
-    , 'bottom-mid': '┴'
-    , 'bottom-left': '└'
-    , 'bottom-right': '┘'
-    , 'left': '│'
-    , 'left-mid': '├'
-    , 'mid': '─'
-    , 'mid-mid': '┼'
-    , 'right': '│'
-    , 'right-mid': '┤'
-    , 'middle': '│'
-  }
-  , truncate: '…'
-  , colWidths: []
-  , rowHeights: []
-  , colAligns: []
-  , rowAligns: []
-  , style: {
-    'padding-left': 1
-    , 'padding-right': 1
-    , head: ['red']
-    , border: ['grey']
-    , compact : false
-  }
-  , head: []
-};
+function defaultOptions(){
+  return{
+    chars: {
+      'top': '─'
+      , 'top-mid': '┬'
+      , 'top-left': '┌'
+      , 'top-right': '┐'
+      , 'bottom': '─'
+      , 'bottom-mid': '┴'
+      , 'bottom-left': '└'
+      , 'bottom-right': '┘'
+      , 'left': '│'
+      , 'left-mid': '├'
+      , 'mid': '─'
+      , 'mid-mid': '┼'
+      , 'right': '│'
+      , 'right-mid': '┤'
+      , 'middle': '│'
+    }
+    , truncate: '…'
+    , colWidths: []
+    , rowHeights: []
+    , colAligns: []
+    , rowAligns: []
+    , style: {
+      'padding-left': 1
+      , 'padding-right': 1
+      , head: ['red']
+      , border: ['grey']
+      , compact : false
+    }
+    , head: []
+  };
+}
 
 function mergeOptions(options,defaults){
   options = options || {};
-  defaults = defaults || defaultOptions;
+  defaults = defaults || defaultOptions();
   var ret = _.extend({}, defaults, options);
   ret.chars = _.extend({}, defaults.chars, options.chars);
   ret.style = _.extend({}, defaults.style, options.style);

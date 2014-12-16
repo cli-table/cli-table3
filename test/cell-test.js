@@ -595,7 +595,6 @@ describe('Cell',function(){
         expect(cell.draw(3)).to.equal('L good… ');
         expect(cell.draw(4)).to.equal('L       ');
 
-        cell.vAlign = null; //center is the default
         cell.drawRight = true;
         expect(cell.draw(0)).to.equal('L       R');
         expect(cell.draw(1)).to.equal('L hello R');
@@ -620,6 +619,7 @@ describe('Cell',function(){
         expect(cell.draw(3)).to.equal('L       ');
         expect(cell.draw(4)).to.equal('L       ');
 
+        cell.vAlign = null; //top is the default
         cell.drawRight = true;
         expect(cell.draw(0)).to.equal('L hello R');
         expect(cell.draw(1)).to.equal('L howdy R');
