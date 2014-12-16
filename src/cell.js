@@ -80,7 +80,7 @@ Cell.prototype.init = function(tableOptions, x, y){
  * @param lineNum - can be `top`, `bottom` or a numerical line number.
  * @returns {String} The representation of this line.
  */
-Cell.prototype.draw = function(lineNum){
+Cell.prototype.draw = function(lineNum,spanningCell){
   if(lineNum == 'top') return this.drawTop(this.drawRight);
   if(lineNum == 'bottom') return this.drawBottom(this.drawRight);
   var padLen = Math.max(this.height - this.lines.length, 0);
@@ -96,10 +96,10 @@ Cell.prototype.draw = function(lineNum){
       padTop = 0;
   }
   if( (lineNum < padTop) || (lineNum >= (padTop + this.lines.length))){
-    return this.drawEmpty(this.drawRight);
+    return this.drawEmpty(this.drawRight,spanningCell);
   }
   var forceTruncation = (this.lines.length > this.height) && (lineNum + 1 >= this.height);
-  return this.drawLine(lineNum - padTop, this.drawRight, forceTruncation);
+  return this.drawLine(lineNum - padTop, this.drawRight, forceTruncation,spanningCell);
 };
 
 /**
@@ -176,8 +176,14 @@ Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
  * only include the truncation symbol if the text will not fit horizontally within the cell width.
  * @returns {String}
  */
-Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
+Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spanningCell){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  if(this.x && spanningCell && this.cells){
+    var cellLeft = this.cells[this.y+spanningCell][this.x-1];
+    if(!(cellLeft instanceof RowSpanCell)){
+      left = this.chars['right-mid'];
+    }
+  }
   var leftPadding = utils.repeat(' ', this.paddingLeft);
   var right = (drawRight ? this.chars['right'] : '');
   var rightPadding = utils.repeat(' ', this.paddingRight);
@@ -212,8 +218,14 @@ Cell.prototype.drawBottom = function(drawRight){
  * @param drawRight - true if this method should render the right edge of the cell
  * @returns {String}
  */
-Cell.prototype.drawEmpty = function(drawRight){
+Cell.prototype.drawEmpty = function(drawRight,spanningCell){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
+  if(this.x && spanningCell && this.cells){
+    var cellLeft = this.cells[this.y+spanningCell][this.x-1];
+    if(!(cellLeft instanceof RowSpanCell)){
+      left = this.chars['right-mid'];
+    }
+  }
   var right = (drawRight ? this.chars['right'] : '');
   var content = utils.repeat(' ',this.width);
   return left + content + right;
@@ -242,12 +254,13 @@ function RowSpanCell(originalCell){
 
 RowSpanCell.prototype.init = function(tableOptions,x,y){
   var originalY = this.originalCell.y;
-  this.offset = findDimension(tableOptions.rowHeights,originalY,y-originalY);
+  this.cellOffset = y - originalY;
+  this.offset = findDimension(tableOptions.rowHeights,originalY,this.cellOffset);
 };
 
 RowSpanCell.prototype.draw = function(lineNum){
   if(lineNum == 'top'){
-    return this.originalCell.draw(this.offset);
+    return this.originalCell.draw(this.offset,this.cellOffset);
   }
   if(lineNum == 'bottom'){
     return this.originalCell.draw('bottom');

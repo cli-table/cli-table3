@@ -78,7 +78,26 @@ describe('Table', function () {
     var expected = [
         '┌───────┬───────────┬───────────┐'
       , '│ hello │ greetings │ greetings │'
-      , '├───────│           │           │'
+      , '├───────┤           │           │'
+      , '│ howdy │           │           │'
+      , '└───────┴───────────┴───────────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('rowSpan to the right - multiline content',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      ['hello',{rowSpan:2,content:'greetings\nfriends'},{rowSpan:2,content:'greetings\nfriends'}],
+      ['howdy']
+    );
+
+    var expected = [
+        '┌───────┬───────────┬───────────┐'
+      , '│ hello │ greetings │ greetings │'
+      , '├───────┤ friends   │ friends   │'
       , '│ howdy │           │           │'
       , '└───────┴───────────┴───────────┘'
     ];
