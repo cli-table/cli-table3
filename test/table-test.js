@@ -23,6 +23,25 @@ describe('Table', function () {
     expect(table.toString()).to.equal(expected.join('\n'));
   });
 
+  it('colSpan below',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      ['hello','howdy'],
+      [{colSpan:2,content:'greetings'}]
+    );
+
+    var expected = [
+        '┌───────┬───────┐'
+      , '│ hello │ howdy │'
+      , '├───────────────┤'
+      , '│ greetings     │'
+      , '└───────────────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
   it('rowSpan spans rows',function(){
     var table = new Table({style:{head:[],border:[]}});
 
@@ -42,6 +61,24 @@ describe('Table', function () {
     expect(table.toString()).to.equal(expected.join('\n'));
   });
 
+  it('rowSpan to the right',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      ['hello',{rowSpan:2,content:'greetings'}],
+      ['howdy']
+    );
+
+    var expected = [
+        '┌───────┬───────────┐'
+      , '│ hello │ greetings │'
+      , '├───────│           │'
+      , '│ howdy │           │'
+      , '└───────┴───────────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
 });
 
 /*
