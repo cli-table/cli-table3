@@ -25,8 +25,6 @@ Cell.prototype.setOptions = function(options){
 };
 
 Cell.prototype.mergeTableOptions = function(tableOptions){
-  this.options.style = this.options.style || {};
-
   if(this.options.chars){
     this.chars = _.extend({},tableOptions.chars,this.options.chars);
   }
@@ -36,8 +34,12 @@ Cell.prototype.mergeTableOptions = function(tableOptions){
 
   this.truncate = this.options.truncate || tableOptions.truncate;
 
-  this.paddingLeft = findOption(this.options.style, tableOptions.style, 'paddingLeft', 'padding-left');
-  this.paddingRight = findOption(this.options.style, tableOptions.style, 'paddingRight', 'padding-right');
+  var style = this.options.style = this.options.style || {};
+  var tableStyle = tableOptions.style;
+  this.paddingLeft = findOption(style, tableStyle, 'paddingLeft', 'padding-left');
+  this.paddingRight = findOption(style, tableStyle, 'paddingRight', 'padding-right');
+  this.head = style.head || tableStyle.head;
+  this.border = style.border || tableStyle.border;
 
   this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
   this.desiredHeight = this.lines.length;
@@ -109,11 +111,10 @@ Cell.prototype.drawTop = function(drawRight){
 };
 
 Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
-  var style = this.options.style;
-  if(style && style[styleProperty] && style[styleProperty].length){
+  if(this[styleProperty] && this[styleProperty].length){
     var colors = require('colors/safe');
-    for(var i = 0; i < style[styleProperty].length; i++){
-      colors = colors[style[styleProperty][i]];
+    for(var i = 0; i < this[styleProperty].length; i++){
+      colors = colors[this[styleProperty][i]];
     }
     return colors(content);
   }

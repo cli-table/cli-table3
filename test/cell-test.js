@@ -467,7 +467,7 @@ describe('Cell',function(){
       });
 
       it('will draw in the color specified by border style',function(){
-        cell.options = {style:{border:['gray']}};
+        cell.border = ['gray'];
         expect(cell.draw('top')).to.equal(colors.gray('┌───────'))
       });
     });
@@ -490,7 +490,7 @@ describe('Cell',function(){
       });
 
       it('will draw in the color specified by border style',function(){
-        cell.options = {style:{border:['gray']}};
+        cell.border = ['gray'];
         expect(cell.draw('bottom')).to.equal(colors.gray('└───────'))
       });
     });
@@ -531,7 +531,7 @@ describe('Cell',function(){
       });
 
       it('left and right will be drawn in color of border style',function(){
-        cell.options = {style:{border:['gray']}};
+        cell.border = ['gray'];
         cell.x = 0;
         expect(cell.draw(0)).to.equal(colors.gray('L') + '  hello  ');
         cell.drawRight = true;
@@ -539,7 +539,7 @@ describe('Cell',function(){
       });
 
       it('text will be drawn in color of head style if y == 0',function(){
-        cell.options = {style:{head:['red']}};
+        cell.head = ['red'];
         cell.x = cell.y = 0;
         expect(cell.draw(0)).to.equal('L' + colors.red('  hello  '));
         cell.drawRight = true;
@@ -547,7 +547,8 @@ describe('Cell',function(){
       });
 
       it('head and border colors together',function(){
-        cell.options = {style:{border:['gray'],head:['red']}};
+        cell.border = ['gray'];
+        cell.head = ['red'];
         cell.x = cell.y = 0;
         expect(cell.draw(0)).to.equal(colors.gray('L') + colors.red('  hello  '));
         cell.drawRight = true;

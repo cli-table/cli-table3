@@ -86,7 +86,7 @@ describe('original inex tests',function(){
       expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test table colors', function(){
+    it('test table colors', function(){
       var table = new Table({
         head: ['Rel', 'By'],
         style: {head: ['red'], border: ['grey']}
@@ -107,12 +107,24 @@ describe('original inex tests',function(){
         [c256s, 'rauchg@gmail.com']
       );
 
-      var expected = [
+      // The expectation from the original cli-table is commented out below.
+      // The output from cli-table2 will still look the same, but the border color is
+      // toggled off and back on at the border of each cell.
+
+      /*var expected = [
           grey + '┌──────┬──────────────────┐' + off
         , grey + '│' + off + red + ' Rel  ' + off + grey + '│' + off + red + ' By               ' + off + grey + '│' + off
         , grey + '├──────┼──────────────────┤' + off
         , grey + '│' + off + ' ' + c256s + ' ' + grey + '│' + off + ' rauchg@gmail.com ' + grey + '│' + off
         , grey + '└──────┴──────────────────┘' + off
+      ];*/
+
+      var expected = [
+          grey + '┌──────'+off+grey+'┬──────────────────┐' + off
+        , grey + '│' + off + red + ' Rel  ' + off + grey + '│' + off + red + ' By               ' + off + grey + '│' + off
+        , grey + '├──────'+off+grey+'┼──────────────────┤' + off
+        , grey + '│' + off + ' ' + c256s + ' ' + grey + '│' + off + ' rauchg@gmail.com ' + grey + '│' + off
+        , grey + '└──────'+off+grey+'┴──────────────────┘' + off
       ];
 
       expect(table.toString()).to.equal(expected.join("\n"));
