@@ -24,7 +24,9 @@ Cell.prototype.setOptions = function(options){
   this.rowSpan = options.rowSpan || 1;
 };
 
-Cell.prototype.mergeTableOptions = function(tableOptions){
+Cell.prototype.mergeTableOptions = function(tableOptions,cells){
+  this.cells = cells;
+
   if(this.options.chars){
     this.chars = _.extend({},tableOptions.chars,this.options.chars);
   }
@@ -104,7 +106,24 @@ Cell.prototype.draw = function(lineNum){
  * @returns {String}
  */
 Cell.prototype.drawTop = function(drawRight){
-  var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
+  var leftChar;
+  if(this.y == 0){
+    leftChar = this.x == 0 ? 'top-left' : 'top-mid';
+  } else  {
+    if(this.x == 0){
+      leftChar = 'left-mid';
+    }
+    else {
+      leftChar = 'mid-mid';
+      if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
+        var cellAbove = this.cells[this.y-1][this.x];
+        if(cellAbove instanceof Cell.NoOpCell){
+          leftChar = 'top-mid';
+        }
+      }
+    }
+  }
+  var left = this.chars[leftChar];
   var content = utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width);
   var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
   return this.wrapWithStyleColors('border',left + content + right);

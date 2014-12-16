@@ -26,7 +26,7 @@ Table.prototype.toString = function(){
 
   _.forEach(cells,function(row){
     _.forEach(row,function(cell){
-      cell.mergeTableOptions(this.options);
+      cell.mergeTableOptions(this.options,cells);
     },this);
   },this);
 
