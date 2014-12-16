@@ -9,11 +9,14 @@ describe('Table', function () {
 
     table.push(
       [{colSpan:2,content:'greetings'}],
+      [{colSpan:2,content:'greetings'}],
       ['hello','howdy']
     );
 
     var expected = [
         '┌───────────────┐'
+      , '│ greetings     │'
+      , '├───────────────┤'
       , '│ greetings     │'
       , '├───────┼───────┤'
       , '│ hello │ howdy │'
@@ -28,12 +31,15 @@ describe('Table', function () {
 
     table.push(
       ['hello','howdy'],
+      [{colSpan:2,content:'greetings'}],
       [{colSpan:2,content:'greetings'}]
     );
 
     var expected = [
         '┌───────┬───────┐'
       , '│ hello │ howdy │'
+      , '├───────────────┤'
+      , '│ greetings     │'
       , '├───────────────┤'
       , '│ greetings     │'
       , '└───────────────┘'
@@ -46,16 +52,16 @@ describe('Table', function () {
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
-      [{rowSpan:2,content:'greetings'},'hello'],
+      [{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings'},'hello'],
       ['howdy']
     );
 
     var expected = [
-        '┌───────────┬───────┐'
-      , '│ greetings │ hello │'
-      , '│           ┼───────┤'
-      , '│           │ howdy │'
-      , '└───────────┴───────┘'
+        '┌───────────┬───────────┬───────┐'
+      , '│ greetings │ greetings │ hello │'
+      , '│           │           ┼───────┤'
+      , '│           │           │ howdy │'
+      , '└───────────┴───────────┴───────┘'
     ];
 
     expect(table.toString()).to.equal(expected.join('\n'));
@@ -65,16 +71,16 @@ describe('Table', function () {
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
-      ['hello',{rowSpan:2,content:'greetings'}],
+      ['hello',{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings'}],
       ['howdy']
     );
 
     var expected = [
-        '┌───────┬───────────┐'
-      , '│ hello │ greetings │'
-      , '├───────│           │'
-      , '│ howdy │           │'
-      , '└───────┴───────────┘'
+        '┌───────┬───────────┬───────────┐'
+      , '│ hello │ greetings │ greetings │'
+      , '├───────│           │           │'
+      , '│ howdy │           │           │'
+      , '└───────┴───────────┴───────────┘'
     ];
 
     expect(table.toString()).to.equal(expected.join('\n'));
