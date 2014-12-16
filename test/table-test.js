@@ -34,7 +34,7 @@ describe('Table', function () {
     var expected = [
         '┌───────────┬───────┐'
       , '│ greetings │ hello │'
-      , '│           ┼───────┤'
+      , '│           ┼──────┤'
       , '│           │ howdy │'
       , '└───────────┴───────┘'
     ];
