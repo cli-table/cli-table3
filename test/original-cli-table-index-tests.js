@@ -167,16 +167,16 @@ describe('original inex tests',function(){
       );
 
       var expected = [
-        '┌──────┬─────┬──────┐'
+          '┌──────┬─────┬──────┐'
         , '│ foo  │ bar │ baz  │'
         , '│ frob │ bar │ quuz │'
         , '└──────┴─────┴──────┘'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test compact empty mid line', function (){
+    it('test compact empty mid line', function (){
       var table = new Table({
         chars: {
           'mid': ''
@@ -196,16 +196,16 @@ describe('original inex tests',function(){
       );
 
       var expected = [
-        '┌──────┬─────┬──────┐'
+          '┌──────┬─────┬──────┐'
         , '│ foo  │ bar │ baz  │'
         , '│ frob │ bar │ quuz │'
         , '└──────┴─────┴──────┘'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test decoration lines disabled', function (){
+    it('test decoration lines disabled', function (){
       var table = new Table({
         chars: {
           'top': ''
@@ -242,7 +242,7 @@ describe('original inex tests',function(){
         , 'frobnicate bar quuz'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
     xit('test with null/undefined as values or column names', function (){
@@ -257,12 +257,18 @@ describe('original inex tests',function(){
         [null, undefined, 0]
       );
 
-      var expected = [
-        '┌──────┬───────────┬───┐'
+      /*var expected = [
+          '┌──────┬───────────┬───┐'
         , '│      │           │ 0 │'
         , '└──────┴───────────┴───┘'
+      ];  */
+
+      var expected = [
+          '┌──┬──┬───┐'
+        , '│  │  │ 0 │'
+        , '└──┴──┴───┘'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 });

@@ -41,26 +41,27 @@ Table.prototype.toString = function(){
     var row = cells[rowIndex];
     var heightOfRow = this.options.rowHeights[rowIndex];
 
-    result.push(doDraw(row,'top'));
+    doDraw(row,'top',result);
 
     for(var lineNum = 0; lineNum < heightOfRow; lineNum++){
-      result.push(doDraw(row,lineNum));
+      doDraw(row,lineNum,result);
     }
 
     if(rowIndex + 1 == cells.length){
-      result.push(doDraw(row,'bottom'));
+      doDraw(row,'bottom',result);
     }
   }
 
   return result.join('\n');
 };
 
-function doDraw(row,lineNum){
+function doDraw(row,lineNum,result){
   var line = [];
   _.forEach(row,function(cell){
     line.push(cell.draw(lineNum));
   });
-  return line.join('');
+  var str = line.join('');
+  if(str.length) result.push(str);
 }
 
 Table.prototype.__defineGetter__('width', function (){
