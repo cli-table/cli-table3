@@ -5,6 +5,7 @@ describe('Cell',function(){
   var sinonChai = require("sinon-chai");
   chai.use(sinonChai);
 
+  var colors = require('colors');
   var Cell = require('../src/cell');
   var RowSpanCell = Cell.RowSpanCell;
   var NoOpCell = Cell.NoOpCell;
@@ -464,6 +465,11 @@ describe('Cell',function(){
         cell.drawRight = true;
         expect(cell.draw('top')).to.equal('┼───────┤');
       });
+
+      it('will draw in the color specified by border style',function(){
+        cell.options = {style:{border:['gray']}};
+        expect(cell.draw('top')).to.equal(colors.gray('┌───────'))
+      });
     });
 
     describe('bottom line',function(){
@@ -481,6 +487,11 @@ describe('Cell',function(){
         expect(cell.draw('bottom')).to.equal('┴───────');
         cell.drawRight = true;
         expect(cell.draw('bottom')).to.equal('┴───────┘');
+      });
+
+      it('will draw in the color specified by border style',function(){
+        cell.options = {style:{border:['gray']}};
+        expect(cell.draw('bottom')).to.equal(colors.gray('└───────'))
       });
     });
 
@@ -517,6 +528,30 @@ describe('Cell',function(){
         expect(cell.draw(0)).to.equal('M   hello ');
         cell.drawRight = true;
         expect(cell.draw(0)).to.equal('M   hello R');
+      });
+
+      it('left and right will be drawn in color of border style',function(){
+        cell.options = {style:{border:['gray']}};
+        cell.x = 0;
+        expect(cell.draw(0)).to.equal(colors.gray('L') + '  hello  ');
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal(colors.gray('L') + '  hello  ' + colors.gray('R'));
+      });
+
+      it('text will be drawn in color of head style if y == 0',function(){
+        cell.options = {style:{head:['red']}};
+        cell.x = cell.y = 0;
+        expect(cell.draw(0)).to.equal('L' + colors.red('  hello  '));
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal('L' + colors.red('  hello  ') + 'R');
+      });
+
+      it('head and border colors together',function(){
+        cell.options = {style:{border:['gray'],head:['red']}};
+        cell.x = cell.y = 0;
+        expect(cell.draw(0)).to.equal(colors.gray('L') + colors.red('  hello  '));
+        cell.drawRight = true;
+        expect(cell.draw(0)).to.equal(colors.gray('L') + colors.red('  hello  ') + colors.gray('R'));
       });
     });    
     

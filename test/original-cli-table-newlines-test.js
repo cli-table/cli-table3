@@ -48,7 +48,7 @@ describe('original newline tests',function(){
     expect(table.toString()).to.equal(expected.join("\n"));
   });
 
-  xit('test newlines in vertical cell header and body', function() {
+  it('test newlines in vertical cell header and body', function() {
     var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
 
     table.push(
@@ -65,7 +65,7 @@ describe('original newline tests',function(){
     expect(table.toString()).to.equal(expected.join("\n"));
   });
 
-  xit('test newlines in cross table header and body', function() {
+  it('test newlines in cross table header and body', function() {
     var table = new Table({ head: ["", "Header\n1"], style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
 
     table.push({ "Header\n2": ['Testing\nsomething\ncool'] });

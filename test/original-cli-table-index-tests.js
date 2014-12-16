@@ -92,6 +92,10 @@ describe('original inex tests',function(){
         style: {head: ['red'], border: ['grey']}
       });
 
+      /*var off = ''
+        , red = ''
+        , orange = ''
+        , grey = ''*/
       var off = '\u001b[39m'
         , red = '\u001b[31m'
         , orange = '\u001b[38;5;221m'

@@ -105,7 +105,21 @@ Cell.prototype.drawTop = function(drawRight){
   var left = this.chars[this.y == 0 ? (this.x == 0 ? 'top-left' : 'top-mid') : (this.x == 0 ? 'left-mid' : 'mid-mid')];
   var content = utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width);
   var right = drawRight ? this.chars[this.y == 0 ? 'top-right' : 'right-mid'] : '';
-  return left + content + right;
+  return this.wrapWithStyleColors('border',left + content + right);
+};
+
+Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
+  var style = this.options.style;
+  if(style && style[styleProperty] && style[styleProperty].length){
+    var colors = require('colors/safe');
+    for(var i = 0; i < style[styleProperty].length; i++){
+      colors = colors[style[styleProperty][i]];
+    }
+    return colors(content);
+  }
+  else {
+    return content;
+  }
 };
 
 /**
@@ -128,7 +142,13 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol){
   if(forceTruncationSymbol) line += this.truncate || '…';
   var content = utils.truncate(line,len,this.truncate);
   content = utils.pad(content, len, ' ', this.hAlign);
-  return left + leftPadding + content + rightPadding + right;
+  content = leftPadding + content + rightPadding;
+  left = this.wrapWithStyleColors('border',left);
+  right = this.wrapWithStyleColors('border',right);
+  if(this.y === 0){
+    content = this.wrapWithStyleColors('head',content);
+  }
+  return left + content + right;
 };
 
 /**
@@ -140,7 +160,7 @@ Cell.prototype.drawBottom = function(drawRight){
   var left = this.chars[this.x == 0 ? 'bottom-left' : 'bottom-mid'];
   var content = utils.repeat(this.chars.bottom,this.width);
   var right = drawRight ? this.chars['bottom-right'] : '';
-  return left + content + right;
+  return this.wrapWithStyleColors('border',left + content + right);
 };
 
 /**
