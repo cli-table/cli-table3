@@ -46,35 +46,35 @@ describe('original inex tests',function(){
       expect(table.width).to.equal(8);
     });
 
-    xit('test vertical table output', function() {
+    it('test vertical table output', function() {
       var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} }); // clear styles to prevent color output
 
       table.push(
-        {'v0.1': 'Testing something cool'}
+          {'v0.1': 'Testing something cool'}
         , {'v0.1': 'Testing something cool'}
       );
 
       var expected = [
-        '┌────┬──────────────────────┐'
+          '┌────┬──────────────────────┐'
         , '│v0.1│Testing something cool│'
         , '├────┼──────────────────────┤'
         , '│v0.1│Testing something cool│'
         , '└────┴──────────────────────┘'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
-    xit('test cross table output', function() {
+    it('test cross table output', function() {
       var table = new Table({ head: ["", "Header 1", "Header 2"], style: {'padding-left':0, 'padding-right':0, head:[], border:[]} }); // clear styles to prevent color output
 
       table.push(
-        {"Header 3": ['v0.1', 'Testing something cool'] }
+          {"Header 3": ['v0.1', 'Testing something cool'] }
         , {"Header 4": ['v0.1', 'Testing something cool'] }
       );
 
       var expected = [
-        '┌────────┬────────┬──────────────────────┐'
+          '┌────────┬────────┬──────────────────────┐'
         , '│        │Header 1│Header 2              │'
         , '├────────┼────────┼──────────────────────┤'
         , '│Header 3│v0.1    │Testing something cool│'
@@ -83,7 +83,7 @@ describe('original inex tests',function(){
         , '└────────┴────────┴──────────────────────┘'
       ];
 
-      table.toString().should.eql(expected.join("\n"));
+      expect(table.toString()).to.equal(expected.join("\n"));
     });
 
     xit('test table colors', function(){
@@ -256,6 +256,10 @@ describe('original inex tests',function(){
       table.push(
         [null, undefined, 0]
       );
+
+      // This is the expectation from the original cli-table.
+      // The empty columns have widths based on the strings `null` and `undefined`
+      // That does not make sense to me, so I am deviating from the original behavior here.
 
       /*var expected = [
           '┌──────┬───────────┬───┐'

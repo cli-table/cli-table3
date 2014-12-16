@@ -71,6 +71,17 @@ var _ = require('lodash');
 
   function generateCells(rows){
     return _.map(rows,function(row){
+      if(!_.isArray(row)){
+        var key = Object.keys(row)[0];
+        row = row[key];
+        if(_.isArray(row)){
+          row = row.slice();
+          row.unshift(key);
+        }
+        else {
+          row = [key,row];
+        }
+      }
       return _.map(row,function(cell){
         return new Cell(cell);
       });
