@@ -158,8 +158,8 @@ describe('Table', function () {
       ['']
     );
 
-    console.log(table.toString());
-    console.log(table.options.rowHeights);
+    //console.log(table.toString());
+    //console.log(table.options.rowHeights);
 
     var expected = [
         '┌──┬──┐'
