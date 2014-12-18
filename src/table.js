@@ -1,6 +1,6 @@
 
 var utils = require('./utils');
-var tableLayout = require('./table-layout');
+var tableLayout = require('./layout-manager');
 var _ = require('lodash');
 
 function Table(options){
