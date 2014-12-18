@@ -3,6 +3,7 @@ describe('tableLayout', function () {
   var layoutManager = require('../src/layout-manager');
   var layoutTable = layoutManager.layoutTable;
   var makeTableLayout = layoutManager.makeTableLayout;
+  var addRowSpanCells = layoutManager.addRowSpanCells;
   var maxWidth = layoutManager.maxWidth;
   var fillInTable = layoutManager.fillInTable;
   var computeWidths = layoutManager.computeWidths;
@@ -177,15 +178,18 @@ describe('tableLayout', function () {
     expect(maxWidth([[1],[1,2],[1,2,3,4,5]])).to.equal(5);
   });
 
-  xdescribe('fillInTable',function(){
-    function mc(opts){
-      return new Cell(opts);
+  describe('fillInTable',function(){
+    function mc(opts,y,x){
+      var cell = new Cell(opts);
+      cell.x = x;
+      cell.y = y;
+      return cell;
     }
 
     it('will blank out individual cells',function(){
       var cells = [
-        [null, mc('a')],
-        [mc('b'), null]
+        [mc('a',0,1)],
+        [mc('b',1,0)]
       ];
       fillInTable(cells);
 
@@ -197,8 +201,8 @@ describe('tableLayout', function () {
 
     it('will autospan to the right',function(){
       var cells = [
-        [null, null],
-        [null, mc('a')]
+        [],
+        [mc('a',1,1)]
       ];
       fillInTable(cells);
 
@@ -210,10 +214,11 @@ describe('tableLayout', function () {
 
     it('will autospan down',function(){
       var cells = [
-        [null, mc('a')],
-        [null, null]
+        [ mc('a',0,1)],
+        []
       ];
       fillInTable(cells);
+      addRowSpanCells(cells);
 
       checkLayout(cells,[
         [{content:'',rowSpan:2}, 'a'],
@@ -223,11 +228,12 @@ describe('tableLayout', function () {
 
     it('will autospan right and down',function(){
       var cells = [
-        [null,  null,    mc('a')],
-        [null,  null,    null],
-        [null,  mc('b'), null]
+        [               mc('a',0,2)],
+        [],
+        [  mc('b',2,1)]
       ];
       fillInTable(cells);
+      addRowSpanCells(cells);
 
       checkLayout(cells,[
         [{content:'',colSpan:2, rowSpan:2}, null, 'a'],
@@ -464,7 +470,7 @@ describe('tableLayout', function () {
       _.forEach(expectedRow,function(expectedCell,x){
         if(expectedCell !== null){
           var actualCell = findCell(actualTable,x,y);
-          checkExpectation(actualCell,expectedCell,x,y);
+          checkExpectation(actualCell,expectedCell,x,y,actualTable);
         }
       });
     });
@@ -482,7 +488,7 @@ describe('tableLayout', function () {
     }
   }
 
-  function checkExpectation(actualCell,expectedCell,x,y){
+  function checkExpectation(actualCell,expectedCell,x,y,actualTable){
     if(_.isString(expectedCell)){
       expectedCell = {content:expectedCell};
     }
@@ -501,50 +507,12 @@ describe('tableLayout', function () {
     }
     if(expectedCell.hasOwnProperty('spannerFor')){
       expect(actualCell, address).to.be.instanceOf(Cell.RowSpanCell);
+      expect(actualCell.originalCell,address + 'originalCell should be a cell').to.be.instanceOf(Cell);
+      expect(actualCell.originalCell,address + 'originalCell not right').to.equal(findCell(actualTable,
+        expectedCell.spannerFor[1],
+        expectedCell.spannerFor[0]
+      ));
       //TODO: retest here x,y coords
     }
   }
-  /*function checkLayout(actualRows,expectedRows){
-    expect(actualRows.length,'number of rows don\'t match').to.equal(expectedRows.length);
-    for(var rowIndex = 0; rowIndex < expectedRows.length; rowIndex++){
-      var actualColumns = actualRows[rowIndex];
-      var expectedColumns = expectedRows[rowIndex];
-      //expect(actualColumns.length,'number of columns on row ' + rowIndex + ' don\'t match').to.equal(expectedColumns.length);
-
-      var x = 0;
-      for(var columnIndex = 0; columnIndex < expectedColumns.length; columnIndex++){
-        var actualCell = actualColumns[x];
-        var expectedCell = expectedColumns[columnIndex];
-        if(_.isString(expectedCell)){
-          expectedCell = {content:expectedCell};
-        }
-        var address = '(' + rowIndex + ',' + columnIndex + ')';
-        if(expectedCell) {
-          if(expectedCell.hasOwnProperty('content')){
-            expect(actualCell, address).to.be.instanceOf(Cell);
-            expect(actualCell.content,'content of ' + address).to.equal(expectedCell.content);
-          }
-          if(expectedCell.hasOwnProperty('rowSpan')){
-            expect(actualCell, address).to.be.instanceOf(Cell);
-            expect(actualCell.rowSpan, 'rowSpan of ' + address).to.equal(expectedCell.rowSpan);
-          }
-          if(expectedCell.hasOwnProperty('colSpan')){
-            expect(actualCell, address).to.be.instanceOf(Cell);
-            expect(actualCell.colSpan, 'colSpan of ' + address).to.equal(expectedCell.colSpan);
-          }
-          if(expectedCell.hasOwnProperty('spannerFor')){
-            expect(actualCell, address).to.be.instanceOf(Cell.RowSpanCell);
-            //expect(actualCell)
-            expect(actualCell.originalCell).to.equal(
-              actualRows[expectedCell.spannerFor[0]][expectedCell.spannerFor[1]]
-            );
-          }
-          x++;
-        } else {
-          //expect(actualCell, address).to.be.instanceOf(Cell.NoOpCell);
-        }
-      }
-    }
-  }*/
-
 });

@@ -1,3 +1,4 @@
+//module.exports = require('./layout-manager'); /*
 var _ = require('lodash');
 (function(){
   var Cell = require('./cell');
@@ -182,4 +183,4 @@ function makeComputeWidths(iterateColumn,maxWidth,colSpan,desiredWidth,getCell){
     }
     _.extend(vals,result);
   }
-}
+}  /* */

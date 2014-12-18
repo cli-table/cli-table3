@@ -110,7 +110,7 @@ function fillInTable(table){
           x++;
         }
         var y2 = y + 1;
-        while(y2 < h_max && allBlank(table,y2,x,x+opts.colSpan)){
+        while(y2 < h_max && allBlank(table,y2,opts.x,opts.x+opts.colSpan)){
           opts.rowSpan++;
           y2++;
         }
@@ -147,8 +147,8 @@ function fillInTable(table){
   function makeTableLayout(rows){
     var cellRows = generateCells(rows);
     layoutTable(cellRows);
-    addRowSpanCells(cellRows);
     fillInTable(cellRows);
+    addRowSpanCells(cellRows);
     return cellRows;
   }
 
@@ -209,7 +209,7 @@ function makeComputeWidths(colSpan,desiredWidth,x){
           i++;
         }
       }
-    };
+    }
     _.extend(vals,result);
   };
 }
