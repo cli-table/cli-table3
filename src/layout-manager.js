@@ -2,28 +2,42 @@ var _ = require('lodash');
 var Cell = require('./cell');
 var RowSpanCell = Cell.RowSpanCell;
 
+(function(){
+
 function layoutTable(table){
   _.forEach(table,function(row,rowIndex){
-    var maxWidth;
     _.forEach(row,function(cell,columnIndex){
       cell.y = rowIndex;
       cell.x = columnIndex;
-      for(var y = 0; y <= rowIndex; y++){
+      for(var y = rowIndex; y >= 0; y--){
         var row2 = table[y];
         var xMax = (y === rowIndex) ? columnIndex : row2.length;
         for(var x = 0; x < xMax; x++){
           var cell2 = row2[x];
-          while(conflict(cell,cell2)){
+          while(cellsConflict(cell,cell2)){
             cell.x++;
           }
-          maxWidth = Math.max(maxWidth,columnIndex + cell.colSpan);
         }
       }
     });
   });
 }
 
-function conflict(cell1,cell2){
+function maxWidth(table) {
+  var mw = 0;
+  _.forEach(table, function (row) {
+    _.forEach(row, function (cell) {
+      mw = Math.max(mw,cell.x + (cell.colSpan || 1));
+    });
+  });
+  return mw;
+}
+
+function maxHeight(table){
+  return table.length;
+}
+
+function cellsConflict(cell1,cell2){
   var yMin1 = cell1.y;
   var yMax1 = cell1.y - 1 + (cell1.rowSpan || 1);
   var yMin2 = cell2.y;
@@ -37,6 +51,29 @@ function conflict(cell1,cell2){
   var xConflict = !(xMin1 > xMax2 || xMin2 > xMax1);
 
   return yConflict && xConflict;
+}
+
+function conflictExists(rows,x,y){
+  var i_max = Math.min(rows.length-1,y);
+  var cell = {x:x,y:y};
+  for(var i = 0; i <= i_max; i++){
+    var row = rows[i];
+    for(var j = 0; j < row.length; j++){
+      if(cellsConflict(cell,row[j])){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function allBlank(rows,y,xMin,xMax){
+  for(var x = xMin; x < xMax; x++){
+    if(conflictExists(rows,x,y)){
+      return false;
+    }
+  }
+  return true;
 }
 
 function addRowSpanCells(table){
@@ -60,7 +97,119 @@ function insertCell(cell,row){
   row.splice(x,0,cell);
 }
 
+function fillInTable(table){
+  var h_max = maxHeight(table);
+  var w_max = maxWidth(table);
+  for(var y = 0; y < h_max; y++){
+    for(var x = 0; x < w_max; x++){
+      if(!conflictExists(table,x,y)){
+        var opts = {x:x,y:y,colSpan:1,rowSpan:1};
+        x++;
+        while(x < w_max && !conflictExists(table,x,y)){
+          opts.colSpan++;
+          x++;
+        }
+        var y2 = y + 1;
+        while(y2 < h_max && allBlank(table,y2,x,x+opts.colSpan)){
+          opts.rowSpan++;
+          y2++;
+        }
+
+        var cell = new Cell(opts);
+        cell.x = opts.x;
+        cell.y = opts.y;
+        insertCell(cell,table[y]);
+      }
+    }
+  }
+}
+
+  function generateCells(rows){
+    return _.map(rows,function(row){
+      if(!_.isArray(row)){
+        var key = Object.keys(row)[0];
+        row = row[key];
+        if(_.isArray(row)){
+          row = row.slice();
+          row.unshift(key);
+        }
+        else {
+          row = [key,row];
+        }
+      }
+      return _.map(row,function(cell){
+        return new Cell(cell);
+      });
+    });
+  }
+
+
+  function makeTableLayout(rows){
+    var cellRows = generateCells(rows);
+    layoutTable(cellRows);
+    addRowSpanCells(cellRows);
+    fillInTable(cellRows);
+    return cellRows;
+  }
+
 module.exports = {
+  makeTableLayout: makeTableLayout,
   layoutTable: layoutTable,
-  addRowSpanCells: addRowSpanCells
+  addRowSpanCells: addRowSpanCells,
+  maxWidth:maxWidth,
+  fillInTable:fillInTable,
+  computeWidths:makeComputeWidths('colSpan','desiredWidth','x'),
+  computeHeights:makeComputeWidths('rowSpan','desiredHeight','y')
 };
+})();
+
+function makeComputeWidths(colSpan,desiredWidth,x){
+  return function(vals,table){
+    var result = [];
+    var spanners = [];
+    _.forEach(table,function(row){
+      _.forEach(row,function(cell){
+        if((cell[colSpan] || 1) > 1){
+          spanners.push(cell);
+        }
+        else {
+          result[cell[x]] = Math.max(result[cell[x]] || 0, cell[desiredWidth] || 0);
+        }
+      });
+    });
+
+    _.forEach(vals,function(val,index){
+      if(_.isNumber(val)){
+        result[index] = val;
+      }
+    });
+
+    //_.forEach(spanners,function(cell){
+    for(var k = spanners.length - 1; k >=0; k--){
+      var cell = spanners[k];
+      var span = cell[colSpan];
+      var col = cell[x];
+      var existingWidth = result[col];
+      var editableCols = _.isNumber(vals[col]) ? 0 : 1;
+      for(var i = 1; i < span; i ++){
+        existingWidth += 1 + result[col + i];
+        if(!_.isNumber(vals[col + i])){
+          editableCols++;
+        }
+      }
+      if(cell[desiredWidth] > existingWidth){
+        i = 0;
+        while(editableCols > 0 && cell[desiredWidth] > existingWidth){
+          if(!_.isNumber(vals[col+i])){
+            var dif = Math.round( (cell[desiredWidth] - existingWidth) / editableCols );
+            existingWidth += dif;
+            result[col + i] += dif;
+            editableCols--;
+          }
+          i++;
+        }
+      }
+    };
+    _.extend(vals,result);
+  };
+}

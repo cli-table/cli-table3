@@ -1,11 +1,12 @@
 describe('tableLayout', function () {
   var Cell = require('../src/cell');
-  var tableLayout = require('../src/table-layout');
-  var makeTableLayout = tableLayout.makeTableLayout;
-  var maxWidth = tableLayout.maxWidth;
-  var fillInTable = tableLayout.fillInTable;
-  var computeWidths = tableLayout.computeWidths;
-  var computeHeights = tableLayout.computeHeights;
+  var layoutManager = require('../src/layout-manager');
+  var layoutTable = layoutManager.layoutTable;
+  var makeTableLayout = layoutManager.makeTableLayout;
+  var maxWidth = layoutManager.maxWidth;
+  var fillInTable = layoutManager.fillInTable;
+  var computeWidths = layoutManager.computeWidths;
+  var computeHeights = layoutManager.computeHeights;
   var chai = require('chai');
   var expect = chai.expect;
   var _ = require('lodash');
@@ -108,6 +109,35 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
+  function logLayout(layout){
+    var tableStr = [];
+    _.forEach(layout,function(row){
+      var rowStr = [];
+      _.forEach(row,function(cell){
+        var cellStr = [];
+
+        cellStr.push('y:' + cell.y);
+        cellStr.push('x:' + cell.x);
+        if((cell.colSpan || 1) != 1){
+          cellStr.push('colSPan:' + cell.colSpan);
+        }
+        if((cell.rowSpan || 1) != 1){
+          cellStr.push('rowSpan:' + cell.rowSpan);
+        }
+        if(cell.originalCell){
+          cellStr.push('rowspan:[' + cell.originalCell.y + ',' + cell.originalCell.x + ']');
+        }
+        else {
+          cellStr.push('content:\'' + (cell.content) + '\'' )
+        }
+
+        rowStr.push('{' + cellStr.join(',') + '}');
+      });
+      tableStr.push(rowStr.join(',\t\t'));
+    });
+    console.log(tableStr.join('\n'));
+  }
+
   it('complex layout2',function(){
     var actual = makeTableLayout([
       ['a','b',                          {content:'c',rowSpan:3,colSpan:2},'d'],
@@ -124,7 +154,7 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
-  xit('stairstep spans',function(){
+  it('stairstep spans',function(){
     var actual = makeTableLayout([
       [{content:'',rowSpan:2},''],
       [{content:'',rowSpan:2}],
@@ -140,14 +170,14 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
-  it('maxWidth finds the maximum width of a 2d array',function(){
+  xit('maxWidth finds the maximum width of a 2d array',function(){
     expect(maxWidth([[1],[1,2],[]])).to.equal(2);
     expect(maxWidth([[1],[1,2,3],[]])).to.equal(3);
     expect(maxWidth([[1,2,3,4],[1,2],[]])).to.equal(4);
     expect(maxWidth([[1],[1,2],[1,2,3,4,5]])).to.equal(5);
   });
 
-  describe('fillInTable',function(){
+  xdescribe('fillInTable',function(){
     function mc(opts){
       return new Cell(opts);
     }
@@ -220,6 +250,7 @@ describe('tableLayout', function () {
         [mc(6), mc(9), mc(1)]
       ];
 
+      layoutTable(cells);
       computeWidths(widths, cells);
 
       expect(widths).to.eql([8, 9, 5]);
@@ -233,6 +264,7 @@ describe('tableLayout', function () {
         [mc(6), mc(9), mc(1)]
       ];
 
+      layoutTable(cells);
       computeWidths(widths, cells);
 
       expect(widths).to.eql([8, 3, 5]);
@@ -241,6 +273,7 @@ describe('tableLayout', function () {
     it('assumes undefined desiredWidth is 0', function () {
       var widths = [];
       var cells = [[{}], [{}], [{}]];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([0])
     });
@@ -248,10 +281,11 @@ describe('tableLayout', function () {
     it('takes into account colSpan and wont over expand', function () {
       var widths = [];
       var cells = [
-        [mc(10, 2), mc(5), mc(5)],
-        [mc(5), mc(3), mc(2)],
+        [mc(10, 2),    mc(5)],
+        [mc(5), mc(5), mc(2)],
         [mc(4), mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([5, 5, 5]);
     });
@@ -259,10 +293,11 @@ describe('tableLayout', function () {
     it('will expand rows involved in colSpan in a balanced way', function () {
       var widths = [];
       var cells = [
-        [mc(13, 2), mc(), mc(5)],
+        [mc(13, 2),    mc(5)],
         [mc(5), mc(5), mc(2)],
         [mc(4), mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([6, 6, 5]);
     });
@@ -270,10 +305,11 @@ describe('tableLayout', function () {
     it('expands across 3 cols', function () {
       var widths = [];
       var cells = [
-        [mc(25, 3), mc(), mc()],
+        [mc(25, 3)],
         [mc(5), mc(5), mc(2)],
         [mc(4), mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([9, 9, 5]);
     });
@@ -281,10 +317,11 @@ describe('tableLayout', function () {
     it('multiple spans in same table', function () {
       var widths = [];
       var cells = [
-        [mc(25, 3), mc(), mc()],
-        [mc(30, 3), mc(), mc()],
+        [mc(25, 3)],
+        [mc(30, 3)],
         [mc(4), mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([11, 9, 8]);
     });
@@ -292,9 +329,10 @@ describe('tableLayout', function () {
     it('spans will only edit uneditable tables',function(){
       var widths = [null, 3];
       var cells = [
-        [mc(20,3),mc(),mc()],
+        [mc(20,3)],
         [mc(4),mc(20),mc(5)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([7,3,8])
     });
@@ -302,9 +340,10 @@ describe('tableLayout', function () {
     it('spans will only edit uneditable tables - first column uneditable',function(){
       var widths = [3];
       var cells = [
-        [mc(20,3),mc(), mc()],
+        [mc(20,3)],
         [mc(4),   mc(3), mc(5)]
       ];
+      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([3,7,8])
     });
@@ -323,6 +362,7 @@ describe('tableLayout', function () {
         [mc(6), mc(9), mc(1)]
       ];
 
+      layoutTable(cells);
       computeHeights(heights,cells);
 
       expect(heights).to.eql([7,8,9]);
@@ -336,6 +376,7 @@ describe('tableLayout', function () {
         [mc(6), mc(9), mc(1)]
       ];
 
+      layoutTable(cells);
       computeHeights(heights,cells);
 
       expect(heights).to.eql([7,3,9]);
@@ -344,6 +385,7 @@ describe('tableLayout', function () {
     it('assumes undefined desiredHeight is 0',function(){
       var heights = [];
       var cells = [[{},{},{}]];
+      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([0])
     });
@@ -351,10 +393,11 @@ describe('tableLayout', function () {
     it('takes into account rowSpan and wont over expand',function(){
       var heights = [];
       var cells = [
-        [mc(10,2), mc(5), mc(5)],
+        [mc(10,2),  mc(5)],
         [mc(5),    mc(3), mc(2)],
         [mc(4),    mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([5,5,4]);
     });
@@ -362,10 +405,11 @@ describe('tableLayout', function () {
     it('will expand rows involved in rowSpan in a balanced way',function(){
       var heights = [];
       var cells = [
-        [mc(13,2), mc(), mc(5)],
-        [mc(5),    mc(5), mc(2)],
+        [mc(13,2), mc(5), mc(5)],
+        [    mc(5), mc(2)],
         [mc(4),    mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([6,6,4]);
     });
@@ -374,9 +418,10 @@ describe('tableLayout', function () {
       var heights = [];
       var cells = [
         [mc(25,3), mc(5), mc(4)],
-        [mc(),    mc(5), mc(2)],
-        [mc(),    mc(2), mc(1)]
+        [   mc(5), mc(2)],
+        [   mc(2), mc(1)]
       ];
+      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([9,9,5]);
     });
@@ -385,9 +430,10 @@ describe('tableLayout', function () {
       var heights = [];
       var cells = [
         [mc(25,3), mc(30,3), mc(4)],
-        [mc(),     mc(),     mc(2)],
-        [mc(),     mc(),     mc(1)]
+        [    mc(2)],
+        [    mc(1)]
       ];
+      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([11,9,8]);
     });
@@ -412,15 +458,62 @@ describe('tableLayout', function () {
    * @param actualRows - the table of cells under test.
    * @param expectedRows - a table of shorthand assertions.
    */
-  function checkLayout(actualRows,expectedRows){
+
+  function checkLayout(actualTable,expectedTable){
+    _.forEach(expectedTable,function(expectedRow,y){
+      _.forEach(expectedRow,function(expectedCell,x){
+        if(expectedCell !== null){
+          var actualCell = findCell(actualTable,x,y);
+          checkExpectation(actualCell,expectedCell,x,y);
+        }
+      });
+    });
+  }
+
+  function findCell(table,x,y){
+    for(var i = 0; i < table.length; i++){
+      var row = table[i];
+      for(var j = 0; j < row.length; j++){
+        var cell = row[j];
+        if(cell.x === x && cell.y === y){
+          return cell;
+        }
+      }
+    }
+  }
+
+  function checkExpectation(actualCell,expectedCell,x,y){
+    if(_.isString(expectedCell)){
+      expectedCell = {content:expectedCell};
+    }
+    var address = '(' + y + ',' + x + ')';
+    if(expectedCell.hasOwnProperty('content')){
+      expect(actualCell, address).to.be.instanceOf(Cell);
+      expect(actualCell.content,'content of ' + address).to.equal(expectedCell.content);
+    }
+    if(expectedCell.hasOwnProperty('rowSpan')){
+      expect(actualCell, address).to.be.instanceOf(Cell);
+      expect(actualCell.rowSpan, 'rowSpan of ' + address).to.equal(expectedCell.rowSpan);
+    }
+    if(expectedCell.hasOwnProperty('colSpan')){
+      expect(actualCell, address).to.be.instanceOf(Cell);
+      expect(actualCell.colSpan, 'colSpan of ' + address).to.equal(expectedCell.colSpan);
+    }
+    if(expectedCell.hasOwnProperty('spannerFor')){
+      expect(actualCell, address).to.be.instanceOf(Cell.RowSpanCell);
+      //TODO: retest here x,y coords
+    }
+  }
+  /*function checkLayout(actualRows,expectedRows){
     expect(actualRows.length,'number of rows don\'t match').to.equal(expectedRows.length);
     for(var rowIndex = 0; rowIndex < expectedRows.length; rowIndex++){
       var actualColumns = actualRows[rowIndex];
       var expectedColumns = expectedRows[rowIndex];
-      expect(actualColumns.length,'number of columns on row ' + rowIndex + ' don\'t match').to.equal(expectedColumns.length);
+      //expect(actualColumns.length,'number of columns on row ' + rowIndex + ' don\'t match').to.equal(expectedColumns.length);
 
+      var x = 0;
       for(var columnIndex = 0; columnIndex < expectedColumns.length; columnIndex++){
-        var actualCell = actualColumns[columnIndex];
+        var actualCell = actualColumns[x];
         var expectedCell = expectedColumns[columnIndex];
         if(_.isString(expectedCell)){
           expectedCell = {content:expectedCell};
@@ -441,15 +534,17 @@ describe('tableLayout', function () {
           }
           if(expectedCell.hasOwnProperty('spannerFor')){
             expect(actualCell, address).to.be.instanceOf(Cell.RowSpanCell);
+            //expect(actualCell)
             expect(actualCell.originalCell).to.equal(
               actualRows[expectedCell.spannerFor[0]][expectedCell.spannerFor[1]]
             );
           }
+          x++;
         } else {
-          expect(actualCell, address).to.be.instanceOf(Cell.NoOpCell);
+          //expect(actualCell, address).to.be.instanceOf(Cell.NoOpCell);
         }
       }
     }
-  }
+  }*/
 
 });
