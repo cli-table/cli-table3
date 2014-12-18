@@ -149,7 +149,7 @@ describe('Table', function () {
     expect(table.toString()).to.equal(expected.join('\n'));
   });
 
-  xit('stairstep spans',function(){
+  it('stairstep spans',function(){
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
@@ -159,6 +159,7 @@ describe('Table', function () {
     );
 
     console.log(table.toString());
+    console.log(table.options.rowHeights);
 
     var expected = [
         '┌──┬──┐'

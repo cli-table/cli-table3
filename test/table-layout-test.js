@@ -388,12 +388,12 @@ describe('tableLayout', function () {
       expect(heights).to.eql([7,3,9]);
     });
 
-    it('assumes undefined desiredHeight is 0',function(){
+    it('assumes undefined desiredHeight is 1',function(){
       var heights = [];
       var cells = [[{},{},{}]];
       layoutTable(cells);
       computeHeights(heights,cells);
-      expect(heights).to.eql([0])
+      expect(heights).to.eql([1])
     });
 
     it('takes into account rowSpan and wont over expand',function(){

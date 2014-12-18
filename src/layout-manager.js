@@ -172,12 +172,12 @@ module.exports = {
   addRowSpanCells: addRowSpanCells,
   maxWidth:maxWidth,
   fillInTable:fillInTable,
-  computeWidths:makeComputeWidths('colSpan','desiredWidth','x'),
-  computeHeights:makeComputeWidths('rowSpan','desiredHeight','y')
+  computeWidths:makeComputeWidths('colSpan','desiredWidth','x',0),
+  computeHeights:makeComputeWidths('rowSpan','desiredHeight','y',1)
 };
 })();
 
-function makeComputeWidths(colSpan,desiredWidth,x){
+function makeComputeWidths(colSpan,desiredWidth,x,forcedMin){
   return function(vals,table){
     var result = [];
     var spanners = [];
@@ -187,7 +187,7 @@ function makeComputeWidths(colSpan,desiredWidth,x){
           spanners.push(cell);
         }
         else {
-          result[cell[x]] = Math.max(result[cell[x]] || 0, cell[desiredWidth] || 0);
+          result[cell[x]] = Math.max(result[cell[x]] || 0, cell[desiredWidth] || 0, forcedMin);
         }
       });
     });
