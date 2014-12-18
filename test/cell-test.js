@@ -199,16 +199,19 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.colAligns = ['left','right','both'];
         var cell = new Cell();
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0);
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('left');
         cell = new Cell();
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1);
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('right');
         cell = new Cell();
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,2);
+        cell.x=2;
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('both');
       });
 
@@ -216,16 +219,19 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.colAligns = ['left','right','both'];
         var cell = new Cell({hAlign:'right'});
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0);
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('right');
         cell = new Cell({hAlign:'left'});
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1);
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('left');
         cell = new Cell({hAlign:'right'});
+        cell.x = 2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,2);
+        cell.init(tableOptions);
         expect(cell.hAlign).to.equal('right');
       });
     });
@@ -235,105 +241,138 @@ describe('Cell',function(){
         var tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top','bottom','center'];
         var cell = new Cell();
+        cell.y=0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('top');
         cell = new Cell();
+        cell.y = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,1);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('bottom');
         cell = new Cell();
+        cell.y = 2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,2);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('center');
       });
 
       it('if set overrides tableOptions',function(){
         var tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top','bottom','center'];
+
         var cell = new Cell({vAlign:'bottom'});
+        cell.y = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('bottom');
+
         cell = new Cell({vAlign:'top'});
+        cell.y = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,1);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('top');
+
         cell = new Cell({vAlign:'center'});
+        cell.y = 2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,2);
+        cell.init(tableOptions);
         expect(cell.vAlign).to.equal('center');
       });
     });
 
     describe('width', function(){
       it('will match colWidth of x',function(){
-        var cell = new Cell();
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [5,10,15];
+
+        var cell = new Cell();
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(5);
+
         cell = new Cell();
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(10);
+
         cell = new Cell();
+        cell.x = 2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,2);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(15);
       });
 
       it('will add colWidths if colSpan > 1',function(){
-        var cell = new Cell({colSpan:2});
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [5,10,15];
+
+        var cell = new Cell({colSpan:2});
+        cell.x=0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(16);
+
         cell = new Cell({colSpan:2});
+        cell.x=1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(26);
+
         cell = new Cell({colSpan:3});
+        cell.x=0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0);
+        cell.init(tableOptions);
         expect(cell.width).to.equal(32);
       });
     });
 
     describe('height', function(){
       it('will match rowHeight of x',function(){
-        var cell = new Cell();
         var tableOptions = defaultOptions();
         tableOptions.rowHeights = [5,10,15];
+
+        var cell = new Cell();
+        cell.y=0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(5);
+
         cell = new Cell();
+        cell.y=1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions,0,1);
         expect(cell.height).to.equal(10);
+
         cell = new Cell();
+        cell.y=2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,2);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(15);
       });
 
       it('will add rowHeights if rowSpan > 1',function(){
-        var cell = new Cell({rowSpan:2});
         var tableOptions = defaultOptions();
         tableOptions.rowHeights = [5,10,15];
+
+        var cell = new Cell({rowSpan:2});
+        cell.y = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(16);
+
         cell = new Cell({rowSpan:2});
+        cell.y = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,1);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(26);
+
         cell = new Cell({rowSpan:3});
+        cell.y = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(32);
       });
     });
@@ -348,56 +387,63 @@ describe('Cell',function(){
 
       it('col 1 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 2 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 3 of 3, with default colspan',function(){
         var cell = new Cell();
+        cell.x = 2;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,2,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(true);
       });
 
       it('col 3 of 4, with default colspan',function(){
         var cell = new Cell();
+        cell.x = 2;
         tableOptions.colWidths = [20,20,20,20];
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,2,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(false);
       });
 
       it('col 2 of 3, with colspan of 2',function(){
         var cell = new Cell({colSpan:2});
+        cell.x=1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,1,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(true);
       });
 
       it('col 1 of 3, with colspan of 3',function(){
         var cell = new Cell({colSpan:3});
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(true);
       });
 
       it('col 1 of 3, with colspan of 2',function(){
         var cell = new Cell({colSpan:2});
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,0);
+        cell.init(tableOptions);
         expect(cell.drawRight).to.equal(false);
       });
     });
 
-    it('will set x and y',function(){
+    xit('will set x and y',function(){
       var cell = new Cell();
       var tableOptions = defaultOptions();
       cell.mergeTableOptions(tableOptions);

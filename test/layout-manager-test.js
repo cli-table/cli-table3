@@ -2,8 +2,10 @@ describe('layout-manager',function(){
   var chai = require('chai');
   var expect = chai.expect;
 
-  var layoutTable = require('../src/layout-manager').layoutTable;
-  var addRowSpanCells = require('../src/layout-manager').addRowSpanCells;
+  var layoutManager = require('../src/layout-manager');
+  var layoutTable = layoutManager.layoutTable;
+  var addRowSpanCells = layoutManager.addRowSpanCells;
+  var maxWidth = layoutManager.maxWidth;
   var Cell = require('../src/cell');
   var RowSpanCell = Cell.RowSpanCell;
 
@@ -20,6 +22,9 @@ describe('layout-manager',function(){
         [{x:0,y:0},{x:1,y:0}],
         [{x:0,y:1},{x:1,y:1}]
       ]);
+
+      var w = maxWidth(table);
+      expect(w).to.equal(2);
     });
 
     it('colSpan will push x values to the right',function(){
@@ -34,6 +39,8 @@ describe('layout-manager',function(){
         [{x:0,y:0,colSpan:2},{x:2,y:0}],
         [{x:0,y:1},{x:1,y:1,colSpan:2}]
       ]);
+
+      expect(maxWidth(table)).to.equal(3);
     });
 
     it('rowSpan will push x values on cells below',function(){
@@ -48,6 +55,8 @@ describe('layout-manager',function(){
         [{x:0,y:0,rowSpan:2},{x:1,y:0}],
         [{x:1,y:1}]
       ]);
+
+      expect(maxWidth(table)).to.equal(2);
     });
 
     it('colSpan and rowSpan together',function(){
@@ -62,6 +71,34 @@ describe('layout-manager',function(){
         [{x:0,y:0,rowSpan:2,colSpan:2},{x:2,y:0}],
         [{x:2,y:1}]
       ]);
+
+      expect(maxWidth(table)).to.equal(3);
+    });
+
+    it('complex layout',function(){
+
+      var table = [
+        [{c:'a'},{c:'b'},             {c:'c',rowSpan:3,colSpan:2}, {c:'d'}],
+        [{c:'e',rowSpan:2,colSpan:2},                              {c:'f'}],
+        [                                                          {c:'g'}]
+      ];
+
+      console.log('a');
+      layoutTable(table);
+      console.log('b');
+
+      expect(table).to.eql([
+        [{c:'a',y:0,x:0},    {c:'b',y:0,x:1}, {c:'c',y:0,x:2,rowSpan:3,colSpan:2}, {c:'d',y:0,x:4}],
+        [{c:'e',rowSpan:2,colSpan:2,y:1,x:0},                                       {c:'f',y:1,x:4}],
+        [{c:'g',y:2,x:4}]
+      ]);
+
+    });
+
+    it('maxWidth of single element',function(){
+      var table = [[{}]];
+      layoutTable(table)
+      expect(maxWidth(table)).to.equal(1);
     });
   });
 
