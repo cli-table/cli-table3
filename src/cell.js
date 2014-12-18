@@ -59,7 +59,9 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
  *
  * @param y - The row this cell is in (with row 0 being at the top).
  */
-Cell.prototype.init = function(tableOptions, x, y){
+Cell.prototype.init = function(tableOptions){
+  var x = this.x;
+  var y = this.y;
   this.widths = tableOptions.colWidths.slice(x, x + this.colSpan);
   this.heights = tableOptions.rowHeights.slice(y, y + this.rowSpan);
   this.width = _.reduce(this.widths,sumPlusOne);
@@ -69,9 +71,6 @@ Cell.prototype.init = function(tableOptions, x, y){
   this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
 
   this.drawRight = x + this.colSpan == tableOptions.colWidths.length;
-
-  this.x = x;
-  this.y = y;
 };
 
 /**

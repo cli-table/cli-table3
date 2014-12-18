@@ -153,10 +153,12 @@ describe('Table', function () {
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
-      [{content:'',rowspan:2},''],
-      [{content:'',rowspan:2}],
+      [{content:'',rowSpan:2},''],
+      [{content:'',rowSpan:2}],
       ['']
     );
+
+    console.log(table.toString());
 
     var expected = [
         '┌──┬──┐'

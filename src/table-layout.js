@@ -1,4 +1,4 @@
-//module.exports = require('./layout-manager'); /*
+module.exports = require('./layout-manager'); /*
 var _ = require('lodash');
 (function(){
   var Cell = require('./cell');

@@ -83,10 +83,23 @@ function addRowSpanCells(table){
         var rowSpanCell = new RowSpanCell(cell);
         rowSpanCell.x = cell.x;
         rowSpanCell.y = cell.y + i;
+        rowSpanCell.colSpan = cell.colSpan;
         insertCell(rowSpanCell,table[rowIndex+i]);
       }
     });
   });
+}
+
+function addColSpanCells(cellRows){
+  for(var rowIndex = cellRows.length-1; rowIndex >= 0; rowIndex--) {
+    var cellColumns = cellRows[rowIndex];
+    for (var columnIndex = 0; columnIndex < cellColumns.length; columnIndex++) {
+      var cell = cellColumns[columnIndex];
+      for (var k = 1; k < cell.colSpan; k++) {
+        cellColumns.splice(columnIndex + 1, 0, new Cell.NoOpCell());
+      }
+    }
+  }
 }
 
 function insertCell(cell,row){
@@ -149,6 +162,7 @@ function fillInTable(table){
     layoutTable(cellRows);
     fillInTable(cellRows);
     addRowSpanCells(cellRows);
+    addColSpanCells(cellRows);
     return cellRows;
   }
 
