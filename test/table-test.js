@@ -148,6 +148,28 @@ describe('Table', function () {
 
     expect(table.toString()).to.equal(expected.join('\n'));
   });
+
+  xit('stairstep spans',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      [{content:'',rowspan:2},''],
+      [{content:'',rowspan:2}],
+      ['']
+    );
+
+    var expected = [
+        '┌──┬──┐'
+      , '│  │  │'
+      , '│  ├──┤'
+      , '│  │  │'
+      , '├──┤  │'
+      , '│  │  │'
+      , '└──┴──┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
 });
 
 /*

@@ -124,6 +124,22 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
+  xit('stairstep spans',function(){
+    var actual = makeTableLayout([
+      [{content:'',rowSpan:2},''],
+      [{content:'',rowSpan:2}],
+      ['']
+    ]);
+
+    var expected = [
+      [{content:'',rowSpan:2}, ''],
+      [{spannerFor:[0,0]},{content:'',rowSpan:2}],
+      ['',{spannerFor:[1,1]}]
+    ];
+
+    checkLayout(actual,expected);
+  });
+
   it('maxWidth finds the maximum width of a 2d array',function(){
     expect(maxWidth([[1],[1,2],[]])).to.equal(2);
     expect(maxWidth([[1],[1,2,3],[]])).to.equal(3);
