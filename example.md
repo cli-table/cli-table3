@@ -1,12 +1,12 @@
 use colSpan to span columns - (colSpan above normal cell)
 --------
-┌───────────────┐
-│ greetings     │
-├───────────────┤
-│ greetings     │
-├───────┬───────┤
-│ hello │ howdy │
-└───────┴───────┘
+    ┌───────────────┐
+    │ greetings     │
+    ├───────────────┤
+    │ greetings     │
+    ├───────┬───────┤
+    │ hello │ howdy │
+    └───────┴───────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -21,13 +21,13 @@ use colSpan to span columns - (colSpan above normal cell)
 
 use colSpan to span columns - (colSpan below normal cell)
 --------
-┌───────┬───────┐
-│ hello │ howdy │
-├───────┴───────┤
-│ greetings     │
-├───────────────┤
-│ greetings     │
-└───────────────┘
+    ┌───────┬───────┐
+    │ hello │ howdy │
+    ├───────┴───────┤
+    │ greetings     │
+    ├───────────────┤
+    │ greetings     │
+    └───────────────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -42,11 +42,11 @@ use colSpan to span columns - (colSpan below normal cell)
 
 use rowSpan to span rows - (rowSpan on the left side)
 --------
-┌───────────┬───────────┬───────┐
-│ greetings │           │ hello │
-│           │ greetings ├───────┤
-│           │           │ howdy │
-└───────────┴───────────┴───────┘
+    ┌───────────┬───────────┬───────┐
+    │ greetings │           │ hello │
+    │           │ greetings ├───────┤
+    │           │           │ howdy │
+    └───────────┴───────────┴───────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -60,11 +60,11 @@ use rowSpan to span rows - (rowSpan on the left side)
 
 use rowSpan to span rows - (rowSpan on the right side)
 --------
-┌───────┬───────────┬───────────┐
-│ hello │ greetings │           │
-├───────┤           │           │
-│ howdy │           │ greetings │
-└───────┴───────────┴───────────┘
+    ┌───────┬───────────┬───────────┐
+    │ hello │ greetings │           │
+    ├───────┤           │           │
+    │ howdy │           │ greetings │
+    └───────┴───────────┴───────────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -78,13 +78,13 @@ use rowSpan to span rows - (rowSpan on the right side)
 
 mix rowSpan and colSpan together for complex table layouts
 --------
-┌───────┬─────┬────┐
-│ hello │ sup │ hi │
-├───────┤     │    │
-│ howdy │     │    │
-├───┬───┼──┬──┤    │
-│ o │ k │  │  │    │
-└───┴───┴──┴──┴────┘
+    ┌───────┬─────┬────┐
+    │ hello │ sup │ hi │
+    ├───────┤     │    │
+    │ howdy │     │    │
+    ├───┬───┼──┬──┤    │
+    │ o │ k │  │  │    │
+    └───┴───┴──┴──┴────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -99,11 +99,11 @@ mix rowSpan and colSpan together for complex table layouts
 
 multi-line content will flow across rows in rowSpan cells
 --------
-┌───────┬───────────┬───────────┐
-│ hello │ greetings │ greetings │
-├───────┤ friends   │ friends   │
-│ howdy │           │           │
-└───────┴───────────┴───────────┘
+    ┌───────┬───────────┬───────────┐
+    │ hello │ greetings │ greetings │
+    ├───────┤ friends   │ friends   │
+    │ howdy │           │           │
+    └───────┴───────────┴───────────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -117,13 +117,13 @@ multi-line content will flow across rows in rowSpan cells
 
 multi-line content will flow across rows in rowSpan cells - (complex layout)
 --------
-┌───────┬─────┬────┐
-│ hello │ sup │ hi │
-├───────┤ man │ yo │
-│ howdy │ hey │    │
-├───┬───┼──┬──┤    │
-│ o │ k │  │  │    │
-└───┴───┴──┴──┴────┘
+    ┌───────┬─────┬────┐
+    │ hello │ sup │ hi │
+    ├───────┤ man │ yo │
+    │ howdy │ hey │    │
+    ├───┬───┼──┬──┤    │
+    │ o │ k │  │  │    │
+    └───┴───┴──┴──┴────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -138,13 +138,13 @@ multi-line content will flow across rows in rowSpan cells - (complex layout)
 
 rowSpan cells can have a staggered layout
 --------
-┌───┬───┐
-│ a │ b │
-│   ├───┤
-│   │ c │
-├───┤   │
-│ d │   │
-└───┴───┘
+    ┌───┬───┐
+    │ a │ b │
+    │   ├───┤
+    │   │ c │
+    ├───┤   │
+    │ d │   │
+    └───┴───┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -159,15 +159,15 @@ rowSpan cells can have a staggered layout
 
 the layout manager automatically create empty cells to fill in the table
 --------
-┌───┬───┬──┐
-│ a │ b │  │
-│   ├───┤  │
-│   │   │  │
-│   ├───┴──┤
-│   │ c    │
-├───┤      │
-│   │      │
-└───┴──────┘
+    ┌───┬───┬──┐
+    │ a │ b │  │
+    │   ├───┤  │
+    │   │   │  │
+    │   ├───┴──┤
+    │   │ c    │
+    ├───┤      │
+    │   │      │
+    └───┴──────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -183,10 +183,10 @@ the layout manager automatically create empty cells to fill in the table
 
 use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.
 --------
-┌───────┐
-│ hello │
-│ hi…   │
-└───────┘
+    ┌───────┐
+    │ hello │
+    │ hi…   │
+    └───────┘
 ```javascript
         var table = new Table({rowHeights:[2],style:{head:[],border:[]}});
 
@@ -197,11 +197,11 @@ use table `rowHeights` option to fix row height. The truncation symbol will be s
 
 if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content
 --------
-┌─────────────┐
-│ hello there │
-├──────┬──────┤
-│ hi   │ hi   │
-└──────┴──────┘
+    ┌─────────────┐
+    │ hello there │
+    ├──────┬──────┤
+    │ hi   │ hi   │
+    └──────┴──────┘
 ```javascript
         var table = new Table({style:{head:[],border:[]}});
 
@@ -215,11 +215,11 @@ if `colWidths` is not specified, the layout manager will automatically widen row
 
 you can specify a column width for only the first row, other rows will be automatically widened to fit content
 --------
-┌─────────────┐
-│ hello there │
-├────┬────────┤
-│ hi │   hi   │
-└────┴────────┘
+    ┌─────────────┐
+    │ hello there │
+    ├────┬────────┤
+    │ hi │   hi   │
+    └────┴────────┘
 ```javascript
         var table = new Table({colWidths:[4],style:{head:[],border:[]}});
 
@@ -233,11 +233,11 @@ you can specify a column width for only the first row, other rows will be automa
 
 a column with a null column width will be automatically widened to fit content
 --------
-┌─────────────┐
-│ hello there │
-├────────┬────┤
-│     hi │ hi │
-└────────┴────┘
+    ┌─────────────┐
+    │ hello there │
+    ├────────┬────┤
+    │     hi │ hi │
+    └────────┴────┘
 ```javascript
         var table = new Table({colWidths:[null, 4],style:{head:[],border:[]}});
 
@@ -251,9 +251,9 @@ a column with a null column width will be automatically widened to fit content
 
 feel free to use colors in your content strings, column widths will be calculated correctly
 --------
-┌─────┐
-│ he… │
-└─────┘
+    ┌─────┐
+    │ he… │
+    └─────┘
 ```javascript
         var table = new Table({colWidths:[5],style:{head:[],border:[]}});
 
