@@ -18,8 +18,8 @@ gulp.task('example',function(){
   printExample.logExample(require('./examples/examples'));
 });
 
-gulp.task('example-md',function(){
-  printExample.mdExample(require('./examples/examples'),'example.md');
+gulp.task('example-md',function(cb){
+  printExample.mdExample(require('./examples/examples'),'example.md',cb);
 });
 
 function coverage(opts){
