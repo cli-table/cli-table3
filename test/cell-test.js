@@ -554,6 +554,20 @@ describe('Cell',function(){
       });
     });
 
+    describe('drawBottom',function(){
+      it('draws an empty line',function(){
+        expect(cell.drawEmpty()).to.equal('L       ');
+        expect(cell.drawEmpty(true)).to.equal('L       R');
+      });
+
+      it('draws an empty line',function(){
+        cell.border = ['gray'];
+        cell.head = ['red'];
+        expect(cell.drawEmpty()).to.equal(colors.gray('L') + colors.red('       '));
+        expect(cell.drawEmpty(true)).to.equal(colors.gray('L') + colors.red('       ') + colors.gray('R'));
+      });
+    });
+
     describe('first line of text',function(){
       beforeEach(function () {
         cell.width = 9;

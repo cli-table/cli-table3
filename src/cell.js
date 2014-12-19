@@ -202,6 +202,10 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spann
   var content = utils.truncate(line,len,this.truncate);
   content = utils.pad(content, len, ' ', this.hAlign);
   content = leftPadding + content + rightPadding;
+  return this.stylizeLine(left,content,right);
+};
+
+Cell.prototype.stylizeLine = function(left,content,right){
   left = this.wrapWithStyleColors('border',left);
   right = this.wrapWithStyleColors('border',right);
   if(this.y === 0){
@@ -240,7 +244,7 @@ Cell.prototype.drawEmpty = function(drawRight,spanningCell){
   }
   var right = (drawRight ? this.chars['right'] : '');
   var content = utils.repeat(' ',this.width);
-  return left + content + right;
+  return this.stylizeLine(left , content , right);
 };
 
 /**
