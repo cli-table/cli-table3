@@ -35,7 +35,7 @@ Table.prototype.toString = function(){
 
   _.forEach(cells,function(row,rowIndex){
     _.forEach(row,function(cell,cellIndex){
-      cell.init(this.options,cellIndex,rowIndex);
+      cell.init(this.options);
     },this);
   },this);
 

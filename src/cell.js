@@ -247,10 +247,7 @@ ColSpanCell.prototype.draw = function(){
   return '';
 };
 
-ColSpanCell.prototype.init = function(tableOptions,x,y){
-  this.x = x;
-  this.y = y;
-};
+ColSpanCell.prototype.init = function(tableOptions){};
 
 
 /**
@@ -263,7 +260,8 @@ function RowSpanCell(originalCell){
   this.originalCell = originalCell;
 }
 
-RowSpanCell.prototype.init = function(tableOptions,x,y){
+RowSpanCell.prototype.init = function(tableOptions){
+  var y = this.y;
   var originalY = this.originalCell.y;
   this.cellOffset = y - originalY;
   this.offset = findDimension(tableOptions.rowHeights,originalY,this.cellOffset);

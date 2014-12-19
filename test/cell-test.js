@@ -343,7 +343,7 @@ describe('Cell',function(){
         cell = new Cell();
         cell.y=1;
         cell.mergeTableOptions(tableOptions);
-        cell.init(tableOptions,0,1);
+        cell.init(tableOptions);
         expect(cell.height).to.equal(10);
 
         cell = new Cell();
@@ -812,49 +812,63 @@ describe('Cell',function(){
 
     it('drawing top of the next row',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,1);
+      spanner.x = 0;
+      spanner.y = 1;
+      spanner.init(tableOptions);
       spanner.draw('top');
       expect(original.draw).to.have.been.calledOnce.and.calledWith(2);
     });
 
     it('drawing line 0 of the next row',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,1);
+      spanner.x = 0;
+      spanner.y = 1;
+      spanner.init(tableOptions);
       spanner.draw(0);
       expect(original.draw).to.have.been.calledOnce.and.calledWith(3);
     });
 
     it('drawing line 1 of the next row',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,1);
+      spanner.x  = 0;
+      spanner.y = 1;
+      spanner.init(tableOptions);
       spanner.draw(1);
       expect(original.draw).to.have.been.calledOnce.and.calledWith(4);
     });
 
     it('drawing top of two rows below',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,2);
+      spanner.x = 0;
+      spanner.y = 2;
+      spanner.init(tableOptions);
       spanner.draw('top');
       expect(original.draw).to.have.been.calledOnce.and.calledWith(6);
     });
 
     it('drawing line 0 of two rows below',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,2);
+      spanner.x = 0;
+      spanner.y = 2;
+      spanner.init(tableOptions);
       spanner.draw(0);
       expect(original.draw).to.have.been.calledOnce.and.calledWith(7);
     });
 
     it('drawing line 1 of two rows below',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,2);
+      spanner.x = 0;
+      spanner.y = 2;
+      spanner.init(tableOptions);
       spanner.draw(1);
       expect(original.draw).to.have.been.calledOnce.and.calledWith(8);
     });
 
     it('drawing bottom',function(){
       var spanner = new RowSpanCell(original);
-      spanner.init(tableOptions,0,1);
+      spanner.x = 0;
+      spanner.y = 1;
+      spanner.init(tableOptions);
       spanner.draw('bottom');
       expect(original.draw).to.have.been.calledOnce.and.calledWith('bottom');
     });

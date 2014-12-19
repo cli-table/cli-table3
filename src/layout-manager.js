@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var Cell = require('./cell');
 var RowSpanCell = Cell.RowSpanCell;
+var ColSpanCell = Cell.ColSpanCell;
 
 (function(){
 
@@ -96,7 +97,10 @@ function addColSpanCells(cellRows){
     for (var columnIndex = 0; columnIndex < cellColumns.length; columnIndex++) {
       var cell = cellColumns[columnIndex];
       for (var k = 1; k < cell.colSpan; k++) {
-        cellColumns.splice(columnIndex + 1, 0, new Cell.ColSpanCell());
+        var colSpanCell = new ColSpanCell();
+        colSpanCell.x = cell.x + k;
+        colSpanCell.y = cell.y;
+        cellColumns.splice(columnIndex + 1, 0, colSpanCell);
       }
     }
   }
