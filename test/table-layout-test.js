@@ -238,11 +238,11 @@ describe('tableLayout', function () {
       expect(widths).to.eql([8, 3, 5]);
     });
 
-    it('assumes undefined desiredWidth is 0', function () {
+    it('assumes undefined desiredWidth is 1', function () {
       var widths = [];
       var cells = [[{x:0,y:0}], [{x:0,y:1}], [{x:0,y:2}]];
       computeWidths(widths, cells);
-      expect(widths).to.eql([0])
+      expect(widths).to.eql([1])
     });
 
     it('takes into account colSpan and wont over expand', function () {

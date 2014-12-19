@@ -176,7 +176,7 @@ module.exports = {
   addRowSpanCells: addRowSpanCells,
   maxWidth:maxWidth,
   fillInTable:fillInTable,
-  computeWidths:makeComputeWidths('colSpan','desiredWidth','x',0),
+  computeWidths:makeComputeWidths('colSpan','desiredWidth','x',1),
   computeHeights:makeComputeWidths('rowSpan','desiredHeight','y',1)
 };
 })();
@@ -229,5 +229,8 @@ function makeComputeWidths(colSpan,desiredWidth,x,forcedMin){
       }
     }
     _.extend(vals,result);
+    for(var j = 0; j < vals.length; j++){
+      vals[j] = Math.max(forcedMin, vals[j] || 0);
+    }
   };
 }

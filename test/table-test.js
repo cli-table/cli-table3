@@ -158,9 +158,6 @@ describe('@api Table', function () {
       ['']
     );
 
-    //console.log(table.toString());
-    //console.log(table.options.rowHeights);
-
     var expected = [
         '┌──┬──┐'
       , '│  │  │'
@@ -172,6 +169,114 @@ describe('@api Table', function () {
     ];
 
     expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('stairstep spans - empty cells autofilled',function(){
+    var table = new Table({style:{head:[],border:[]}});
+
+    table.push(
+      [{content:'',rowSpan:3,colSpan:2},'hi'],
+      [],
+      [{content:'',rowSpan:2,colSpan:2}],
+      []
+    );
+
+    var expected = [
+        '┌───┬────┬──┐'
+      , '│   │ hi │  │'  // top-right and bottom-left cells are automatically created to fill the empty space
+      , '│   ├────┤  │'
+      , '│   │    │  │'
+      , '│   ├────┴──┤'
+      , '│   │       │'
+      , '├───┤       │'
+      , '│   │       │'
+      , '└───┴───────┘'
+    ];
+
+    console.log(table.toString());
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('truncation symbol shows if there are undisplayed lines',function(){
+    var table = new Table({rowHeights:[1],style:{head:[],border:[]}});
+
+    table.push(['hi\nhello']);
+
+
+    var expected = [
+        '┌───────┐'
+      , '│ hi…   │'
+      , '└───────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('colSpan width expansion',function(){
+    var table = new Table({style:{head:[],border:[]}});
+    table.push(
+      [{colSpan:2,content:'hello there'}],
+      ['hi', 'hi']
+    );
+
+    var expected = [
+        '┌─────────────┐'
+      , '│ hello there │'
+      , '├──────┬──────┤'
+      , '│ hi   │ hi   │'
+      , '└──────┴──────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('colSpan width expansion - specified widths',function(){
+    var table = new Table({colWidths:[4],style:{head:[],border:[]}});
+    table.push(
+      [{colSpan:2,content:'hello there'}],
+      ['hi',{hAlign:'center',content:'hi'}]
+    );
+
+    var expected = [
+        '┌─────────────┐'
+      , '│ hello there │'
+      , '├────┬────────┤'
+      , '│ hi │   hi   │'
+      , '└────┴────────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('colSpan width expansion - null widths',function(){
+    var table = new Table({colWidths:[null, 4],style:{head:[],border:[]}});
+    table.push(
+      [{colSpan:2,content:'hello there'}],
+      [{hAlign:'right',content:'hi'}, 'hi']
+    );
+
+    var expected = [
+        '┌─────────────┐'
+      , '│ hello there │'
+      , '├────────┬────┤'
+      , '│     hi │ hi │'
+      , '└────────┴────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('colorful truncation',function(){
+    var table = new Table({colWidths:[5],style:{head:[],border:[]}});
+
+    table.push([colors.red('hello')]);
+    var expected = [
+        '┌─────┐'
+      , '│ ' + colors.red('he') + '… │'
+      , '└─────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join('\n'))
   });
 });
 
