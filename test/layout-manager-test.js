@@ -83,9 +83,7 @@ describe('layout-manager',function(){
         [                                                          {c:'g'}]
       ];
 
-      console.log('a');
       layoutTable(table);
-      console.log('b');
 
       expect(table).to.eql([
         [{c:'a',y:0,x:0},    {c:'b',y:0,x:1}, {c:'c',y:0,x:2,rowSpan:3,colSpan:2}, {c:'d',y:0,x:4}],

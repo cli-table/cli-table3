@@ -442,21 +442,6 @@ describe('Cell',function(){
         expect(cell.drawRight).to.equal(false);
       });
     });
-
-    xit('will set x and y',function(){
-      var cell = new Cell();
-      var tableOptions = defaultOptions();
-      cell.mergeTableOptions(tableOptions);
-      cell.init(tableOptions,0,0);
-      expect(cell.x).to.equal(0);
-      expect(cell.y).to.equal(0);
-
-      cell = new Cell();
-      cell.mergeTableOptions(tableOptions);
-      cell.init(tableOptions,3,4);
-      expect(cell.x).to.equal(3);
-      expect(cell.y).to.equal(4);
-    });
   });
 
   describe('drawLine', function(){

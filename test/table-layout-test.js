@@ -110,35 +110,6 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
-  function logLayout(layout){
-    var tableStr = [];
-    _.forEach(layout,function(row){
-      var rowStr = [];
-      _.forEach(row,function(cell){
-        var cellStr = [];
-
-        cellStr.push('y:' + cell.y);
-        cellStr.push('x:' + cell.x);
-        if((cell.colSpan || 1) != 1){
-          cellStr.push('colSPan:' + cell.colSpan);
-        }
-        if((cell.rowSpan || 1) != 1){
-          cellStr.push('rowSpan:' + cell.rowSpan);
-        }
-        if(cell.originalCell){
-          cellStr.push('rowspan:[' + cell.originalCell.y + ',' + cell.originalCell.x + ']');
-        }
-        else {
-          cellStr.push('content:\'' + (cell.content) + '\'' )
-        }
-
-        rowStr.push('{' + cellStr.join(',') + '}');
-      });
-      tableStr.push(rowStr.join(',\t\t'));
-    });
-    console.log(tableStr.join('\n'));
-  }
-
   it('complex layout2',function(){
     var actual = makeTableLayout([
       ['a','b',                          {content:'c',rowSpan:3,colSpan:2},'d'],
@@ -169,13 +140,6 @@ describe('tableLayout', function () {
     ];
 
     checkLayout(actual,expected);
-  });
-
-  xit('maxWidth finds the maximum width of a 2d array',function(){
-    expect(maxWidth([[1],[1,2],[]])).to.equal(2);
-    expect(maxWidth([[1],[1,2,3],[]])).to.equal(3);
-    expect(maxWidth([[1,2,3,4],[1,2],[]])).to.equal(4);
-    expect(maxWidth([[1],[1,2],[1,2,3,4,5]])).to.equal(5);
   });
 
   describe('fillInTable',function(){
