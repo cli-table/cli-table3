@@ -92,6 +92,31 @@
       expect(table.toString()).to.equal(expected.join('\n'));
     });
 
+    it('compact longhand - headers are not rendered with separator',function(){
+      var table = new Table({
+        chars: {
+          'mid': ''
+          , 'left-mid': ''
+          , 'mid-mid': ''
+          , 'right-mid': ''
+        },
+        head:['hello','goodbye'],
+        style:{border:[],head:[]}}
+      );
+
+      table.push(['hola','adios'],['hi','bye']);
+
+      var expected = [
+          '┌───────┬─────────┐'
+        , '│ hello │ goodbye │'
+        , '│ hola  │ adios   │'
+        , '│ hi    │ bye     │'
+        , '└───────┴─────────┘'
+      ];
+
+      expect(table.toString()).to.equal(expected.join('\n'));
+    });
+
     it('compact longhand',function(){
       var table = new Table({
         chars: {
