@@ -83,8 +83,9 @@ Cell.prototype.init = function(tableOptions){
  * Draws the given line of the cell.
  * This default implementation defers to methods `drawTop`, `drawBottom`, `drawLine` and `drawEmpty`.
  * @param lineNum - can be `top`, `bottom` or a numerical line number.
+ * @param spanningCell - will be a number if being called from a RowSpanCell, and will represent how
+ * many rows below it's being called from. Otherwise it's undefined.
  * @returns {String} The representation of this line.
- * @param spanningCell
  */
 Cell.prototype.draw = function(lineNum,spanningCell){
   if(lineNum == 'top') return this.drawTop(this.drawRight);
@@ -180,6 +181,7 @@ Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
  * @param forceTruncationSymbol - `true` if the rendered text should end with the truncation symbol even
  * if the text fits. This is used when the cell is vertically truncated. If `false` the text should
  * only include the truncation symbol if the text will not fit horizontally within the cell width.
+ * @param spanningCell - a number of if being called from a RowSpanCell. (how many rows below). otherwise undefined.
  * @returns {String}
  */
 Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spanningCell){
@@ -216,7 +218,7 @@ Cell.prototype.stylizeLine = function(left,content,right){
 
 /**
  * Renders the bottom line of the cell.
- * @param drawRight - true if this method should render the right edge of the cell
+ * @param drawRight - true if this method should render the right edge of the cell.
  * @returns {String}
  */
 Cell.prototype.drawBottom = function(drawRight){
@@ -228,7 +230,8 @@ Cell.prototype.drawBottom = function(drawRight){
 
 /**
  * Renders a blank line of text within the cell. Used for top and/or bottom padding.
- * @param drawRight - true if this method should render the right edge of the cell
+ * @param drawRight - true if this method should render the right edge of the cell.
+ * @param spanningCell - a number of if being called from a RowSpanCell. (how many rows below). otherwise undefined.
  * @returns {String}
  */
 Cell.prototype.drawEmpty = function(drawRight,spanningCell){
