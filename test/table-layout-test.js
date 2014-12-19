@@ -244,19 +244,18 @@ describe('tableLayout', function () {
   });
 
   describe('computeWidths',function() {
-    function mc(desiredWidth, colSpan) {
-      return {desiredWidth: desiredWidth, colSpan: colSpan};
+    function mc(y,x,desiredWidth, colSpan) {
+      return {x:x,y:y,desiredWidth:desiredWidth,colSpan:colSpan};
     }
 
     it('finds the maximum desired width of each column', function () {
       var widths = [];
       var cells = [
-        [mc(7), mc(3), mc(5)],
-        [mc(8), mc(5), mc(2)],
-        [mc(6), mc(9), mc(1)]
+        [mc(0,0,7), mc(0,1,3), mc(0,2,5)],
+        [mc(1,0,8), mc(1,1,5), mc(1,2,2)],
+        [mc(2,0,6), mc(2,1,9), mc(2,2,1)]
       ];
 
-      layoutTable(cells);
       computeWidths(widths, cells);
 
       expect(widths).to.eql([8, 9, 5]);
@@ -265,12 +264,11 @@ describe('tableLayout', function () {
     it('won\'t touch hard coded values', function () {
       var widths = [null, 3];
       var cells = [
-        [mc(7), mc(3), mc(5)],
-        [mc(8), mc(5), mc(2)],
-        [mc(6), mc(9), mc(1)]
+        [mc(0,0,7), mc(0,1,3), mc(0,2,5)],
+        [mc(1,0,8), mc(1,1,5), mc(1,2,2)],
+        [mc(2,0,6), mc(2,1,9), mc(2,2,1)]
       ];
 
-      layoutTable(cells);
       computeWidths(widths, cells);
 
       expect(widths).to.eql([8, 3, 5]);
@@ -278,8 +276,7 @@ describe('tableLayout', function () {
 
     it('assumes undefined desiredWidth is 0', function () {
       var widths = [];
-      var cells = [[{}], [{}], [{}]];
-      layoutTable(cells);
+      var cells = [[{x:0,y:0}], [{x:0,y:1}], [{x:0,y:2}]];
       computeWidths(widths, cells);
       expect(widths).to.eql([0])
     });
@@ -287,11 +284,10 @@ describe('tableLayout', function () {
     it('takes into account colSpan and wont over expand', function () {
       var widths = [];
       var cells = [
-        [mc(10, 2),    mc(5)],
-        [mc(5), mc(5), mc(2)],
-        [mc(4), mc(2), mc(1)]
+        [mc(0,0,10, 2),        mc(0,2,5)],
+        [mc(1,0,5), mc(1,1,5), mc(1,2,2)],
+        [mc(2,0,4), mc(2,1,2), mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([5, 5, 5]);
     });
@@ -299,11 +295,10 @@ describe('tableLayout', function () {
     it('will expand rows involved in colSpan in a balanced way', function () {
       var widths = [];
       var cells = [
-        [mc(13, 2),    mc(5)],
-        [mc(5), mc(5), mc(2)],
-        [mc(4), mc(2), mc(1)]
+        [mc(0,0,13,2),          mc(0,2,5)],
+        [mc(1,0,5), mc(1,1,5),  mc(1,2,2)],
+        [mc(2,0,4), mc(2,1,2),  mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([6, 6, 5]);
     });
@@ -311,11 +306,10 @@ describe('tableLayout', function () {
     it('expands across 3 cols', function () {
       var widths = [];
       var cells = [
-        [mc(25, 3)],
-        [mc(5), mc(5), mc(2)],
-        [mc(4), mc(2), mc(1)]
+        [mc(0,0,25,3)                        ],
+        [mc(1,0,5),    mc(1,1,5),  mc(1,2,2) ],
+        [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([9, 9, 5]);
     });
@@ -323,11 +317,10 @@ describe('tableLayout', function () {
     it('multiple spans in same table', function () {
       var widths = [];
       var cells = [
-        [mc(25, 3)],
-        [mc(30, 3)],
-        [mc(4), mc(2), mc(1)]
+        [mc(0,0,25,3)                        ],
+        [mc(1,0,30,3)                        ],
+        [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([11, 9, 8]);
     });
@@ -335,10 +328,9 @@ describe('tableLayout', function () {
     it('spans will only edit uneditable tables',function(){
       var widths = [null, 3];
       var cells = [
-        [mc(20,3)],
-        [mc(4),mc(20),mc(5)]
+        [mc(0,0,20,3)                         ],
+        [mc(1,0,4),    mc(1,1,20),  mc(1,2,5) ]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([7,3,8])
     });
@@ -346,29 +338,27 @@ describe('tableLayout', function () {
     it('spans will only edit uneditable tables - first column uneditable',function(){
       var widths = [3];
       var cells = [
-        [mc(20,3)],
-        [mc(4),   mc(3), mc(5)]
+        [mc(0,0,20,3)                        ],
+        [mc(1,0,4),    mc(1,1,3),  mc(1,2,5) ]
       ];
-      layoutTable(cells);
       computeWidths(widths, cells);
       expect(widths).to.eql([3,7,8])
     });
   });
     
   describe('computeHeights',function(){
-    function mc(desiredHeight,colSpan){
-      return {desiredHeight:desiredHeight,rowSpan:colSpan};
+    function mc(y,x,desiredHeight,colSpan){
+      return {x:x,y:y,desiredHeight:desiredHeight,rowSpan:colSpan};
     }
 
     it('finds the maximum desired height of each row',function(){
       var heights = [];
       var cells = [
-        [mc(7), mc(3), mc(5)],
-        [mc(8), mc(5), mc(2)],
-        [mc(6), mc(9), mc(1)]
+        [mc(0,0,7),  mc(0,1,3),  mc(0,2,5) ],
+        [mc(1,0,8),  mc(1,1,5),  mc(1,2,2) ],
+        [mc(2,0,6),  mc(2,1,9),  mc(2,2,1) ]
       ];
 
-      layoutTable(cells);
       computeHeights(heights,cells);
 
       expect(heights).to.eql([7,8,9]);
@@ -377,12 +367,11 @@ describe('tableLayout', function () {
     it('won\'t touch hard coded values',function(){
       var heights = [null,3];
       var cells = [
-        [mc(7), mc(3), mc(5)],
-        [mc(8), mc(5), mc(2)],
-        [mc(6), mc(9), mc(1)]
+        [mc(0,0,7),  mc(0,1,3),  mc(0,2,5)],
+        [mc(1,0,8),  mc(1,1,5),  mc(1,2,2)],
+        [mc(2,0,6),  mc(2,1,9),  mc(2,2,1)]
       ];
 
-      layoutTable(cells);
       computeHeights(heights,cells);
 
       expect(heights).to.eql([7,3,9]);
@@ -390,8 +379,7 @@ describe('tableLayout', function () {
 
     it('assumes undefined desiredHeight is 1',function(){
       var heights = [];
-      var cells = [[{},{},{}]];
-      layoutTable(cells);
+      var cells = [[{x:0,y:0},{x:1,y:0},{x:2,y:0}]];
       computeHeights(heights,cells);
       expect(heights).to.eql([1])
     });
@@ -399,11 +387,10 @@ describe('tableLayout', function () {
     it('takes into account rowSpan and wont over expand',function(){
       var heights = [];
       var cells = [
-        [mc(10,2),  mc(5)],
-        [mc(5),    mc(3), mc(2)],
-        [mc(4),    mc(2), mc(1)]
+        [mc(0,0,10,2),  mc(0,1,5),  mc(0,2,2)],
+        [               mc(1,1,5),  mc(1,2,2)],
+        [mc(2,0,4),     mc(2,1,2),  mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([5,5,4]);
     });
@@ -411,11 +398,10 @@ describe('tableLayout', function () {
     it('will expand rows involved in rowSpan in a balanced way',function(){
       var heights = [];
       var cells = [
-        [mc(13,2), mc(5), mc(5)],
-        [    mc(5), mc(2)],
-        [mc(4),    mc(2), mc(1)]
+        [mc(0,0,13,2), mc(0,1,5), mc(0,2,5)],
+        [              mc(1,1,5), mc(1,2,2)],
+        [mc(2,0,4),    mc(2,1,2), mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([6,6,4]);
     });
@@ -423,11 +409,10 @@ describe('tableLayout', function () {
     it('expands across 3 rows',function(){
       var heights = [];
       var cells = [
-        [mc(25,3), mc(5), mc(4)],
-        [   mc(5), mc(2)],
-        [   mc(2), mc(1)]
+        [mc(0,0,25,3), mc(0,1,5), mc(0,2,4)],
+        [              mc(1,1,5), mc(1,2,2)],
+        [              mc(2,1,2), mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([9,9,5]);
     });
@@ -435,11 +420,10 @@ describe('tableLayout', function () {
     it('multiple spans in same table',function(){
       var heights = [];
       var cells = [
-        [mc(25,3), mc(30,3), mc(4)],
-        [    mc(2)],
-        [    mc(1)]
+        [mc(0,0,25,3), mc(0,1,30,3), mc(0,2,4)],
+        [                            mc(1,2,2)],
+        [                            mc(2,2,1)]
       ];
-      layoutTable(cells);
       computeHeights(heights,cells);
       expect(heights).to.eql([11,9,8]);
     });
