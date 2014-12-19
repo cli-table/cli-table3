@@ -114,5 +114,20 @@
 
       expect(table.toString()).to.equal(expected.join('\n'));
     });
+
+    it('objects with multiple properties in a cross-table',function(){
+      var table = new Table({style:{border:[],head:[]}});
+
+      table.push(
+        {'a':['b'], c:['d']}   // value of property 'c' will be discarded
+      );
+
+      var expected = [
+          '┌───┬───┐'
+        , '│ a │ b │'
+        , '└───┴───┘'
+      ];
+      expect(table.toString()).to.equal(expected.join('\n'));
+    });
   }
 })();
