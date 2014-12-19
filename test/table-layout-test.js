@@ -54,7 +54,7 @@ describe('tableLayout', function () {
     checkLayout(actual,expected);
   });
 
-  it('colSpan adds NoOpCells to the right',function(){
+  it('colSpan adds RowSpanCells to the right',function(){
     var actual = makeTableLayout([
       [{content:'hello',colSpan:2}],
       ['hola','adios']
@@ -401,7 +401,7 @@ describe('tableLayout', function () {
    * Available Expectations Can Be:
    *
    *    * A `String` -  Must be a normal cell with contents equal to the String value.
-   *    * `null` -  Must be a NoOpCell
+   *    * `null` -  Must be a RowSpanCell
    *
    * Or an `Object` with any of the following properties (multiple properties allowed):
    *    * rowSpan:Number - Must be a normal cell with the given rowSpan.

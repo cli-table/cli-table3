@@ -138,7 +138,7 @@ Cell.prototype._topLeftChar = function(offset){
     else {
       leftChar = offset == 0 ? 'mid-mid' : 'bottom-mid';
       if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
-        var spanAbove = this.cells[this.y-1][x] instanceof Cell.NoOpCell;
+        var spanAbove = this.cells[this.y-1][x] instanceof Cell.ColSpanCell;
         var spanLeft = offset == 0 && this.cells[this.y][x-1] instanceof Cell.RowSpanCell;
         if(spanAbove){
           leftChar = offset == 0 ? 'top-mid' : 'mid';
@@ -179,7 +179,7 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spann
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   if(this.x && spanningCell && this.cells){
     var cellLeft = this.cells[this.y+spanningCell][this.x-1];
-    while(cellLeft instanceof NoOpCell){
+    while(cellLeft instanceof ColSpanCell){
       cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
     }
     if(!(cellLeft instanceof RowSpanCell)){
@@ -224,7 +224,7 @@ Cell.prototype.drawEmpty = function(drawRight,spanningCell){
   var left = this.chars[this.x == 0 ? 'left' : 'middle'];
   if(this.x && spanningCell && this.cells){
     var cellLeft = this.cells[this.y+spanningCell][this.x-1];
-    while(cellLeft instanceof NoOpCell){
+    while(cellLeft instanceof ColSpanCell){
       cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
     }
     if(!(cellLeft instanceof RowSpanCell)){
@@ -241,13 +241,13 @@ Cell.prototype.drawEmpty = function(drawRight,spanningCell){
  * Used as a placeholder in column spanning.
  * @constructor
  */
-function NoOpCell(){}
+function ColSpanCell(){}
 
-NoOpCell.prototype.draw = function(){
+ColSpanCell.prototype.draw = function(){
   return '';
 };
 
-NoOpCell.prototype.init = function(tableOptions, x, y){
+ColSpanCell.prototype.init = function(tableOptions,x,y){
   this.x = x;
   this.y = y;
 };
@@ -279,7 +279,7 @@ RowSpanCell.prototype.draw = function(lineNum){
   return this.originalCell.draw(this.offset + 1 + lineNum);
 };
 
-NoOpCell.prototype.mergeTableOptions =
+ColSpanCell.prototype.mergeTableOptions =
 RowSpanCell.prototype.mergeTableOptions = function(){};
 
 // HELPER FUNCTIONS
@@ -300,5 +300,5 @@ function sumPlusOne(a,b){
 }
 
 module.exports = Cell;
-module.exports.NoOpCell = NoOpCell;
+module.exports.ColSpanCell = ColSpanCell;
 module.exports.RowSpanCell = RowSpanCell;

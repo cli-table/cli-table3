@@ -8,7 +8,7 @@ describe('Cell',function(){
   var colors = require('colors');
   var Cell = require('../src/cell');
   var RowSpanCell = Cell.RowSpanCell;
-  var NoOpCell = Cell.NoOpCell;
+  var ColSpanCell = Cell.ColSpanCell;
   var mergeOptions = require('../src/utils').mergeOptions;
 
   function defaultOptions(){
@@ -783,20 +783,20 @@ describe('Cell',function(){
     });
   });
 
-  describe("NoOp",function(){
+  describe("ColSpanCell",function(){
     it('has an init function',function(){
-      expect(new NoOpCell()).to.respondTo('init');
-      new NoOpCell().init(); // nothing happens.
+      expect(new ColSpanCell()).to.respondTo('init');
+      new ColSpanCell().init(); // nothing happens.
     });
 
     it('draw returns an empty string',function(){
-      expect(new NoOpCell().draw('top')).to.equal('');
-      expect(new NoOpCell().draw('bottom')).to.equal('');
-      expect(new NoOpCell().draw(1)).to.equal('');
+      expect(new ColSpanCell().draw('top')).to.equal('');
+      expect(new ColSpanCell().draw('bottom')).to.equal('');
+      expect(new ColSpanCell().draw(1)).to.equal('');
     });
   });
 
-  describe("RowSpan",function(){
+  describe("RowSpanCell",function(){
     var original, tableOptions;
 
     beforeEach(function () {

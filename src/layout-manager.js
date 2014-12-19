@@ -96,7 +96,7 @@ function addColSpanCells(cellRows){
     for (var columnIndex = 0; columnIndex < cellColumns.length; columnIndex++) {
       var cell = cellColumns[columnIndex];
       for (var k = 1; k < cell.colSpan; k++) {
-        cellColumns.splice(columnIndex + 1, 0, new Cell.NoOpCell());
+        cellColumns.splice(columnIndex + 1, 0, new Cell.ColSpanCell());
       }
     }
   }
