@@ -3,7 +3,7 @@
      commonTests(require('cli-table'));
   });
 
-  describe('cli-table2 matches verified behavior',function(){
+  describe('@api cli-table2 matches verified behavior',function(){
      commonTests(require('../src/table'));
   });
 

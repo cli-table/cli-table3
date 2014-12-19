@@ -1,4 +1,4 @@
-describe('Table', function () {
+describe('@api Table', function () {
   var Table = require('../src/table');
   var chai = require('chai');
   var expect = chai.expect;
@@ -52,14 +52,14 @@ describe('Table', function () {
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
-      [{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings'},'hello'],
+      [{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings',vAlign:'center'},'hello'],
       ['howdy']
     );
 
     var expected = [
         '┌───────────┬───────────┬───────┐'
-      , '│ greetings │ greetings │ hello │'
-      , '│           │           ├───────┤'
+      , '│ greetings │           │ hello │'
+      , '│           │ greetings ├───────┤'
       , '│           │           │ howdy │'
       , '└───────────┴───────────┴───────┘'
     ];
@@ -71,15 +71,15 @@ describe('Table', function () {
     var table = new Table({style:{head:[],border:[]}});
 
     table.push(
-      ['hello',{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings'}],
+      ['hello',{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings',vAlign:'bottom'}],
       ['howdy']
     );
 
     var expected = [
         '┌───────┬───────────┬───────────┐'
-      , '│ hello │ greetings │ greetings │'
+      , '│ hello │ greetings │           │'
       , '├───────┤           │           │'
-      , '│ howdy │           │           │'
+      , '│ howdy │           │ greetings │'
       , '└───────┴───────────┴───────────┘'
     ];
 

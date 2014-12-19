@@ -1,4 +1,4 @@
-describe('original-cli-table newline tests',function(){
+describe('@api original-cli-table newline tests',function(){
   var Table = require('../src/table');
   var chai = require('chai');
   var expect = chai.expect;

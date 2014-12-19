@@ -2,43 +2,44 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
+var _ = require('lodash');
 
 gulp.task('mocha',mochaTask);
-gulp.task('coverage',coverageTask);
+gulp.task('coverage',coverage());
+gulp.task('coverage-api',coverage({grep:'@api'}));
 
 gulp.task('watch-mocha',function(){
   gulp.watch(['test/**','src/**'],['mocha']);
   mochaTask();
 });
 
-gulp.task('watch-coverage',function(){
-  gulp.watch(['test/**','src/**'],['coverage']);
-  coverageTask();
-});
-
 gulp.task('example',function(){
   require('./examples/examples')();
 });
 
-function coverageTask(cb){
-  gulp.src(['src/*.js'])
-    .pipe(istanbul()) // Covering files
-    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-    .on('error', logMochaError)
-    .on('finish', function () {
-      var opts = process.env.TRAVIS ? {} : {grep:'original-cli-table', invert:true};
+function coverage(opts){
+  opts = opts || {};
 
-      gulp.src(['test/*.js'])
-        .pipe(mocha(opts))
-        .on('error',function(err){
-          logMochaError(err);
-          if(cb) cb(err);
-        })
-        .pipe(istanbul.writeReports()) // Creating the reports after tests run
-        .on('end', function(){
-          if(cb) cb();
-        });
-    });
+  function coverageTask(cb){
+    gulp.src(['src/*.js'])
+      .pipe(istanbul()) // Covering files
+      .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+      .on('error', logMochaError)
+      .on('finish', function () {
+        gulp.src(['test/*.js'])
+          .pipe(mocha(opts))
+          .on('error',function(err){
+            logMochaError(err);
+            if(cb) cb(err);
+          })
+          .pipe(istanbul.writeReports()) // Creating the reports after tests run
+          .on('end', function(){
+            if(cb) cb();
+          });
+      });
+  }
+
+  return coverageTask;
 }
 
 function mochaTask(){

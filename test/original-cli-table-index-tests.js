@@ -1,4 +1,4 @@
-describe('original-cli-table index tests',function(){
+describe('@api original-cli-table index tests',function(){
   var Table = require('../src/table');
   var chai = require('chai');
   var expect = chai.expect;
