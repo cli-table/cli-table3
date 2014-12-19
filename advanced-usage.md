@@ -237,7 +237,7 @@
 
 
 ##### feel free to use colors in your content strings, column widths will be calculated correctly
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/aa38495e152ccf9893a36e43295a6aceb6f1043f/examples/screenshots/truncation-with-colors.png)
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/de54b0caeb4584dad16c9ad3067b07a850bc6657/examples/screenshots/truncation-with-colors.png)
 ```javascript
       var table = new Table({colWidths:[5],style:{head:[],border:[]}});
 
