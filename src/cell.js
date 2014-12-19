@@ -48,16 +48,22 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
 };
 
 /**
+ * Each cell will have it's `x` and `y` values set by the `layout-manager` prior to
+ * `init` being called;
+ * @type {Number}
+ */
+
+Cell.prototype.x = null;
+Cell.prototype.y = null;
+
+/**
  * Initializes the Cells data structure.
  *
  * @param tableOptions - A fully populated set of tableOptions.
- * In addition to the standard default values, tableOptions must be populated with the actual
- * `colWidths` and `rowWidths`. Both arrays must have lengths equal to the number of columns
- * or rows (respectively) in this table, and all items in each array must have number value.
+ * In addition to the standard default values, tableOptions must have fully populated the
+ * `colWidths` and `rowWidths` arrays. Those arrays must have lengths equal to the number
+ * of columns or rows (respectively) in this table, and each array item must be a Number.
  *
- * @param x - The column this cell is in (with column 0 being on the left).
- *
- * @param y - The row this cell is in (with row 0 being at the top).
  */
 Cell.prototype.init = function(tableOptions){
   var x = this.x;
@@ -75,9 +81,10 @@ Cell.prototype.init = function(tableOptions){
 
 /**
  * Draws the given line of the cell.
- * This default implementation differs to methods `drawTop`, `drawBottom`, `drawLine` and `drawEmpty`.
+ * This default implementation defers to methods `drawTop`, `drawBottom`, `drawLine` and `drawEmpty`.
  * @param lineNum - can be `top`, `bottom` or a numerical line number.
  * @returns {String} The representation of this line.
+ * @param spanningCell
  */
 Cell.prototype.draw = function(lineNum,spanningCell){
   if(lineNum == 'top') return this.drawTop(this.drawRight);
