@@ -8,7 +8,7 @@
       runTest(name,result[0],result[1]);
     }
 
-    it('colSpan spans columns',function(){
+    it('use colSpan to span columns - (colSpan above normal cell)',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -34,7 +34,7 @@
       return [makeTable,expected];
     });
 
-    it('colSpan below',function(){
+    it('use colSpan to span columns - (colSpan below normal cell)',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -60,7 +60,7 @@
       return [makeTable,expected];
     });
 
-    it('rowSpan spans rows',function(){
+    it('use rowSpan to span rows - (rowSpan on the left side)',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -84,7 +84,7 @@
     });
 
 
-    it('rowSpan to the right',function(){
+    it('use rowSpan to span rows - (rowSpan on the right side)',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -107,7 +107,7 @@
       return[makeTable,expected];
     });
 
-    it('rowSpan to the right of a colspan',function(){
+    it('mix rowSpan and colSpan together for complex table layouts',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -133,33 +133,7 @@
       return [makeTable,expected];
     });
 
-    it('rowSpan to the right of a non-empty line',function(){
-      function makeTable(){
-        var table = new Table({style:{head:[],border:[]}});
-
-        table.push(
-          [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup\nsup'},{rowSpan:3,content:'hi\nhi'}],
-          [{content:'howdy',colSpan:2}],
-          ['o','k','','']
-        );
-
-        return table;
-      }
-
-      var expected = [
-          '┌───────┬─────┬────┐'
-        , '│ hello │ sup │ hi │'
-        , '├───────┤ sup │ hi │'
-        , '│ howdy │     │    │'
-        , '├───┬───┼──┬──┤    │'
-        , '│ o │ k │  │  │    │'
-        , '└───┴───┴──┴──┴────┘'
-      ];
-
-      return [makeTable,expected];
-    });
-
-    it('rowSpan to the right - multiline content',function(){
+    it('multi-line content will flow across rows in rowSpan cells',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -182,72 +156,99 @@
       return [makeTable, expected];
     });
 
-    it('stairstep spans',function(){
+    it('multi-line content will flow across rows in rowSpan cells - (complex layout)',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
         table.push(
-          [{content:'',rowSpan:2},''],
-          [{content:'',rowSpan:2}],
-          ['']
+          [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup\nman\nhey'},{rowSpan:3,content:'hi\nyo'}],
+          [{content:'howdy',colSpan:2}],
+          ['o','k','','']
         );
 
         return table;
       }
 
       var expected = [
-          '┌──┬──┐'
-        , '│  │  │'
-        , '│  ├──┤'
-        , '│  │  │'
-        , '├──┤  │'
-        , '│  │  │'
-        , '└──┴──┘'
+          '┌───────┬─────┬────┐'
+        , '│ hello │ sup │ hi │'
+        , '├───────┤ man │ yo │'
+        , '│ howdy │ hey │    │'
+        , '├───┬───┼──┬──┤    │'
+        , '│ o │ k │  │  │    │'
+        , '└───┴───┴──┴──┴────┘'
       ];
 
       return [makeTable,expected];
     });
 
-    it('stairstep spans - empty cells autofilled',function(){
+    it('rowSpan cells can have a staggered layout',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
         table.push(
-          [{content:'',rowSpan:3,colSpan:2},'hi'],
+          [{content:'a',rowSpan:2},'b'],
+          [{content:'c',rowSpan:2}],
+          ['d']
+        );
+
+        return table;
+      }
+
+      var expected = [
+          '┌───┬───┐'
+        , '│ a │ b │'
+        , '│   ├───┤'
+        , '│   │ c │'
+        , '├───┤   │'
+        , '│ d │   │'
+        , '└───┴───┘'
+      ];
+
+      return [makeTable,expected];
+    });
+
+    it('the layout manager automatically create empty cells to fill in the table',function(){
+      function makeTable(){
+        var table = new Table({style:{head:[],border:[]}});
+
+        //notice we only create 3 cells here, but the table ends up having 6.
+        table.push(
+          [{content:'a',rowSpan:3,colSpan:2},'b'],
           [],
-          [{content:'',rowSpan:2,colSpan:2}],
+          [{content:'c',rowSpan:2,colSpan:2}],
           []
         );
         return table;
       }
 
       var expected = [
-          '┌───┬────┬──┐'
-        , '│   │ hi │  │'  // top-right and bottom-left cells are automatically created to fill the empty space
-        , '│   ├────┤  │'
-        , '│   │    │  │'
-        , '│   ├────┴──┤'
-        , '│   │       │'
-        , '├───┤       │'
-        , '│   │       │'
-        , '└───┴───────┘'
+          '┌───┬───┬──┐'
+        , '│ a │ b │  │'  // top-right and bottom-left cells are automatically created to fill the empty space
+        , '│   ├───┤  │'
+        , '│   │   │  │'
+        , '│   ├───┴──┤'
+        , '│   │ c    │'
+        , '├───┤      │'
+        , '│   │      │'
+        , '└───┴──────┘'
       ];
 
       return [makeTable,expected];
     });
 
-
-    it('truncation symbol shows if there are undisplayed lines',function(){
+    it('use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.',function(){
       function makeTable(){
-        var table = new Table({rowHeights:[1],style:{head:[],border:[]}});
+        var table = new Table({rowHeights:[2],style:{head:[],border:[]}});
 
-        table.push(['hi\nhello']);
+        table.push(['hello\nhi\nsup']);
 
         return table;
       }
 
       var expected = [
-         '┌───────┐'
+          '┌───────┐'
+        , '│ hello │'
         , '│ hi…   │'
         , '└───────┘'
       ];
@@ -255,7 +256,7 @@
       return [makeTable,expected];
     });
 
-    it('colSpan width expansion',function(){
+    it('if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content',function(){
       function makeTable(){
         var table = new Table({style:{head:[],border:[]}});
 
@@ -278,7 +279,7 @@
       return [makeTable,expected];
     });
 
-    it('colSpan width expansion - specified widths',function(){
+    it('you can specify a column width for only the first row, other rows will be automatically widened to fit content',function(){
       function makeTable(){
         var table = new Table({colWidths:[4],style:{head:[],border:[]}});
 
@@ -301,7 +302,7 @@
       return [makeTable, expected];
     });
 
-    it('colSpan width expansion - null widths',function(){
+    it('a column with a null column width will be automatically widened to fit content',function(){
       function makeTable(){
         var table = new Table({colWidths:[null, 4],style:{head:[],border:[]}});
 
@@ -324,7 +325,7 @@
       return [makeTable,expected];
     });
 
-    it('colorful truncation',function(){
+    it('feel free to use colors in your content strings, column widths will be calculated correctly',function(){
       function makeTable(){
         var table = new Table({colWidths:[5],style:{head:[],border:[]}});
 
@@ -343,15 +344,10 @@
     });
   };
 
-
-
-
-
-
 /*
 
  var expected = [
- '┌──┬───┬──┬──┐'
+   '┌──┬───┬──┬──┐'
  , '│  │   │  │  │'
  , '├──┼───┼──┼──┤'
  , '│  │ … │  │  │'

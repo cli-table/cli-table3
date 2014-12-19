@@ -15,7 +15,7 @@ gulp.task('watch-mocha',function(){
 });
 
 gulp.task('example',function(){
-  printExample.printExample(require('./examples/examples'));
+  printExample.printExample(require('./examples/examples'),console.log);
 });
 
 function coverage(opts){
