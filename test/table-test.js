@@ -1,4 +1,8 @@
-describe('@api Table', function () {
+var printExamples = require('../lib/print-example');
+var examples = require('../examples/examples');
+
+printExamples.runTest(examples);
+/* describe('@api Table', function () {
   var Table = require('../src/table');
   var chai = require('chai');
   var expect = chai.expect;

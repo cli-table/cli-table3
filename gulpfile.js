@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
+var printExample = require('./lib/print-example');
 var _ = require('lodash');
 
 gulp.task('mocha',mochaTask);
@@ -9,12 +10,12 @@ gulp.task('coverage',coverage());
 gulp.task('coverage-api',coverage({grep:'@api'}));
 
 gulp.task('watch-mocha',function(){
-  gulp.watch(['test/**','src/**'],['mocha']);
+  gulp.watch(['test/**','src/**','examples/**'],['mocha']);
   mochaTask();
 });
 
 gulp.task('example',function(){
-  require('./examples/examples')();
+  printExample.printExample(require('./examples/examples'));
 });
 
 function coverage(opts){
