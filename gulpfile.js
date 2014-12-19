@@ -15,7 +15,7 @@ gulp.task('watch-mocha',function(){
 });
 
 gulp.task('example',function(){
-  printExample.logExample(require('./examples/examples'));
+  printExample.logExample(require('./examples/col-and-row-span-examples'));
 });
 
 /**
@@ -23,7 +23,7 @@ gulp.task('example',function(){
  * Commit the images, then run this.
  */
 gulp.task('example-md',function(cb){
-  printExample.mdExample(require('./examples/examples'),'example.md',cb);
+  printExample.mdExample(require('./examples/col-and-row-span-examples'),'example.md',cb);
 });
 
 function coverage(opts){

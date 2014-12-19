@@ -1,5 +1,5 @@
 var printExamples = require('../lib/print-example');
-var examples = require('../examples/examples');
+var examples = require('../examples/col-and-row-span-examples');
 
 printExamples.runTest(examples);
 /* describe('@api Table', function () {
