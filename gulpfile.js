@@ -18,6 +18,10 @@ gulp.task('example',function(){
   printExample.logExample(require('./examples/examples'));
 });
 
+/**
+ * Do NOT run this in the same commit when you are adding images.
+ * Commit the images, then run this.
+ */
 gulp.task('example-md',function(cb){
   printExample.mdExample(require('./examples/examples'),'example.md',cb);
 });
