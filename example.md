@@ -1,5 +1,4 @@
-use colSpan to span columns - (colSpan above normal cell)
---------
+#### use colSpan to span columns - (colSpan above normal cell)
     ┌───────────────┐
     │ greetings     │
     ├───────────────┤
@@ -19,8 +18,7 @@ use colSpan to span columns - (colSpan above normal cell)
 ```
 
 
-use colSpan to span columns - (colSpan below normal cell)
---------
+#### use colSpan to span columns - (colSpan below normal cell)
     ┌───────┬───────┐
     │ hello │ howdy │
     ├───────┴───────┤
@@ -40,8 +38,7 @@ use colSpan to span columns - (colSpan below normal cell)
 ```
 
 
-use rowSpan to span rows - (rowSpan on the left side)
---------
+#### use rowSpan to span rows - (rowSpan on the left side)
     ┌───────────┬───────────┬───────┐
     │ greetings │           │ hello │
     │           │ greetings ├───────┤
@@ -58,8 +55,7 @@ use rowSpan to span rows - (rowSpan on the left side)
 ```
 
 
-use rowSpan to span rows - (rowSpan on the right side)
---------
+#### use rowSpan to span rows - (rowSpan on the right side)
     ┌───────┬───────────┬───────────┐
     │ hello │ greetings │           │
     ├───────┤           │           │
@@ -76,8 +72,7 @@ use rowSpan to span rows - (rowSpan on the right side)
 ```
 
 
-mix rowSpan and colSpan together for complex table layouts
---------
+#### mix rowSpan and colSpan together for complex table layouts
     ┌───────┬─────┬────┐
     │ hello │ sup │ hi │
     ├───────┤     │    │
@@ -97,8 +92,7 @@ mix rowSpan and colSpan together for complex table layouts
 ```
 
 
-multi-line content will flow across rows in rowSpan cells
---------
+#### multi-line content will flow across rows in rowSpan cells
     ┌───────┬───────────┬───────────┐
     │ hello │ greetings │ greetings │
     ├───────┤ friends   │ friends   │
@@ -115,8 +109,7 @@ multi-line content will flow across rows in rowSpan cells
 ```
 
 
-multi-line content will flow across rows in rowSpan cells - (complex layout)
---------
+#### multi-line content will flow across rows in rowSpan cells - (complex layout)
     ┌───────┬─────┬────┐
     │ hello │ sup │ hi │
     ├───────┤ man │ yo │
@@ -136,8 +129,7 @@ multi-line content will flow across rows in rowSpan cells - (complex layout)
 ```
 
 
-rowSpan cells can have a staggered layout
---------
+#### rowSpan cells can have a staggered layout
     ┌───┬───┐
     │ a │ b │
     │   ├───┤
@@ -157,8 +149,7 @@ rowSpan cells can have a staggered layout
 ```
 
 
-the layout manager automatically create empty cells to fill in the table
---------
+#### the layout manager automatically create empty cells to fill in the table
     ┌───┬───┬──┐
     │ a │ b │  │
     │   ├───┤  │
@@ -181,8 +172,7 @@ the layout manager automatically create empty cells to fill in the table
 ```
 
 
-use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.
---------
+#### use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.
     ┌───────┐
     │ hello │
     │ hi…   │
@@ -195,8 +185,7 @@ use table `rowHeights` option to fix row height. The truncation symbol will be s
 ```
 
 
-if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content
---------
+#### if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content
     ┌─────────────┐
     │ hello there │
     ├──────┬──────┤
@@ -213,8 +202,7 @@ if `colWidths` is not specified, the layout manager will automatically widen row
 ```
 
 
-you can specify a column width for only the first row, other rows will be automatically widened to fit content
---------
+#### you can specify a column width for only the first row, other rows will be automatically widened to fit content
     ┌─────────────┐
     │ hello there │
     ├────┬────────┤
@@ -231,8 +219,7 @@ you can specify a column width for only the first row, other rows will be automa
 ```
 
 
-a column with a null column width will be automatically widened to fit content
---------
+#### a column with a null column width will be automatically widened to fit content
     ┌─────────────┐
     │ hello there │
     ├────────┬────┤
@@ -249,8 +236,7 @@ a column with a null column width will be automatically widened to fit content
 ```
 
 
-feel free to use colors in your content strings, column widths will be calculated correctly
---------
+#### feel free to use colors in your content strings, column widths will be calculated correctly
     ┌─────┐
     │ he… │
     └─────┘
