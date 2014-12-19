@@ -237,9 +237,7 @@
 
 
 #### feel free to use colors in your content strings, column widths will be calculated correctly
-    ┌─────┐
-    │ he… │
-    └─────┘
+![table image](https://rawgit.com/jamestalmage/cli-table2/master/examples/screenshots/truncation-with-colors.png)
 ```javascript
         var table = new Table({colWidths:[5],style:{head:[],border:[]}});
 

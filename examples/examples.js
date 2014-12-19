@@ -340,7 +340,7 @@
         , '└─────┘'
       ];
 
-      return [makeTable,expected];
+      return [screenshot(makeTable,'truncation-with-colors'),expected];
     });
   };
 
