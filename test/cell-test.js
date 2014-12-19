@@ -16,6 +16,26 @@ describe('Cell',function(){
     return mergeOptions({style:{head:[],border:[]}});
   }
 
+  function defaultChars(){
+    return {
+      'top': '─'
+      , 'topMid': '┬'
+      , 'topLeft': '┌'
+      , 'topRight': '┐'
+      , 'bottom': '─'
+      , 'bottomMid': '┴'
+      , 'bottomLeft': '└'
+      , 'bottomRight': '┘'
+      , 'left': '│'
+      , 'leftMid': '├'
+      , 'mid': '─'
+      , 'midMid': '┼'
+      , 'right': '│'
+      , 'rightMid': '┤'
+      , 'middle': '│'
+    };
+  }
+
   describe('constructor',function(){
     it('colSpan and rowSpan default to 1',function(){
       var cell = new Cell();
@@ -64,15 +84,23 @@ describe('Cell',function(){
         var cell = new Cell();
         var tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
-        expect(cell.chars).to.eql(defaultOptions().chars);
+        expect(cell.chars).to.eql(defaultChars());
       });
 
       it('set chars override the value of table',function(){
-        var cell = new Cell({chars:{top:'='}});
+        var cell = new Cell({chars:{bottomRight:'='}});
         cell.mergeTableOptions(defaultOptions());
-        var options = defaultOptions();
-        options.chars.top = '=';
-        expect(cell.chars).to.eql(options.chars);
+        var chars = defaultChars();
+        chars.bottomRight = '=';
+        expect(cell.chars).to.eql(chars);
+      });
+
+      it('hyphenated names will be converted to camel-case',function(){
+        var cell = new Cell({chars:{'bottom-left':'='}});
+        cell.mergeTableOptions(defaultOptions());
+        var chars = defaultChars();
+        chars.bottomLeft = '=';
+        expect(cell.chars).to.eql(chars);
       });
     });
 
@@ -451,7 +479,7 @@ describe('Cell',function(){
       cell = new Cell();
 
       //manually init
-      cell.chars = defaultOptions().chars;
+      cell.chars = defaultChars();
       cell.paddingLeft = cell.paddingRight = 1;
       cell.width = 7;
       cell.height = 3;

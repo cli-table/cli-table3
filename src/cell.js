@@ -27,19 +27,19 @@ Cell.prototype.setOptions = function(options){
 Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   this.cells = cells;
 
-  if(this.options.chars){
-    this.chars = _.extend({},tableOptions.chars,this.options.chars);
-  }
-  else {
-    this.chars = tableOptions.chars;
-  }
+  var optionsChars = this.options.chars || {};
+  var tableChars = tableOptions.chars;
+  var chars = this.chars = {};
+  _.forEach(CHAR_NAMES,function(name){
+     setOption(optionsChars,tableChars,name,chars);
+  });
 
   this.truncate = this.options.truncate || tableOptions.truncate;
 
   var style = this.options.style = this.options.style || {};
   var tableStyle = tableOptions.style;
-  this.paddingLeft = findOption(style, tableStyle, 'paddingLeft', 'padding-left');
-  this.paddingRight = findOption(style, tableStyle, 'paddingRight', 'padding-right');
+  setOption(style, tableStyle, 'padding-left', this);
+  setOption(style, tableStyle, 'padding-right', this);
   this.head = style.head || tableStyle.head;
   this.border = style.border || tableStyle.border;
 
@@ -128,7 +128,7 @@ Cell.prototype.drawTop = function(drawRight){
     content.push(utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],this.width));
   }
   if(drawRight){
-    content.push(this.chars[this.y == 0 ? 'top-right' : 'right-mid']);
+    content.push(this.chars[this.y == 0 ? 'topRight' : 'rightMid']);
   }
   return this.wrapWithStyleColors('border',content.join(''));
 };
@@ -137,21 +137,21 @@ Cell.prototype._topLeftChar = function(offset){
   var x = this.x+offset;
   var leftChar;
   if(this.y == 0){
-    leftChar = x == 0 ? 'top-left' : (offset == 0 ? 'top-mid' : 'top');
+    leftChar = x == 0 ? 'topLeft' : (offset == 0 ? 'topMid' : 'top');
   } else  {
     if(x == 0){
-      leftChar = 'left-mid';
+      leftChar = 'leftMid';
     }
     else {
-      leftChar = offset == 0 ? 'mid-mid' : 'bottom-mid';
+      leftChar = offset == 0 ? 'midMid' : 'bottomMid';
       if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
         var spanAbove = this.cells[this.y-1][x] instanceof Cell.ColSpanCell;
         var spanLeft = offset == 0 && this.cells[this.y][x-1] instanceof Cell.RowSpanCell;
         if(spanAbove){
-          leftChar = offset == 0 ? 'top-mid' : 'mid';
+          leftChar = offset == 0 ? 'topMid' : 'mid';
         }
         if(spanLeft){
-          leftChar = 'left-mid';
+          leftChar = 'leftMid';
         }
       }
     }
@@ -190,7 +190,7 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spann
       cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
     }
     if(!(cellLeft instanceof RowSpanCell)){
-      left = this.chars['right-mid'];
+      left = this.chars['rightMid'];
     }
   }
   var leftPadding = utils.repeat(' ', this.paddingLeft);
@@ -216,9 +216,9 @@ Cell.prototype.drawLine = function(lineNum,drawRight,forceTruncationSymbol,spann
  * @returns {String}
  */
 Cell.prototype.drawBottom = function(drawRight){
-  var left = this.chars[this.x == 0 ? 'bottom-left' : 'bottom-mid'];
+  var left = this.chars[this.x == 0 ? 'bottomLeft' : 'bottomMid'];
   var content = utils.repeat(this.chars.bottom,this.width);
-  var right = drawRight ? this.chars['bottom-right'] : '';
+  var right = drawRight ? this.chars['bottomRight'] : '';
   return this.wrapWithStyleColors('border',left + content + right);
 };
 
@@ -235,7 +235,7 @@ Cell.prototype.drawEmpty = function(drawRight,spanningCell){
       cellLeft = this.cells[cellLeft.y][cellLeft.x-1];
     }
     if(!(cellLeft instanceof RowSpanCell)){
-      left = this.chars['right-mid'];
+      left = this.chars['rightMid'];
     }
   }
   var right = (drawRight ? this.chars['right'] : '');
@@ -288,8 +288,16 @@ ColSpanCell.prototype.mergeTableOptions =
 RowSpanCell.prototype.mergeTableOptions = function(){};
 
 // HELPER FUNCTIONS
-function findOption(objA,objB,nameA,nameB){
-  return objA[nameA] || objA[nameB] || objB[nameA] || objB[nameB];
+function setOption(objA,objB,nameB,targetObj){
+  var nameA = nameB.split('-');
+  if(nameA.length > 1) {
+    nameA[1] = nameA[1].charAt(0).toUpperCase() + nameA[1].substr(1);
+    nameA = nameA.join('');
+    targetObj[nameA] = objA[nameA] || objA[nameB] || objB[nameA] || objB[nameB];
+  }
+  else {
+    targetObj[nameB] = objA[nameB] || objB[nameB];
+  }
 }
 
 function findDimension(dimensionTable, startingIndex, span){
@@ -304,6 +312,22 @@ function sumPlusOne(a,b){
   return a+b+1;
 }
 
+var CHAR_NAMES = [  'top'
+  , 'top-mid'
+  , 'top-left'
+  , 'top-right'
+  , 'bottom'
+  , 'bottom-mid'
+  , 'bottom-left'
+  , 'bottom-right'
+  , 'left'
+  , 'left-mid'
+  , 'mid'
+  , 'mid-mid'
+  , 'right'
+  , 'right-mid'
+  , 'middle'
+];
 module.exports = Cell;
 module.exports.ColSpanCell = ColSpanCell;
 module.exports.RowSpanCell = RowSpanCell;
