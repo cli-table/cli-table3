@@ -5,11 +5,11 @@ var istanbul = require('gulp-istanbul');
 var printExample = require('./lib/print-example');
 var _ = require('lodash');
 
-gulp.task('mocha',mochaTask);
+gulp.task('test',mochaTask);
 gulp.task('coverage',coverage());
 gulp.task('coverage-api',coverage({grep:'@api'}));
 
-gulp.task('watch-mocha',function(){
+gulp.task('watch-test',function(){
   gulp.watch(['test/**','src/**','examples/**'],['mocha']);
   mochaTask();
 });
