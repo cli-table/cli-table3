@@ -1,5 +1,5 @@
 ##### Basic Usage
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/d4266014c8858ae25bdba4f7c7c9d5682e0d544b/examples/screenshots/basic-usage-with-colors.png)
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/f01763b7716cee85e3b37721f459df2b3d7dbf08/examples/screenshots/basic-usage-with-colors.png)
 ```javascript
       // By default, headers will be red, and borders will be grey
       // Those defaults are overwritten in a lot of these examples and within the tests.
@@ -39,7 +39,7 @@
 ```
 
 
-##### Create vertical tables by adding objects a single key that contains an array
+##### Create vertical tables by adding objects a that specify key-value pairs
     ┌────┬──────────────────────┐
     │v0.1│Testing something cool│
     ├────┼──────────────────────┤

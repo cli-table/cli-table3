@@ -66,7 +66,7 @@ module.exports = function(runTest) {
   });
 
 
-  it('Create vertical tables by adding objects a single key that contains an array', function() {
+  it('Create vertical tables by adding objects a that specify key-value pairs', function() {
     function makeTable(){
       var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
 
