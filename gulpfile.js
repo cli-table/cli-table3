@@ -10,7 +10,7 @@ gulp.task('coverage',coverage());
 gulp.task('coverage-api',coverage({grep:'@api'}));
 
 gulp.task('watch-test',function(){
-  gulp.watch(['test/**','src/**','examples/**'],['mocha']);
+  gulp.watch(['test/**','src/**','examples/**'],['test']);
   mochaTask();
 });
 
