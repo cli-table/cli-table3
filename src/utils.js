@@ -44,6 +44,7 @@ function addToCodeCache(name,on,off){
   codeCache[name] = {on:on,off:off};
 }
 
+//https://github.com/Marak/colors.js/blob/master/lib/styles.js
 addToCodeCache('bold', 1, 22);
 addToCodeCache('italics', 3, 23);
 addToCodeCache('underline', 4, 24);
@@ -66,6 +67,17 @@ function updateState(state,controlChars){
   state[info.set] = info.to;
 }
 
+function readState(line){
+  var code = /\u001b\[(?:\d*;){0,5}\d*m/g;
+  var controlChars = code.exec(line);
+  var state = {};
+  while(controlChars !== null){
+    updateState(state,controlChars[0]);
+    controlChars = code.exec(line);
+  }
+  return state;
+}
+
 function unwindState(state,ret){
   var lastBackgroundAdded = state.lastBackgroundAdded;
   var lastForegroundAdded = state.lastForegroundAdded;
@@ -84,6 +96,29 @@ function unwindState(state,ret){
   }
   if(lastForegroundAdded && (lastForegroundAdded != '\u001b[39m')){
     ret += '\u001b[39m';
+  }
+
+  return ret;
+}
+
+function rewindState(state,ret){
+  var lastBackgroundAdded = state.lastBackgroundAdded;
+  var lastForegroundAdded = state.lastForegroundAdded;
+
+  delete state.lastBackgroundAdded;
+  delete state.lastForegroundAdded;
+
+  _.forEach(state,function(value,key){
+    if(value){
+      ret = codeCache[key].on + ret;
+    }
+  });
+
+  if(lastBackgroundAdded && (lastBackgroundAdded != '\u001b[49m')){
+    ret = lastBackgroundAdded + ret;
+  }
+  if(lastForegroundAdded && (lastForegroundAdded != '\u001b[39m')){
+    ret = lastForegroundAdded + ret;
   }
 
   return ret;
@@ -201,11 +236,24 @@ function wordWrap(maxLength,input){
   return lines.join('\n');
 }
 
+function colorizeLines(input){
+  var state = {};
+  var output = [];
+  for(var i = 0; i < input.length; i++){
+    var line = rewindState(state,input[i]) ;
+    state = readState(line);
+    var temp = _.extend({},state);
+    output.push(unwindState(temp,line));
+  }
+  return output;
+}
+
 module.exports = {
   strlen:strlen,
   repeat:repeat,
   pad:pad,
   truncate:truncate,
   mergeOptions:mergeOptions,
-  wordWrap:wordWrap
+  wordWrap:wordWrap,
+  colorizeLines:colorizeLines
 };

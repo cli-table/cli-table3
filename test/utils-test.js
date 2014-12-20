@@ -227,4 +227,18 @@ describe('utils',function(){
       expect(wordWrap(10,input)).to.equal(expected);
     });
   });
+
+  describe('colorizeLines',function(){
+    it('will continue colors on to next line',function(){
+      var input = colors.red('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.red('Hello'),
+        colors.red('Hi')
+      ]);
+
+    });
+
+
+  });
 });
