@@ -8,15 +8,37 @@ module.exports = function(runTest) {
     runTest(name, result[0], result[1], result[2]);
   }
 
-  it('Basic Usage', function (){
+  it('Basic Usage',function(){
+    function makeTable(){
+      // By default, headers will be red, and borders will be grey
+      // Those defaults are overwritten in a lot of these examples and within the tests.
+      // It makes unit tests easier and visually cleaner,  and does not require a screenshot image.
+      var table = new Table({head:['a','b']});
+
+      table.push(['c','d']);
+
+      return table;
+    }
+
+    var expected = [
+        colors.gray('┌───')                                                         + colors.gray('┬───┐')
+      , colors.gray('│') + colors.red(' a ') + colors.gray('│') + colors.red(' b ')     + colors.gray('│')
+      , colors.gray('├───') +                                                         colors.gray('┼───┤')
+      , colors.gray('│') +           (' c ') + colors.gray('│') +          (' d ') +      colors.gray('│')
+      , colors.gray('└───')                                                         + colors.gray('┴───┘')
+    ];
+    return [makeTable,expected]
+  });
+
+  it('Basic Usage - No color styles', function (){
     function makeTable(){
       var table = new Table({
         head: ['Rel', 'Change', 'By', 'When']
         , style: {
           'padding-left': 1
           , 'padding-right': 1
-          , head: []
-          , border: []
+          , head: []    //overriding header style to not use colors
+          , border: []  //overriding border style to not use colors
         }
         , colWidths: [6, 21, 25, 17]
       });
