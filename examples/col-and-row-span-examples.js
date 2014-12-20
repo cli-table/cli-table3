@@ -1,11 +1,11 @@
 var Table = require('../src/table');
 var colors = require('colors/safe');
 
-module.exports = function(runTest,screenshot) {
+module.exports = function(runTest) {
 
   function it(name,fn) {
     var result = fn();
-    runTest(name,result[0],result[1]);
+    runTest(name,result[0],result[1],result[2]);
   }
 
   it('use colSpan to span columns - (colSpan above normal cell)',function(){
@@ -340,7 +340,7 @@ module.exports = function(runTest,screenshot) {
       , '└─────┘'
     ];
 
-    return [screenshot(makeTable,'truncation-with-colors'),expected];
+    return [makeTable,expected,'truncation-with-colors'];
   });
 };
 
