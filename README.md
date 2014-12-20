@@ -1,4 +1,4 @@
-CLI Table 2  [![Build Status](https://travis-ci.org/jamestalmage/cli-table2.svg?branch=master)](https://travis-ci.org/jamestalmage/cli-table2) [![Coverage Status](https://coveralls.io/repos/jamestalmage/cli-table2/badge.png?branch=master)](https://coveralls.io/r/jamestalmage/cli-table2?branch=master)
+CLI Table 2 [![npm version](https://badge.fury.io/js/cli-table2.svg)](http://badge.fury.io/js/cli-table2) [![Build Status](https://travis-ci.org/jamestalmage/cli-table2.svg?branch=master)](https://travis-ci.org/jamestalmage/cli-table2) [![Coverage Status](https://coveralls.io/repos/jamestalmage/cli-table2/badge.png?branch=master)](https://coveralls.io/r/jamestalmage/cli-table2?branch=master)
 ===========
 
 This utility allows you to render unicode-aided tables on the command line from
@@ -35,6 +35,13 @@ npm install cli-table2
 ```
 
 ## How to use
+
+A portion of the unit test suite is used to generate examples:
+- [basic-usage](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md) - covers basic uses.
+- [advanced](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md) - covers using the new column and row span features.
+
+This package is api compatible with the original [cli-table](https://github.com/Automattic/cli-table).
+So all the original documentation still applies (copied below).
 
 ### Horizontal Tables
 ```javascript
@@ -181,6 +188,8 @@ Other build targets are available, check `gulpfile.js` for a comprehensive list.
 (The MIT License)
 
 Copyright (c) 2014 James Talmage &lt;james.talmage@jrtechnical.com&gt;
+
+Original cli-table code/documentation: Copyright (c) 2010 LearnBoost &lt;dev@learnboost.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
