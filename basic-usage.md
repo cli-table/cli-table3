@@ -1,5 +1,5 @@
 ##### Basic Usage
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/a535180770278e3e2bf9e954b1b9de2b18fdf052/examples/screenshots/basic-usage-with-colors.png)
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/c806c2636df97f73c732b41aa913cf78d4ac0d39/examples/screenshots/basic-usage-with-colors.png)
 ```javascript
       // By default, headers will be red, and borders will be grey
       var table = new Table({head:['a','b']});
@@ -111,13 +111,35 @@
 
 
 ##### Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/a535180770278e3e2bf9e954b1b9de2b18fdf052/examples/screenshots/multi-line-colors.png)
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/c806c2636df97f73c732b41aa913cf78d4ac0d39/examples/screenshots/multi-line-colors.png)
 ```javascript
       var table = new Table({style:{border:[],header:[]}});
 
       table.push([
         colors.red('Hello\nhow\nare\nyou?'),
         colors.blue('I\nam\nfine\nthanks!')
+      ]);
+
+```
+
+
+##### Set `wordWrap` to true to make lines of text wrap instead of being truncated
+    ┌───────┬─────────┐
+    │ Hello │ I am    │
+    │ how   │ fine    │
+    │ are   │ thanks! │
+    │ you?  │         │
+    └───────┴─────────┘
+```javascript
+      var table = new Table({
+        style:{border:[],header:[]},
+        colWidths:[7,9],
+        wordWrap:true
+      });
+
+      table.push([
+        'Hello how are you?',
+        'I am fine thanks!'
       ]);
 
 ```

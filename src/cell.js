@@ -44,6 +44,13 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   this.head = style.head || tableStyle.head;
   this.border = style.border || tableStyle.border;
 
+  var fixedWidth = tableOptions.colWidths[this.x];
+  if(tableOptions.wordWrap && fixedWidth){
+    fixedWidth -= this.paddingLeft + this.paddingRight;
+    this.content = utils.wordWrap(fixedWidth,this.content);
+    this.lines = this.content.split('\n');
+  }
+
   this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
   this.desiredHeight = this.lines.length;
 };

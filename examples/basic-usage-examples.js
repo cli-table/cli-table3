@@ -177,6 +177,34 @@ module.exports = function(runTest) {
 
     return [makeTable,expected,'multi-line-colors'];
   });
+
+  it('Set `wordWrap` to true to make lines of text wrap instead of being truncated',function(){
+    function makeTable(){
+      var table = new Table({
+        style:{border:[],header:[]},
+        colWidths:[7,9],
+        wordWrap:true
+      });
+
+      table.push([
+        'Hello how are you?',
+        'I am fine thanks!'
+      ]);
+
+      return table;
+    }
+
+    var expected = [
+        '┌───────┬─────────┐'
+      , '│ Hello │ I am    │'
+      , '│ how   │ fine    │'
+      , '│ are   │ thanks! │'
+      , '│ you?  │         │'
+      , '└───────┴─────────┘'
+    ];
+
+    return [makeTable,expected];
+  });
 };
 
 /* Expectation - ready to be copy/pasted and filled in. DO NOT DELETE THIS
