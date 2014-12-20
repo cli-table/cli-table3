@@ -19,7 +19,8 @@ Cell.prototype.setOptions = function(options){
   options = options || {};
   this.options = options;
   this.content = options.content || '';
-  this.lines = this.content.split('\n');
+  this.lines = utils.colorizeLines(this.content.split('\n'));
+  //this.lines = this.content.split('\n');
   this.colSpan = options.colSpan || 1;
   this.rowSpan = options.rowSpan || 1;
 };

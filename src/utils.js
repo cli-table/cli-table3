@@ -53,7 +53,7 @@ addToCodeCache('strikethrough', 9, 29);
 
 
 function updateState(state,controlChars){
-  if(controlChars.length == 5){
+  if(controlChars.length >= 5){
     if(controlChars.charAt(2) == '3') {
       state.lastForegroundAdded = controlChars;
       return;
