@@ -1,14 +1,20 @@
 describe('utils',function(){
   var colors = require('colors/safe');
   var chai = require('chai');
+  var utils = require('../src/utils');
   var expect = chai.expect;
 
-  var utils = require('../src/utils');
-  var strlen = utils.strlen;
-  var repeat = utils.repeat;
-  var pad = utils.pad;
-  var truncate = utils.truncate;
-  var mergeOptions = utils.mergeOptions;
+  var strlen, repeat, pad, truncate, mergeOptions, wordWrap;
+
+  beforeEach(function(){
+    strlen = utils.strlen;
+    repeat = utils.repeat;
+    pad = utils.pad;
+    truncate = utils.truncate;
+    mergeOptions = utils.mergeOptions;
+    wordWrap = utils.wordWrap;
+  });
+
 
   describe('strlen',function(){
     it('length of "hello" is 5',function(){
@@ -205,6 +211,15 @@ describe('utils',function(){
       expected.style.border = [];
       //we can't use lodash's `merge()` in implementation because it would deeply copy array.
       expect(mergeOptions({style:{'border':[]}})).to.eql(expected);
+    });
+  });
+
+  describe('wordWrap',function(){
+    it('length',function(){
+      var input = 'Hello, how are you today? I am fine, thank you!';
+      var expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
+
+      expect(wordWrap(10,input)).to.equal(expected);
     });
   });
 });

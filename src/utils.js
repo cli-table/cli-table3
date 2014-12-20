@@ -173,10 +173,39 @@ function mergeOptions(options,defaults){
   return ret;
 }
 
+function wordWrap(maxLength,input){
+  var lines = [];
+  var code = /\s/g;
+  var split = input.split(/\s/g);
+  var whitespace = '';
+  var line = [];
+  var lineLength = 0;
+  var inputIndex = 0;
+  while(whitespace !== null){
+    var word = split[inputIndex];
+    var newLength = lineLength + whitespace.length + strlen(word);
+    if(newLength > maxLength){
+      lines.push(line.join(''));
+      line = [word];
+      lineLength = strlen(word);
+    } else {
+      line.push(whitespace,word);
+      lineLength = newLength;
+    }
+    inputIndex++;
+    whitespace = code.exec(input);
+  }
+  if(lineLength){
+    lines.push(line.join(''));
+  }
+  return lines.join('\n');
+}
+
 module.exports = {
   strlen:strlen,
   repeat:repeat,
   pad:pad,
   truncate:truncate,
-  mergeOptions:mergeOptions
+  mergeOptions:mergeOptions,
+  wordWrap:wordWrap
 };
