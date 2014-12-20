@@ -15,7 +15,7 @@ replacement for nearly all users.
 - Ability to set custom styles per cell (border characters/colors, padding, etc).
 - Vertical alignment (top, bottom, center).
 - More robust truncation of cell text that contains ansi color characters.
-- Lots of examples auto-generated from the tests. ([basic-usage](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md),[advanced-usage](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md))
+- Lots of examples auto-generated from the tests ([basic](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md), [advanced](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md)).
 
 ## Features
 
@@ -173,7 +173,7 @@ Other build targets are available, check `gulpfile.js` for a comprehensive list.
 
 ## Credits
 
-- James Talmage - author of this project; cli-table2 &lt;james.talmage@jrtechnical.com&gt; ([jamestalmage](http://github.com/jamestalmage))
+- James Talmage - author &lt;james.talmage@jrtechnical.com&gt; ([jamestalmage](http://github.com/jamestalmage))
 - Guillermo Rauch - author of the original cli-table &lt;guillermo@learnboost.com&gt; ([Guille](http://github.com/guille))
 
 ## License
