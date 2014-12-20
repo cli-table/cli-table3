@@ -27,7 +27,8 @@ module.exports = function(runTest) {
       , colors.gray('│') +           (' c ') + colors.gray('│') +          (' d ') +      colors.gray('│')
       , colors.gray('└───')                                                         + colors.gray('┴───┘')
     ];
-    return [makeTable,expected]
+
+    return [makeTable,expected,'basic-usage-with-colors'];
   });
 
   it('Basic Usage - No color styles', function (){
