@@ -4,16 +4,12 @@ describe('utils',function(){
   var utils = require('../src/utils');
   var expect = chai.expect;
 
-  var strlen, repeat, pad, truncate, mergeOptions, wordWrap;
-
-  beforeEach(function(){
-    strlen = utils.strlen;
-    repeat = utils.repeat;
-    pad = utils.pad;
-    truncate = utils.truncate;
-    mergeOptions = utils.mergeOptions;
-    wordWrap = utils.wordWrap;
-  });
+  var strlen = utils.strlen;
+  var repeat = utils.repeat;
+  var pad = utils.pad;
+  var truncate = utils.truncate;
+  var mergeOptions = utils.mergeOptions;
+  var wordWrap = utils.wordWrap;
 
 
   describe('strlen',function(){
@@ -217,7 +213,16 @@ describe('utils',function(){
   describe('wordWrap',function(){
     it('length',function(){
       var input = 'Hello, how are you today? I am fine, thank you!';
+
       var expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
+
+      expect(wordWrap(10,input)).to.equal(expected);
+    });
+
+    it('length with colors',function(){
+      var input = colors.red('Hello, how are') + colors.blue(' you today? I') + colors.green(' am fine, thank you!');
+
+      var expected = colors.red('Hello, how\nare') + colors.blue(' you\ntoday? I') + colors.green('\nam fine,\nthank you!');
 
       expect(wordWrap(10,input)).to.equal(expected);
     });
