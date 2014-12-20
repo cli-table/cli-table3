@@ -1,9 +1,7 @@
 ##### Basic Usage
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/f01763b7716cee85e3b37721f459df2b3d7dbf08/examples/screenshots/basic-usage-with-colors.png)
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/a535180770278e3e2bf9e954b1b9de2b18fdf052/examples/screenshots/basic-usage-with-colors.png)
 ```javascript
       // By default, headers will be red, and borders will be grey
-      // Those defaults are overwritten in a lot of these examples and within the tests.
-      // It makes unit tests easier and visually cleaner,  and does not require a screenshot image.
       var table = new Table({head:['a','b']});
 
       table.push(['c','d']);
@@ -11,7 +9,7 @@
 ```
 
 
-##### Basic Usage - No color styles
+##### Basic Usage - disable colors - (used often in the examples and tests)
     ┌──────┬─────────────────────┬─────────────────────────┬─────────────────┐
     │ Rel  │ Change              │ By                      │ When            │
     ├──────┼─────────────────────┼─────────────────────────┼─────────────────┤
@@ -20,15 +18,16 @@
     │ v0.1 │ Testing something … │ rauchg@gmail.com        │ 8 minutes ago   │
     └──────┴─────────────────────┴─────────────────────────┴─────────────────┘
 ```javascript
+      // For most of these examples, and most of the unit tests we disable colors.
+      // It makes unit tests easier to write/understand, and allows these pages to
+      // display the examples as text instead of screen shots.
       var table = new Table({
-        head: ['Rel', 'Change', 'By', 'When']
+           head: ['Rel', 'Change', 'By', 'When']
         , style: {
-          'padding-left': 1
-          , 'padding-right': 1
-          , head: []    //overriding header style to not use colors
-          , border: []  //overriding border style to not use colors
+            head: []    //disable colors in header cells
+          , border: []  //disable colors for the border
         }
-        , colWidths: [6, 21, 25, 17]
+        , colWidths: [6, 21, 25, 17]  //set the widths of each column (optional)
       });
 
       table.push(
@@ -107,6 +106,19 @@
         ['foo', 'bar', 'baz']
         , ['frob', 'bar', 'quuz']
       );
+
+```
+
+
+##### Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines
+![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/a535180770278e3e2bf9e954b1b9de2b18fdf052/examples/screenshots/multi-line-colors.png)
+```javascript
+      var table = new Table({style:{border:[],header:[]}});
+
+      table.push([
+        colors.red('Hello\nhow\nare\nyou?'),
+        colors.blue('I\nam\nfine\nthanks!')
+      ]);
 
 ```
 

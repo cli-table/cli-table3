@@ -175,7 +175,7 @@ module.exports = function(runTest) {
       , '└───────┴─────────┘'
     ];
 
-    return [makeTable,expected];
+    return [makeTable,expected,'multi-line-colors'];
   });
 };
 
