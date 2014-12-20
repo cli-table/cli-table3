@@ -47,7 +47,7 @@ So all the original documentation still applies (copied below).
 
 ### Horizontal Tables
 ```javascript
-var Table = require('cli-table');
+var Table = require('cli-table2');
 
 // instantiate
 var table = new Table({
@@ -66,7 +66,7 @@ console.log(table.toString());
 
 ### Vertical Tables
 ```javascript
-var Table = require('cli-table');
+var Table = require('cli-table2');
 var table = new Table();
 
 table.push(
@@ -83,7 +83,7 @@ Cross tables are very similar to vertical tables, with two key differences:
 2. The individual rows take the general form of { "Header": ["Row", "Values"] }
 
 ```javascript
-var Table = require('cli-table');
+var Table = require('cli-table2');
 var table = new Table({ head: ["", "Top Header 1", "Top Header 2"] });
 
 table.push(
