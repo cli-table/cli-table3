@@ -14,7 +14,9 @@ replacement for nearly all users.
 - Ability to make cells span columns and/or rows.
 - Ability to set custom styles per cell (border characters/colors, padding, etc).
 - Vertical alignment (top, bottom, center).
+- Automatic word wrapping.
 - More robust truncation of cell text that contains ansi color characters.
+- Better handling of text color that spans multiple lines.
 - API compatible with the original cli-table.
 - Exhaustive test suite including the entire original cli-table test suite.
 - Lots of examples auto-generated from the tests ([basic](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md), [advanced](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md)).
