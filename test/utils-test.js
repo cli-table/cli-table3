@@ -229,8 +229,18 @@ describe('utils',function(){
 
     it('will not create an empty last line',function(){
       var input = 'Hello Hello ';
+
       var expected = 'Hello\nHello';
+
       expect(wordWrap(5,input)).to.equal(expected);
+    });
+
+    it('words longer than limit will not create extra newlines',function(){
+      var input = 'disestablishment is a multiplicity someotherlongword';
+
+      var expected = 'disestablishment\nis a\nmultiplicity\nsomeotherlongword';
+
+      expect(wordWrap(7,input)).to.equal(expected);
     });
   });
 

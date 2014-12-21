@@ -220,7 +220,9 @@ function wordWrap(maxLength,input){
     var word = split[inputIndex];
     var newLength = lineLength + whitespace.length + strlen(word);
     if(newLength > maxLength){
-      lines.push(line.join(''));
+      if(lineLength !== 0){
+        lines.push(line.join(''));
+      }
       line = [word];
       lineLength = strlen(word);
     } else {
