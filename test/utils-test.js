@@ -226,19 +226,50 @@ describe('utils',function(){
 
       expect(wordWrap(10,input)).to.equal(expected);
     });
+
+    it('will not create an empty last line',function(){
+      var input = 'Hello Hello ';
+      var expected = 'Hello\nHello';
+      expect(wordWrap(5,input)).to.equal(expected);
+    });
   });
 
   describe('colorizeLines',function(){
-    it('will continue colors on to next line',function(){
+    it('foreground colors continue on each line',function(){
       var input = colors.red('Hello\nHi').split('\n');
 
       expect(utils.colorizeLines(input)).to.eql([
         colors.red('Hello'),
         colors.red('Hi')
       ]);
-
     });
 
+    it('foreground colors continue on each line',function(){
+      var input = colors.bgRed('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.bgRed('Hello'),
+        colors.bgRed('Hi')
+      ]);
+    });
+
+    it('styles will continue on each line',function(){
+      var input = colors.underline('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.underline('Hello'),
+        colors.underline('Hi')
+      ]);
+    });
+
+    it('styles that end before the break will not be applied to the next line',function(){
+      var input = (colors.underline('Hello') +'\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.underline('Hello'),
+        'Hi'
+      ]);
+    });
 
   });
 });
