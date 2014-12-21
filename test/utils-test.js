@@ -1,14 +1,16 @@
 describe('utils',function(){
   var colors = require('colors/safe');
   var chai = require('chai');
+  var utils = require('../src/utils');
   var expect = chai.expect;
 
-  var utils = require('../src/utils');
   var strlen = utils.strlen;
   var repeat = utils.repeat;
   var pad = utils.pad;
   var truncate = utils.truncate;
   var mergeOptions = utils.mergeOptions;
+  var wordWrap = utils.wordWrap;
+
 
   describe('strlen',function(){
     it('length of "hello" is 5',function(){
@@ -206,5 +208,68 @@ describe('utils',function(){
       //we can't use lodash's `merge()` in implementation because it would deeply copy array.
       expect(mergeOptions({style:{'border':[]}})).to.eql(expected);
     });
+  });
+
+  describe('wordWrap',function(){
+    it('length',function(){
+      var input = 'Hello, how are you today? I am fine, thank you!';
+
+      var expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
+
+      expect(wordWrap(10,input)).to.equal(expected);
+    });
+
+    it('length with colors',function(){
+      var input = colors.red('Hello, how are') + colors.blue(' you today? I') + colors.green(' am fine, thank you!');
+
+      var expected = colors.red('Hello, how\nare') + colors.blue(' you\ntoday? I') + colors.green('\nam fine,\nthank you!');
+
+      expect(wordWrap(10,input)).to.equal(expected);
+    });
+
+    it('will not create an empty last line',function(){
+      var input = 'Hello Hello ';
+      var expected = 'Hello\nHello';
+      expect(wordWrap(5,input)).to.equal(expected);
+    });
+  });
+
+  describe('colorizeLines',function(){
+    it('foreground colors continue on each line',function(){
+      var input = colors.red('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.red('Hello'),
+        colors.red('Hi')
+      ]);
+    });
+
+    it('foreground colors continue on each line',function(){
+      var input = colors.bgRed('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.bgRed('Hello'),
+        colors.bgRed('Hi')
+      ]);
+    });
+
+    it('styles will continue on each line',function(){
+      var input = colors.underline('Hello\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.underline('Hello'),
+        colors.underline('Hi')
+      ]);
+    });
+
+    it('styles that end before the break will not be applied to the next line',function(){
+      var input = (colors.underline('Hello') +'\nHi').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.underline('Hello'),
+        'Hi'
+      ]);
+    });
+
   });
 });

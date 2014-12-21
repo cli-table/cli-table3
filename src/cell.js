@@ -19,7 +19,8 @@ Cell.prototype.setOptions = function(options){
   options = options || {};
   this.options = options;
   this.content = options.content || '';
-  this.lines = this.content.split('\n');
+  this.lines = utils.colorizeLines(this.content.split('\n'));
+  //this.lines = this.content.split('\n');
   this.colSpan = options.colSpan || 1;
   this.rowSpan = options.rowSpan || 1;
 };
@@ -42,6 +43,13 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   setOption(style, tableStyle, 'padding-right', this);
   this.head = style.head || tableStyle.head;
   this.border = style.border || tableStyle.border;
+
+  var fixedWidth = tableOptions.colWidths[this.x];
+  if(tableOptions.wordWrap && fixedWidth){
+    fixedWidth -= this.paddingLeft + this.paddingRight;
+    this.content = utils.wordWrap(fixedWidth,this.content);
+    this.lines = this.content.split('\n');
+  }
 
   this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
   this.desiredHeight = this.lines.length;
