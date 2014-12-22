@@ -216,7 +216,7 @@ describe('utils',function(){
 
       var expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
 
-      expect(wordWrap(10,input)).to.equal(expected);
+      expect(wordWrap(10,input).join('\n')).to.equal(expected);
     });
 
     it('length with colors',function(){
@@ -224,7 +224,7 @@ describe('utils',function(){
 
       var expected = colors.red('Hello, how\nare') + colors.blue(' you\ntoday? I') + colors.green('\nam fine,\nthank you!');
 
-      expect(wordWrap(10,input)).to.equal(expected);
+      expect(wordWrap(10,input).join('\n')).to.equal(expected);
     });
 
     it('will not create an empty last line',function(){
@@ -232,7 +232,7 @@ describe('utils',function(){
 
       var expected = 'Hello\nHello';
 
-      expect(wordWrap(5,input)).to.equal(expected);
+      expect(wordWrap(5,input).join('\n')).to.equal(expected);
     });
 
     it('words longer than limit will not create extra newlines',function(){
@@ -240,7 +240,7 @@ describe('utils',function(){
 
       var expected = 'disestablishment\nis a\nmultiplicity\nsomeotherlongword';
 
-      expect(wordWrap(7,input)).to.equal(expected);
+      expect(wordWrap(7,input).join('\n')).to.equal(expected);
     });
   });
 

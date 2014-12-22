@@ -45,8 +45,8 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   var fixedWidth = tableOptions.colWidths[this.x];
   if(tableOptions.wordWrap && fixedWidth){
     fixedWidth -= this.paddingLeft + this.paddingRight;
-    this.content = utils.wordWrap(fixedWidth,this.content);
-    this.lines = this.content.split('\n');
+    this.lines = utils.wordWrap(fixedWidth,this.content);
+    this.content = this.lines.join('\n');
   }
   else {
     this.lines = utils.colorizeLines(this.content.split('\n'));

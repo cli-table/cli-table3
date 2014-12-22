@@ -235,7 +235,7 @@ function wordWrap(maxLength,input){
   if(lineLength){
     lines.push(line.join(''));
   }
-  return lines.join('\n');
+  return lines;
 }
 
 function colorizeLines(input){
