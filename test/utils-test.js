@@ -242,6 +242,13 @@ describe('utils',function(){
 
       expect(wordWrap(7,input).join('\n')).to.equal(expected);
     });
+
+    it('multiple line input',function(){
+      var input = 'a\nb\nc d e d b duck\nm\nn\nr';
+      var expected = ['a', 'b', 'c d', 'e d', 'b', 'duck', 'm', 'n', 'r'];
+
+      expect(wordWrap(4,input)).to.eql(expected);
+    });
   });
 
   describe('colorizeLines',function(){

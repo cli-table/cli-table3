@@ -238,6 +238,15 @@ function wordWrap(maxLength,input){
   return lines;
 }
 
+function multiLineWordWrap(maxLength, input){
+  var output = [];
+  input = input.split('\n');
+  for(var i = 0; i < input.length; i++){
+    output.push.apply(output,wordWrap(maxLength,input[i]));
+  }
+  return output;
+}
+
 function colorizeLines(input){
   var state = {};
   var output = [];
@@ -256,6 +265,6 @@ module.exports = {
   pad:pad,
   truncate:truncate,
   mergeOptions:mergeOptions,
-  wordWrap:wordWrap,
+  wordWrap:multiLineWordWrap,
   colorizeLines:colorizeLines
 };
