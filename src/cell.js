@@ -19,7 +19,7 @@ Cell.prototype.setOptions = function(options){
   options = options || {};
   this.options = options;
   this.content = options.content || '';
-  this.lines = utils.colorizeLines(this.content.split('\n'));
+  //this.lines = utils.colorizeLines(this.content.split('\n'));
   //this.lines = this.content.split('\n');
   this.colSpan = options.colSpan || 1;
   this.rowSpan = options.rowSpan || 1;
@@ -49,6 +49,9 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
     fixedWidth -= this.paddingLeft + this.paddingRight;
     this.content = utils.wordWrap(fixedWidth,this.content);
     this.lines = this.content.split('\n');
+  }
+  else {
+    this.lines = utils.colorizeLines(this.content.split('\n'));
   }
 
   this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;

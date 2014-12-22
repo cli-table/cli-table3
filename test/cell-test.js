@@ -52,19 +52,16 @@ describe('Cell',function(){
     it('content can be set as a string',function(){
       var cell = new Cell('hello\nworld');
       expect(cell.content).to.equal('hello\nworld');
-      expect(cell.lines).to.eql(['hello','world']);
     });
 
     it('content can be set as a options property',function(){
       var cell = new Cell({content:'hello\nworld'});
       expect(cell.content).to.equal('hello\nworld');
-      expect(cell.lines).to.eql(['hello','world']);
     });
 
     it('default content is an empty string',function(){
       var cell = new Cell();
       expect(cell.content).to.equal('');
-      expect(cell.lines).to.eql(['']);
     });
 
     it('new Cell(null) will have empty string content',function(){
