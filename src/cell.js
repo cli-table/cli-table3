@@ -175,11 +175,15 @@ Cell.prototype._topLeftChar = function(offset){
 
 Cell.prototype.wrapWithStyleColors = function(styleProperty,content){
   if(this[styleProperty] && this[styleProperty].length){
-    var colors = require('colors/safe');
-    for(var i = this[styleProperty].length - 1; i >= 0; i--){
-      colors = colors[this[styleProperty][i]];
+    try {
+      var colors = require('colors/safe');
+      for(var i = this[styleProperty].length - 1; i >= 0; i--){
+        colors = colors[this[styleProperty][i]];
+      }
+      return colors(content);
+    } catch (e) {
+      return content;
     }
-    return colors(content);
   }
   else {
     return content;
