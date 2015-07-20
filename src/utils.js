@@ -1,7 +1,11 @@
 var _ = require('lodash');
 
+function codeRegex(capture){
+  return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g
+}
+
 function strlen(str){
-  var code = /\u001b\[(?:\d*;){0,5}\d*m/g;
+  var code = codeRegex();
   var stripped = ("" + str).replace(code,'');
   var split = stripped.split("\n");
   return split.reduce(function (memo, s) { return (s.length > memo) ? s.length : memo }, 0);
@@ -77,7 +81,7 @@ function updateState(state,controlChars){
 }
 
 function readState(line){
-  var code = /\u001b\[(?:\d*;){0,5}\d*m/g;
+  var code = codeRegex();
   var controlChars = code.exec(line);
   var state = {};
   while(controlChars !== null){
@@ -143,8 +147,8 @@ function truncate(str, desiredLength, truncateChar){
   if(lengthOfStr === str.length){
     return str.substr(0, desiredLength) + truncateChar;
   }
-  var code = /\u001b\[(?:\d*;){0,5}\d*m/g;
-  var split = str.split(/\u001b\[(?:\d*;){0,5}\d*m/g);
+  var code = codeRegex();
+  var split = str.split(codeRegex());
   var splitIndex = 0;
   var retLen = 0;
   var ret = '';
@@ -219,15 +223,16 @@ function mergeOptions(options,defaults){
 
 function wordWrap(maxLength,input){
   var lines = [];
-  var code = /\s/g;
-  var split = input.split(/\s/g);
-  var whitespace = '';
+  var split = input.split(/(\s+)/g);
   var line = [];
   var lineLength = 0;
-  var inputIndex = 0;
-  while(whitespace !== null){
-    var word = split[inputIndex];
-    var newLength = lineLength + whitespace.length + strlen(word);
+  var whitespace;
+  for (var i = 0; i < split.length; i += 2) {
+    var word = split[i];
+    var newLength = lineLength + strlen(word);
+    if (lineLength > 0 && whitespace) {
+      newLength += whitespace.length;
+    }
     if(newLength > maxLength){
       if(lineLength !== 0){
         lines.push(line.join(''));
@@ -235,11 +240,10 @@ function wordWrap(maxLength,input){
       line = [word];
       lineLength = strlen(word);
     } else {
-      line.push(whitespace,word);
+      line.push(whitespace || '', word);
       lineLength = newLength;
     }
-    inputIndex++;
-    whitespace = code.exec(input);
+    whitespace = split[i+1];
   }
   if(lineLength){
     lines.push(line.join(''));

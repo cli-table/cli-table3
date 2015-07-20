@@ -277,6 +277,12 @@ describe('utils',function(){
 
       expect(wordWrap(4,input)).to.eql(expected);
     });
+
+    it('will not start a line with whitespace', function(){
+      var input = 'ab cd  ef gh  ij kl';
+      var expected = ['ab cd','ef gh', 'ij kl'];
+      expect(wordWrap(7, input)).to.eql(expected);
+    });
   });
 
   describe('colorizeLines',function(){
