@@ -141,6 +141,18 @@ describe('utils',function(){
       var expected = colors.red.bgGreen(colors.zebra('hello wor')) + '…';
       expect(truncate(original,10)).to.equal(expected);
     });
+
+    it('handles reset code', function() {
+      var original = '\x1b[31mhello\x1b[0m world';
+      var expected = '\x1b[31mhello\x1b[0m wor…';
+      expect(truncate(original,10)).to.equal(expected);
+    });
+
+    it('handles reset code (EMPTY VERSION)', function() {
+      var original = '\x1b[31mhello\x1b[0m world';
+      var expected = '\x1b[31mhello\x1b[0m wor…';
+      expect(truncate(original,10)).to.equal(expected);
+    });
   });
 
   function defaultOptions(){
@@ -235,6 +247,22 @@ describe('utils',function(){
       expect(wordWrap(5,input).join('\n')).to.equal(expected);
     });
 
+    it('will handle color reset code',function(){
+      var input = '\x1b[31mHello\x1b[0m Hello ';
+
+      var expected = '\x1b[31mHello\x1b[0m\nHello';
+
+      expect(wordWrap(5,input).join('\n')).to.equal(expected);
+    });
+
+    it('will handle color reset code (EMPTY version)',function(){
+      var input = '\x1b[31mHello\x1b[m Hello ';
+
+      var expected = '\x1b[31mHello\x1b[m\nHello';
+
+      expect(wordWrap(5,input).join('\n')).to.equal(expected);
+    });
+
     it('words longer than limit will not create extra newlines',function(){
       var input = 'disestablishment is a multiplicity someotherlongword';
 
@@ -288,5 +316,12 @@ describe('utils',function(){
       ]);
     });
 
+    it('the reset code can be used to drop styles', function() {
+      var input = '\x1b[31mHello\x1b[0m\nHi'.split('\n');
+      expect(utils.colorizeLines(input)).to.eql([
+        "\x1b[31mHello\x1b[0m",
+        "Hi"
+      ]);
+    });
   });
 });

@@ -63,6 +63,15 @@ function updateState(state,controlChars){
       return;
     }
   }
+  if (/\u001b\[0*m/.test(controlChars)) {
+    for (var i in state) {
+      /* istanbul ignore else */
+      if (state.hasOwnProperty(i)) {
+        delete state[i];
+      }
+    }
+    return;
+  }
   var info = codeCache[controlChars];
   state[info.set] = info.to;
 }
