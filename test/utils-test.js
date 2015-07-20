@@ -329,5 +329,32 @@ describe('utils',function(){
         "Hi"
       ]);
     });
+
+    it('handles aixterm 16-color foreground', function() {
+      var input = '\x1b[90mHello\nHi\x1b[0m'.split('\n');
+      expect(utils.colorizeLines(input)).to.eql([
+        '\x1b[90mHello\x1b[39m',
+        '\x1b[90mHi\x1b[0m'
+      ]);
+    });
+
+    it('handles aixterm 16-color background', function() {
+      var input = '\x1b[100mHello\nHi\x1b[m\nHowdy'.split('\n');
+      expect(utils.colorizeLines(input)).to.eql([
+        '\x1b[100mHello\x1b[49m',
+        '\x1b[100mHi\x1b[m',
+        'Howdy'
+      ]);
+    });
+
+    it('handles aixterm 256-color foreground', function() {
+      var input ='\x1b[48;5;8mHello\nHi\x1b[0m\nHowdy'.split('\n');
+      expect(utils.colorizeLines(input)).to.eql([
+        '\x1b[48;5;8mHello\x1b[49m',
+        '\x1b[48;5;8mHi\x1b[0m',
+        'Howdy'
+      ]);
+    });
+
   });
 });

@@ -56,18 +56,21 @@ addToCodeCache('inverse', 7, 27);
 addToCodeCache('strikethrough', 9, 29);
 
 
-function updateState(state,controlChars){
-  if(controlChars.length >= 5){
-    if(controlChars.charAt(2) == '3') {
-      state.lastForegroundAdded = controlChars;
-      return;
-    }
-    else if(controlChars.charAt(2) == '4') {
-      state.lastBackgroundAdded = controlChars;
-      return;
-    }
+function updateState(state, controlChars){
+  var controlCode = controlChars[1] ? parseInt(controlChars[1].split(';')[0]) : 0;
+  if ( (controlCode >= 30 && controlCode <= 39)
+     || (controlCode >= 90 && controlCode <= 97)
+  ) {
+    state.lastForegroundAdded = controlChars[0];
+    return;
   }
-  if (/\u001b\[0*m/.test(controlChars)) {
+  if ( (controlCode >= 40 && controlCode <= 49)
+     || (controlCode >= 100 && controlCode <= 107)
+  ) {
+    state.lastBackgroundAdded = controlChars[0];
+    return;
+  }
+  if (controlCode === 0) {
     for (var i in state) {
       /* istanbul ignore else */
       if (state.hasOwnProperty(i)) {
@@ -76,16 +79,18 @@ function updateState(state,controlChars){
     }
     return;
   }
-  var info = codeCache[controlChars];
-  state[info.set] = info.to;
+  var info = codeCache[controlChars[0]];
+  if (info) {
+    state[info.set] = info.to;
+  }
 }
 
 function readState(line){
-  var code = codeRegex();
+  var code = codeRegex(true);
   var controlChars = code.exec(line);
   var state = {};
   while(controlChars !== null){
-    updateState(state,controlChars[0]);
+    updateState(state, controlChars);
     controlChars = code.exec(line);
   }
   return state;
@@ -147,7 +152,7 @@ function truncate(str, desiredLength, truncateChar){
   if(lengthOfStr === str.length){
     return str.substr(0, desiredLength) + truncateChar;
   }
-  var code = codeRegex();
+  var code = codeRegex(true);
   var split = str.split(codeRegex());
   var splitIndex = 0;
   var retLen = 0;
@@ -165,9 +170,8 @@ function truncate(str, desiredLength, truncateChar){
     ret += toAdd;
     retLen += toAdd.length;
     if(retLen < desiredLength){
-      var controlChars = myArray[0];
-      ret += controlChars;
-      updateState(state,controlChars);
+      ret += myArray[0];
+      updateState(state,myArray);
     }
   }
 
