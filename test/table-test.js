@@ -19,7 +19,31 @@ describe('@api Table ',function(){
     ];
 
     expect(table.toString()).to.equal(expected.join('\n'));
-  })
+  });
+
+  it('allows numbers as `content` property of cells defined using object notation', function() {
+    var table = new Table({style:{border:[],head:[]}});
+
+    table.push([{content: 12}]);
+
+     var expected = [
+       '┌────┐'
+     , '│ 12 │'
+     , '└────┘'
+     ];
+
+    expect(table.toString()).to.equal(expected.join('\n'));
+  });
+
+  it('throws if content is not a string or number', function() {
+    var table = new Table({style:{border:[],head:[]}});
+
+    expect(function() {
+      table.push([{content: {a:'b'}}]);
+      table.toString();
+    }).to.throw();
+
+  });
 });
 
 

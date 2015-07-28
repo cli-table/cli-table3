@@ -18,7 +18,14 @@ Cell.prototype.setOptions = function(options){
   }
   options = options || {};
   this.options = options;
-  this.content = options.content || '';
+  var content = options.content;
+  if (_.isString(content) || _.isNumber(content)) {
+    this.content = String(content);
+  } else if (!content) {
+    this.content = '';
+  } else {
+    throw new Error('Content needs to be string or number, got: ' + (typeof  content));
+  }
   this.colSpan = options.colSpan || 1;
   this.rowSpan = options.rowSpan || 1;
 };
