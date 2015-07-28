@@ -13,18 +13,18 @@ function Cell(options){
 }
 
 Cell.prototype.setOptions = function(options){
-  if(_.isString(options) || _.isNumber(options)){
+  if(_.isString(options) || _.isNumber(options) || _.isBoolean(options)){
     options = {content:''+options};
   }
   options = options || {};
   this.options = options;
   var content = options.content;
-  if (_.isString(content) || _.isNumber(content)) {
+  if (_.isString(content) || _.isNumber(content) || _.isBoolean(content)) {
     this.content = String(content);
   } else if (!content) {
     this.content = '';
   } else {
-    throw new Error('Content needs to be string or number, got: ' + (typeof  content));
+    throw new Error('Content needs to be a primitive, got: ' + (typeof  content));
   }
   this.colSpan = options.colSpan || 1;
   this.rowSpan = options.rowSpan || 1;

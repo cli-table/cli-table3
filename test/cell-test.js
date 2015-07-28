@@ -69,9 +69,29 @@ describe('Cell',function(){
       expect(cell.content).to.equal('');
     });
 
+    it('new Cell({content: null}) will have empty string content',function(){
+      var cell = new Cell({content: null});
+      expect(cell.content).to.equal('');
+    });
+
     it('new Cell(0) will have "0" as content',function(){
       var cell = new Cell(0);
       expect(cell.content).to.equal('0');
+    });
+
+    it('new Cell({content: 0}) will have "0" as content',function(){
+      var cell = new Cell({content: 0});
+      expect(cell.content).to.equal('0');
+    });
+
+    it('new Cell(false) will have "false" as content',function(){
+      var cell = new Cell(false);
+      expect(cell.content).to.equal('false');
+    });
+
+    it('new Cell({content: false}) will have "false" as content',function(){
+      var cell = new Cell({content: false});
+      expect(cell.content).to.equal('false');
     });
   });
 
