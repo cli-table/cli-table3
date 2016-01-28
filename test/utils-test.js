@@ -32,6 +32,18 @@ describe('utils',function(){
     it('length of "hello\\nhi\\nheynow" is 6',function(){
       expect(strlen('hello\nhi\nheynow')).to.equal(6);
     });
+
+    it('length of "中文字符" is 8',function(){
+      expect(strlen('中文字符')).to.equal(8);
+    });
+
+    it('length of "日本語の文字" is 12',function(){
+      expect(strlen('日本語の文字')).to.equal(12);
+    });
+
+    it('length of "한글" is 4',function(){
+      expect(strlen('한글')).to.equal(4);
+    });
   });
 
   describe('repeat',function(){
@@ -152,6 +164,28 @@ describe('utils',function(){
       var original = '\x1b[31mhello\x1b[0m world';
       var expected = '\x1b[31mhello\x1b[0m wor…';
       expect(truncate(original,10)).to.equal(expected);
+    });
+
+    it('truncateWidth("漢字テスト", 15) === "漢字テスト"',function(){
+      expect(truncate('漢字テスト',15)).to.equal('漢字テスト');
+    });
+
+    it('truncateWidth("漢字テスト", 6) === "漢字…"',function(){
+      expect(truncate('漢字テスト',6)).to.equal('漢字…');
+    });
+
+    it('truncateWidth("漢字テスト", 5) === "漢字…"',function(){
+      expect(truncate('漢字テスト',5)).to.equal('漢字…');
+    });
+
+    it('truncateWidth("漢字testてすと", 12) === "漢字testて…"',function(){
+      expect(truncate('漢字testてすと',12)).to.equal('漢字testて…');
+    });
+
+    it('handles color code with CJK chars',function(){
+      var original = '漢字\x1b[31m漢字\x1b[0m漢字';
+      var expected = '漢字\x1b[31m漢字\x1b[0m漢…';
+      expect(truncate(original,11)).to.equal(expected);
     });
   });
 
@@ -283,6 +317,18 @@ describe('utils',function(){
       var expected = ['ab cd','ef gh', 'ij kl'];
       expect(wordWrap(7, input)).to.eql(expected);
     });
+
+    it('wraps CJK chars', function(){
+      var input = '漢字 漢\n字 漢字';
+      var expected = ['漢字 漢','字 漢字'];
+      expect(wordWrap(7, input)).to.eql(expected);
+    });
+
+    it('wraps CJK chars with colors', function(){
+      var input = '\x1b[31m漢字\x1b[0m\n 漢字';
+      var expected = ['\x1b[31m漢字\x1b[0m', ' 漢字'];
+      expect(wordWrap(5, input)).to.eql(expected);
+    });
   });
 
   describe('colorizeLines',function(){
@@ -356,5 +402,13 @@ describe('utils',function(){
       ]);
     });
 
+    it('handles CJK chars',function(){
+      var input = colors.red('漢字\nテスト').split('\n');
+
+      expect(utils.colorizeLines(input)).to.eql([
+        colors.red('漢字'),
+        colors.red('テスト')
+      ]);
+    });
   });
 });

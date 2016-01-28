@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var stringWidth = require('string-width');
 
 function codeRegex(capture){
   return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g
@@ -8,7 +9,7 @@ function strlen(str){
   var code = codeRegex();
   var stripped = ("" + str).replace(code,'');
   var split = stripped.split("\n");
-  return split.reduce(function (memo, s) { return (s.length > memo) ? s.length : memo }, 0);
+  return split.reduce(function (memo, s) { return (stringWidth(s) > memo) ? stringWidth(s) : memo }, 0);
 }
 
 function repeat(str,times){
@@ -142,16 +143,19 @@ function rewindState(state,ret){
   return ret;
 }
 
-function truncate(str, desiredLength, truncateChar){
-  truncateChar = truncateChar || '…';
-  var lengthOfStr = strlen(str);
-  if(lengthOfStr <= desiredLength){
-    return str;
+function truncateWidth(str, desiredLength){
+  if (str.length === strlen(str)) {
+    return str.substr(0, desiredLength);
   }
-  desiredLength -= truncateChar.length;
-  if(lengthOfStr === str.length){
-    return str.substr(0, desiredLength) + truncateChar;
+
+  while (strlen(str) > desiredLength){
+    str = str.slice(0, -1);
   }
+
+  return str;
+}
+
+function truncateWidthWithAnsi(str, desiredLength){
   var code = codeRegex(true);
   var split = str.split(codeRegex());
   var splitIndex = 0;
@@ -164,18 +168,31 @@ function truncate(str, desiredLength, truncateChar){
     myArray = code.exec(str);
     var toAdd = split[splitIndex];
     splitIndex++;
-    if (retLen + toAdd.length > desiredLength){
-      toAdd = toAdd.substr(0, desiredLength - retLen);
+    if (retLen + strlen(toAdd) > desiredLength){
+      toAdd = truncateWidth(toAdd, desiredLength - retLen);
     }
     ret += toAdd;
-    retLen += toAdd.length;
+    retLen += strlen(toAdd);
+
     if(retLen < desiredLength){
+      if (!myArray) { break; }  // full-width chars may cause a whitespace which cannot be filled
       ret += myArray[0];
       updateState(state,myArray);
     }
   }
 
-  ret = unwindState(state,ret);
+  return unwindState(state,ret);
+}
+
+function truncate(str, desiredLength, truncateChar){
+  truncateChar = truncateChar || '…';
+  var lengthOfStr = strlen(str);
+  if(lengthOfStr <= desiredLength){
+    return str;
+  }
+  desiredLength -= strlen(truncateChar);
+
+  ret = truncateWidthWithAnsi(str, desiredLength);
 
   return ret + truncateChar;
 }

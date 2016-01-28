@@ -44,6 +44,31 @@ describe('@api Table ',function(){
     }).to.throw();
 
   });
+
+  it('works with CJK values', function () {
+    var table = new Table({style: {border:[],head:[]}, colWidths: [5, 10, 5]});
+
+    table.push(
+      ['foobar', 'English test', 'baz']
+      , ['foobar', '中文测试', 'baz']
+      , ['foobar', '日本語テスト', 'baz']
+      , ['foobar', '한국어테스트', 'baz']
+    );
+
+    var expected = [
+        '┌─────┬──────────┬─────┐'
+      , '│ fo… │ English… │ baz │'
+      , '├─────┼──────────┼─────┤'
+      , '│ fo… │ 中文测试 │ baz │'
+      , '├─────┼──────────┼─────┤'
+      , '│ fo… │ 日本語…  │ baz │'
+      , '├─────┼──────────┼─────┤'
+      , '│ fo… │ 한국어…  │ baz │'
+      , '└─────┴──────────┴─────┘'
+    ];
+
+    expect(table.toString()).to.equal(expected.join("\n"));
+  });
 });
 
 
