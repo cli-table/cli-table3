@@ -36,7 +36,7 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   var optionsChars = this.options.chars || {};
   var tableChars = tableOptions.chars;
   var chars = this.chars = {};
-  _.forEach(CHAR_NAMES,function(name){
+  CHAR_NAMES.forEach(function(name){
      setOption(optionsChars,tableChars,name,chars);
   });
 
@@ -132,7 +132,7 @@ Cell.prototype.draw = function(lineNum,spanningCell){
 Cell.prototype.drawTop = function(drawRight){
   var content = [];
   if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
-    _.forEach(this.widths,function(width,index){
+    this.widths.forEach(function(width,index){
       content.push(this._topLeftChar(index));
       content.push(
         utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],width)

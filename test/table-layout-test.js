@@ -414,8 +414,8 @@ describe('tableLayout', function () {
    */
 
   function checkLayout(actualTable,expectedTable){
-    _.forEach(expectedTable,function(expectedRow,y){
-      _.forEach(expectedRow,function(expectedCell,x){
+    expectedTable.forEach(function(expectedRow,y){
+      expectedRow.forEach(function(expectedCell,x){
         if(expectedCell !== null){
           var actualCell = findCell(actualTable,x,y);
           checkExpectation(actualCell,expectedCell,x,y,actualTable);

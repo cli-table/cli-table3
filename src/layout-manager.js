@@ -5,8 +5,8 @@ var ColSpanCell = Cell.ColSpanCell;
 
 (function(){
   function layoutTable(table){
-    _.forEach(table,function(row,rowIndex){
-      _.forEach(row,function(cell,columnIndex){
+    table.forEach(function(row,rowIndex){
+      row.forEach(function(cell,columnIndex){
         cell.y = rowIndex;
         cell.x = columnIndex;
         for(var y = rowIndex; y >= 0; y--){
@@ -25,8 +25,8 @@ var ColSpanCell = Cell.ColSpanCell;
 
   function maxWidth(table) {
     var mw = 0;
-    _.forEach(table, function (row) {
-      _.forEach(row, function (cell) {
+    table.forEach(function (row) {
+      row.forEach(function (cell) {
         mw = Math.max(mw,cell.x + (cell.colSpan || 1));
       });
     });
@@ -77,8 +77,8 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function addRowSpanCells(table){
-    _.forEach(table,function(row,rowIndex){
-      _.forEach(row,function(cell){
+    table.forEach(function(row,rowIndex){
+      row.forEach(function(cell){
         for(var i = 1; i < cell.rowSpan; i++){
           var rowSpanCell = new RowSpanCell(cell);
           rowSpanCell.x = cell.x;
@@ -141,7 +141,7 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function generateCells(rows){
-    return _.map(rows,function(row){
+    return rows.map(function(row){
       if(!_.isArray(row)){
         var key = Object.keys(row)[0];
         row = row[key];
@@ -153,7 +153,7 @@ var ColSpanCell = Cell.ColSpanCell;
           row = [key,row];
         }
       }
-      return _.map(row,function(cell){
+      return row.map(function(cell){
         return new Cell(cell);
       });
     });
@@ -183,8 +183,8 @@ function makeComputeWidths(colSpan,desiredWidth,x,forcedMin){
   return function(vals,table){
     var result = [];
     var spanners = [];
-    _.forEach(table,function(row){
-      _.forEach(row,function(cell){
+    table.forEach(function(row){
+      row.forEach(function(cell){
         if((cell[colSpan] || 1) > 1){
           spanners.push(cell);
         }
@@ -194,13 +194,13 @@ function makeComputeWidths(colSpan,desiredWidth,x,forcedMin){
       });
     });
 
-    _.forEach(vals,function(val,index){
+    vals.forEach(function(val,index){
       if(_.isNumber(val)){
         result[index] = val;
       }
     });
 
-    //_.forEach(spanners,function(cell){
+    //spanners.forEach(function(cell){
     for(var k = spanners.length - 1; k >=0; k--){
       var cell = spanners[k];
       var span = cell[colSpan];
