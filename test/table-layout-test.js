@@ -10,7 +10,7 @@ describe('tableLayout', function () {
   var computeHeights = layoutManager.computeHeights;
   var chai = require('chai');
   var expect = chai.expect;
-  var _ = require('lodash');
+  var kindOf = require('kind-of');
 
   it('simple 2x2 layout',function(){
     var actual = makeTableLayout([
@@ -437,7 +437,7 @@ describe('tableLayout', function () {
   }
 
   function checkExpectation(actualCell,expectedCell,x,y,actualTable){
-    if(_.isString(expectedCell)){
+    if(kindOf(expectedCell) === 'string'){
       expectedCell = {content:expectedCell};
     }
     var address = '(' + y + ',' + x + ')';
