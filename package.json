@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "lodash": "^3.10.1",
+    "object-assign": "^4.1.0",
     "string-width": "^1.0.1"
   },
   "devDependencies": {
