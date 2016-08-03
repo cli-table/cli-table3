@@ -104,8 +104,8 @@ function unwindState(state,ret){
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  _.forEach(state,function(value,key){
-    if(value){
+  Object.keys(state).forEach(function(key){
+    if(state[key]){
       ret += codeCache[key].off;
     }
   });
@@ -127,8 +127,8 @@ function rewindState(state,ret){
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  _.forEach(state,function(value,key){
-    if(value){
+  Object.keys(state).forEach(function(key){
+    if(state[key]){
       ret = codeCache[key].on + ret;
     }
   });
