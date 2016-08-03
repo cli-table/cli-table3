@@ -85,8 +85,8 @@ Cell.prototype.init = function(tableOptions){
   var y = this.y;
   this.widths = tableOptions.colWidths.slice(x, x + this.colSpan);
   this.heights = tableOptions.rowHeights.slice(y, y + this.rowSpan);
-  this.width = _.reduce(this.widths,sumPlusOne);
-  this.height = _.reduce(this.heights,sumPlusOne);
+  this.width = this.widths.reduce(sumPlusOne, -1);
+  this.height = this.heights.reduce(sumPlusOne, -1);
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
   this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
