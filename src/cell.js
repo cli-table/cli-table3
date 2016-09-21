@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var kindOf = require('kind-of');
 var utils = require('./utils');
 
 /**
@@ -13,13 +13,13 @@ function Cell(options){
 }
 
 Cell.prototype.setOptions = function(options){
-  if(_.isString(options) || _.isNumber(options) || _.isBoolean(options)){
+  if(['boolean', 'number', 'string'].indexOf(kindOf(options)) !== -1){
     options = {content:''+options};
   }
   options = options || {};
   this.options = options;
   var content = options.content;
-  if (_.isString(content) || _.isNumber(content) || _.isBoolean(content)) {
+  if (['boolean', 'number', 'string'].indexOf(kindOf(content)) !== -1) {
     this.content = String(content);
   } else if (!content) {
     this.content = '';
@@ -36,7 +36,7 @@ Cell.prototype.mergeTableOptions = function(tableOptions,cells){
   var optionsChars = this.options.chars || {};
   var tableChars = tableOptions.chars;
   var chars = this.chars = {};
-  _.forEach(CHAR_NAMES,function(name){
+  CHAR_NAMES.forEach(function(name){
      setOption(optionsChars,tableChars,name,chars);
   });
 
@@ -85,8 +85,8 @@ Cell.prototype.init = function(tableOptions){
   var y = this.y;
   this.widths = tableOptions.colWidths.slice(x, x + this.colSpan);
   this.heights = tableOptions.rowHeights.slice(y, y + this.rowSpan);
-  this.width = _.reduce(this.widths,sumPlusOne);
-  this.height = _.reduce(this.heights,sumPlusOne);
+  this.width = this.widths.reduce(sumPlusOne, -1);
+  this.height = this.heights.reduce(sumPlusOne, -1);
 
   this.hAlign = this.options.hAlign || tableOptions.colAligns[x];
   this.vAlign = this.options.vAlign || tableOptions.rowAligns[y];
@@ -132,7 +132,7 @@ Cell.prototype.draw = function(lineNum,spanningCell){
 Cell.prototype.drawTop = function(drawRight){
   var content = [];
   if(this.cells){  //TODO: cells should always exist - some tests don't fill it in though
-    _.forEach(this.widths,function(width,index){
+    this.widths.forEach(function(width,index){
       content.push(this._topLeftChar(index));
       content.push(
         utils.repeat(this.chars[this.y == 0 ? 'top' : 'mid'],width)

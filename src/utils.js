@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var objectAssign = require('object-assign');
 var stringWidth = require('string-width');
 
 function codeRegex(capture){
@@ -104,8 +104,8 @@ function unwindState(state,ret){
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  _.forEach(state,function(value,key){
-    if(value){
+  Object.keys(state).forEach(function(key){
+    if(state[key]){
       ret += codeCache[key].off;
     }
   });
@@ -127,8 +127,8 @@ function rewindState(state,ret){
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  _.forEach(state,function(value,key){
-    if(value){
+  Object.keys(state).forEach(function(key){
+    if(state[key]){
       ret = codeCache[key].on + ret;
     }
   });
@@ -236,9 +236,9 @@ function defaultOptions(){
 function mergeOptions(options,defaults){
   options = options || {};
   defaults = defaults || defaultOptions();
-  var ret = _.extend({}, defaults, options);
-  ret.chars = _.extend({}, defaults.chars, options.chars);
-  ret.style = _.extend({}, defaults.style, options.style);
+  var ret = objectAssign({}, defaults, options);
+  ret.chars = objectAssign({}, defaults.chars, options.chars);
+  ret.style = objectAssign({}, defaults.style, options.style);
   return ret;
 }
 
@@ -287,7 +287,7 @@ function colorizeLines(input){
   for(var i = 0; i < input.length; i++){
     var line = rewindState(state,input[i]) ;
     state = readState(line);
-    var temp = _.extend({},state);
+    var temp = objectAssign({},state);
     output.push(unwindState(temp,line));
   }
   return output;

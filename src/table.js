@@ -1,7 +1,5 @@
-
 var utils = require('./utils');
 var tableLayout = require('./layout-manager');
-var _ = require('lodash');
 
 function Table(options){
   this.options = utils.mergeOptions(options);
@@ -24,8 +22,8 @@ Table.prototype.toString = function(){
 
   var cells = tableLayout.makeTableLayout(array);
 
-  _.forEach(cells,function(row){
-    _.forEach(row,function(cell){
+  cells.forEach(function(row){
+    row.forEach(function(cell){
       cell.mergeTableOptions(this.options,cells);
     },this);
   },this);
@@ -33,8 +31,8 @@ Table.prototype.toString = function(){
   tableLayout.computeWidths(this.options.colWidths,cells);
   tableLayout.computeHeights(this.options.rowHeights,cells);
 
-  _.forEach(cells,function(row,rowIndex){
-    _.forEach(row,function(cell,cellIndex){
+  cells.forEach(function(row,rowIndex){
+    row.forEach(function(cell,cellIndex){
       cell.init(this.options);
     },this);
   },this);
@@ -63,7 +61,7 @@ Table.prototype.toString = function(){
 
 function doDraw(row,lineNum,result){
   var line = [];
-  _.forEach(row,function(cell){
+  row.forEach(function(cell){
     line.push(cell.draw(lineNum));
   });
   var str = line.join('');

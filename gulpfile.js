@@ -3,7 +3,6 @@ var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var printExample = require('./lib/print-example');
-var _ = require('lodash');
 
 gulp.task('test',mochaTask);
 gulp.task('coverage',coverage());
