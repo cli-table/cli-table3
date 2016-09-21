@@ -192,7 +192,7 @@ function truncate(str, desiredLength, truncateChar){
   }
   desiredLength -= strlen(truncateChar);
 
-  ret = truncateWidthWithAnsi(str, desiredLength);
+  var ret = truncateWidthWithAnsi(str, desiredLength);
 
   return ret + truncateChar;
 }
