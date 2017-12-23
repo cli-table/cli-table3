@@ -350,7 +350,7 @@ describe('Cell',function(){
         expect(cell.width).to.equal(15);
       });
 
-      it('will add colWidths if colSpan > 1',function(){
+      it('will add colWidths if colSpan > 1 with wordWrap false',function(){
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [5,10,15];
 
@@ -372,6 +372,76 @@ describe('Cell',function(){
         cell.init(tableOptions);
         expect(cell.width).to.equal(32);
       });
+
+      it('will add colWidths if colSpan > 1 with wordWrap true',function(){
+        var tableOptions = defaultOptions();
+        tableOptions.colWidths = [5,10,15];
+        tableOptions.wordWrap = true;
+
+        var cell = new Cell({colSpan:2});
+        cell.x=0;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        expect(cell.width).to.equal(16);
+
+        cell = new Cell({colSpan:2});
+        cell.x=1;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        expect(cell.width).to.equal(26);
+
+        cell = new Cell({colSpan:3});
+        cell.x=0;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        expect(cell.width).to.equal(32);
+      });
+
+      it('will use multiple columns for wordWrap text when using colSpan and wordWrap together',function(){
+        var tableOptions = defaultOptions();
+        tableOptions.colWidths = [7, 7, 17];
+        tableOptions.wordWrap = true;
+
+        var cell = new Cell({content:"the quick brown fox", colSpan:2});
+        cell.x=0;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        expect(cell.lines.length).to.equal(2);
+        expect(cell.lines[0]).to.contain('quick');
+        expect(cell.lines[1]).to.contain('fox');
+
+        cell = new Cell({content:"the quick brown fox", colSpan:2});
+        cell.x=1;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        console.log(cell.lines);
+        expect(cell.lines.length).to.equal(1);
+        expect(cell.lines[0]).to.contain('fox');
+
+        cell = new Cell({content:"the quick brown fox", colSpan:3});
+        cell.x=0;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        console.log(cell.lines);
+        expect(cell.lines.length).to.equal(1);
+        expect(cell.lines[0]).to.contain('fox');
+      });
+
+      it('will only use one column for wordWrap text when not using colSpan',function(){
+        var tableOptions = defaultOptions();
+        tableOptions.colWidths = [7, 7, 7];
+        tableOptions.wordWrap = true;
+
+        var cell = new Cell({content:"the quick brown fox"});
+        cell.x=0;
+        cell.mergeTableOptions(tableOptions);
+        cell.init(tableOptions);
+        expect(cell.lines.length).to.equal(4);
+        expect(cell.lines[1]).to.contain('quick');
+        expect(cell.lines[3]).to.contain('fox');
+      });
+
+
     });
 
     describe('height', function(){
@@ -652,8 +722,8 @@ describe('Cell',function(){
         cell.drawRight = true;
         expect(cell.draw(0)).to.equal(colors.gray('L') + colors.red('  hello  ') + colors.gray('R'));
       });
-    });    
-    
+    });
+
     describe('second line of text',function(){
       beforeEach(function () {
         cell.width = 9;
@@ -688,8 +758,8 @@ describe('Cell',function(){
         cell.drawRight = true;
         expect(cell.draw(1)).to.equal('M   howdy R');
       });
-    });    
-    
+    });
+
     describe('truncated line of text',function(){
       beforeEach(function () {
         cell.width = 9;
@@ -933,4 +1003,3 @@ describe('Cell',function(){
     });
   });
 });
-
