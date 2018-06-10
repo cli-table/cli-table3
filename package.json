@@ -23,9 +23,7 @@
     "git-rev": "^0.2.1",
     "growl": "^1.8.1",
     "gulp": "^3.9.0",
-    "jest": "^23.1.0",
-    "sinon": "^1.17.2",
-    "sinon-chai": "^2.8.0"
+    "jest": "^23.1.0"
   },
   "optionalDependencies": {
     "colors": "^1.1.2"

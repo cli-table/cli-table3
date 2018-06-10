@@ -1,9 +1,6 @@
 describe('Cell',function(){
   var chai = require('chai');
   var expect = chai.expect;
-  var sinon = require('sinon');
-  var sinonChai = require("sinon-chai");
-  chai.use(sinonChai);
 
   var colors = require('colors');
   var Cell = require('../src/cell');
@@ -932,7 +929,7 @@ describe('Cell',function(){
       original = {
         rowSpan:3,
         y:0,
-        draw:sinon.spy()
+        draw: jest.fn()
       };
       tableOptions = {
         rowHeights:[2,3,4,5]
@@ -945,7 +942,8 @@ describe('Cell',function(){
       spanner.y = 1;
       spanner.init(tableOptions);
       spanner.draw('top');
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(2);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(2, 1);
     });
 
     it('drawing line 0 of the next row',function(){
@@ -954,7 +952,8 @@ describe('Cell',function(){
       spanner.y = 1;
       spanner.init(tableOptions);
       spanner.draw(0);
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(3);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(3);
     });
 
     it('drawing line 1 of the next row',function(){
@@ -963,7 +962,8 @@ describe('Cell',function(){
       spanner.y = 1;
       spanner.init(tableOptions);
       spanner.draw(1);
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(4);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(4);
     });
 
     it('drawing top of two rows below',function(){
@@ -972,7 +972,8 @@ describe('Cell',function(){
       spanner.y = 2;
       spanner.init(tableOptions);
       spanner.draw('top');
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(6);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(6, 2);
     });
 
     it('drawing line 0 of two rows below',function(){
@@ -981,7 +982,8 @@ describe('Cell',function(){
       spanner.y = 2;
       spanner.init(tableOptions);
       spanner.draw(0);
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(7);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(7);
     });
 
     it('drawing line 1 of two rows below',function(){
@@ -990,7 +992,8 @@ describe('Cell',function(){
       spanner.y = 2;
       spanner.init(tableOptions);
       spanner.draw(1);
-      expect(original.draw).to.have.been.calledOnce.and.calledWith(8);
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith(8);
     });
 
     it('drawing bottom',function(){
@@ -999,7 +1002,8 @@ describe('Cell',function(){
       spanner.y = 1;
       spanner.init(tableOptions);
       spanner.draw('bottom');
-      expect(original.draw).to.have.been.calledOnce.and.calledWith('bottom');
+      self.expect(original.draw).toHaveBeenCalledTimes(1);
+      self.expect(original.draw).toHaveBeenCalledWith('bottom');
     });
   });
 });
