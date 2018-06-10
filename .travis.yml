@@ -4,6 +4,8 @@ node_js:
   - "8"
   - "10"
 
+cache: yarn
+
 script:
   # --color and --runInBand are necessary to ensure that `colors` work correctly
   - yarn test --coverage --runInBand --color
