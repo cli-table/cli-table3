@@ -1,11 +1,16 @@
-CLI Table 2 [![npm version](https://badge.fury.io/js/cli-table2.svg)](http://badge.fury.io/js/cli-table2) [![Build Status](https://travis-ci.org/jamestalmage/cli-table2.svg?branch=master)](https://travis-ci.org/jamestalmage/cli-table2) [![Coverage Status](https://coveralls.io/repos/jamestalmage/cli-table2/badge.png?branch=master)](https://coveralls.io/r/jamestalmage/cli-table2?branch=master)
-===========
+cli-table3 
+===============================================================================
+
+[![npm version](https://img.shields.io/npm/v/cli-table3.svg)](https://www.npmjs.com/package/cli-table3)
+[![Build Status](https://travis-ci.com/cli-table/cli-table3.svg?branch=master)](https://travis-ci.com/cli-table/cli-table3)
 
 This utility allows you to render unicode-aided tables on the command line from
-your node.js scripts. Based on (and api compatible with) the original [cli-table](https://github.com/Automattic/cli-table),
-`cli-table2` is nearly a complete rewrite to accommodate column and row spanning.
-It passes the entire original cli-table test suite, and should be a drop in
-replacement for nearly all users.
+your node.js scripts.
+
+`cli-table3` is based on (and api compatible with) the original [cli-table](https://github.com/Automattic/cli-table),
+and [cli-table2](https://github.com/jamestalmage/cli-table2), which are both
+unmaintained. `cli-table3` includes all the additional features from
+`cli-table2`.
 
 ![Screenshot](http://i.imgur.com/sYq4T.png)
 
@@ -19,7 +24,7 @@ replacement for nearly all users.
 - Better handling of text color that spans multiple lines.
 - API compatible with the original cli-table.
 - Exhaustive test suite including the entire original cli-table test suite.
-- Lots of examples auto-generated from the tests ([basic](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md), [advanced](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md)).
+- Lots of examples auto-generated from the tests ([basic](https://github.com/cli-table/cli-table3/blob/master/basic-usage.md), [advanced](https://github.com/cli-table/cli-table3/blob/master/advanced-usage.md)).
 
 ## Features
 
@@ -35,21 +40,21 @@ replacement for nearly all users.
 ## Installation
 
 ```bash
-npm install cli-table2
+npm install cli-table3
 ```
 
 ## How to use
 
 A portion of the unit test suite is used to generate examples:
-- [basic-usage](https://github.com/jamestalmage/cli-table2/blob/master/basic-usage.md) - covers basic uses.
-- [advanced](https://github.com/jamestalmage/cli-table2/blob/master/advanced-usage.md) - covers using the new column and row span features.
+- [basic-usage](https://github.com/cli-table/cli-table3/blob/master/basic-usage.md) - covers basic uses.
+- [advanced](https://github.com/cli-table/cli-table3/blob/master/advanced-usage.md) - covers using the new column and row span features.
 
 This package is api compatible with the original [cli-table](https://github.com/Automattic/cli-table).
 So all the original documentation still applies (copied below).
 
 ### Horizontal Tables
 ```javascript
-var Table = require('cli-table2');
+var Table = require('cli-table3');
 
 // instantiate
 var table = new Table({
@@ -68,7 +73,7 @@ console.log(table.toString());
 
 ### Vertical Tables
 ```javascript
-var Table = require('cli-table2');
+var Table = require('cli-table3');
 var table = new Table();
 
 table.push(
@@ -85,7 +90,7 @@ Cross tables are very similar to vertical tables, with two key differences:
 2. The individual rows take the general form of { "Header": ["Row", "Values"] }
 
 ```javascript
-var Table = require('cli-table2');
+var Table = require('cli-table3');
 var table = new Table({ head: ["", "Top Header 1", "Top Header 2"] });
 
 table.push(

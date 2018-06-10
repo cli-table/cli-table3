@@ -1,5 +1,5 @@
 ##### Basic Usage
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/c806c2636df97f73c732b41aa913cf78d4ac0d39/examples/screenshots/basic-usage-with-colors.png)
+![table image](./examples/screenshots/basic-usage-with-colors.png)
 ```javascript
       // By default, headers will be red, and borders will be grey
       var table = new Table({head:['a','b']});
@@ -111,7 +111,7 @@
 
 
 ##### Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines
-![table image](https://cdn.rawgit.com/jamestalmage/cli-table2/c806c2636df97f73c732b41aa913cf78d4ac0d39/examples/screenshots/multi-line-colors.png)
+![table image](./examples/screenshots/multi-line-colors.png)
 ```javascript
       var table = new Table({style:{border:[],header:[]}});
 
