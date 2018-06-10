@@ -1,10 +1,8 @@
 describe('tableLayout', function () {
   var Cell = require('../src/cell');
   var layoutManager = require('../src/layout-manager');
-  var layoutTable = layoutManager.layoutTable;
   var makeTableLayout = layoutManager.makeTableLayout;
   var addRowSpanCells = layoutManager.addRowSpanCells;
-  var maxWidth = layoutManager.maxWidth;
   var fillInTable = layoutManager.fillInTable;
   var computeWidths = layoutManager.computeWidths;
   var computeHeights = layoutManager.computeHeights;
@@ -438,7 +436,6 @@ describe('tableLayout', function () {
     if(kindOf(expectedCell) === 'string'){
       expectedCell = {content:expectedCell};
     }
-    var address = '(' + y + ',' + x + ')';
     if(expectedCell.hasOwnProperty('content')){
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.content).toEqual(expectedCell.content);

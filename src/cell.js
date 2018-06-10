@@ -292,7 +292,7 @@ ColSpanCell.prototype.draw = function(){
   return '';
 };
 
-ColSpanCell.prototype.init = function(tableOptions){};
+ColSpanCell.prototype.init = function(/* tableOptions */){};
 
 
 /**

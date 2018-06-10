@@ -31,8 +31,8 @@ Table.prototype.toString = function(){
   tableLayout.computeWidths(this.options.colWidths,cells);
   tableLayout.computeHeights(this.options.rowHeights,cells);
 
-  cells.forEach(function(row,rowIndex){
-    row.forEach(function(cell,cellIndex){
+  cells.forEach(function(row){
+    row.forEach(function(cell){
       cell.init(this.options);
     },this);
   },this);
