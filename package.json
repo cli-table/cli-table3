@@ -29,8 +29,8 @@
     "colors": "^1.1.2"
   },
   "scripts": {
-    "docs": "gulp example-md",
-    "prettier": "prettier --write '{examples,lib,src,test}/**/*.js'",
+    "docs": "node ./scripts/update-docs.js",
+    "prettier": "prettier --write '{examples,lib,scripts,src,test}/**/*.js'",
     "test": "jest --color",
     "test:watch": "jest --color --watchAll --notify"
   },
@@ -73,6 +73,7 @@
         "testMatch": [
           "<rootDir>/examples/**/*.js",
           "<rootDir>/lib/**/*.js",
+          "<rootDir>/scripts/**/*.js",
           "<rootDir>/src/**/*.js",
           "<rootDir>/test/**/*.js"
         ]
