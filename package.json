@@ -13,7 +13,7 @@
   "dependencies": {
     "kind-of": "^6.0.2",
     "object-assign": "^4.1.0",
-    "string-width": "^1.0.1"
+    "string-width": "^2.1.1"
   },
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
