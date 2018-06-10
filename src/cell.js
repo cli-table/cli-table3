@@ -277,18 +277,22 @@ Cell.prototype.drawEmpty = function(drawRight, spanningCell) {
   return this.stylizeLine(left, content, right);
 };
 
-/**
- * A Cell that doesn't do anything. It just draws empty lines.
- * Used as a placeholder in column spanning.
- * @constructor
- */
-function ColSpanCell() {}
+class ColSpanCell {
+  /**
+   * A Cell that doesn't do anything. It just draws empty lines.
+   * Used as a placeholder in column spanning.
+   * @constructor
+   */
+  constructor() {}
 
-ColSpanCell.prototype.draw = function() {
-  return '';
-};
+  draw() {
+    return '';
+  }
 
-ColSpanCell.prototype.init = function(/* tableOptions */) {};
+  init() {}
+
+  mergeTableOptions() {}
+}
 
 class RowSpanCell {
   /**
@@ -320,8 +324,6 @@ class RowSpanCell {
 
   mergeTableOptions() {}
 }
-
-ColSpanCell.prototype.mergeTableOptions = function() {};
 
 // HELPER FUNCTIONS
 function setOption(objA, objB, nameB, targetObj) {
