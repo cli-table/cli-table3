@@ -1,6 +1,4 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
-var istanbul = require('gulp-istanbul');
 var printExample = require('./lib/print-example');
 
 gulp.task('example',function(){
