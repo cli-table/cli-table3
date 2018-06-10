@@ -4,5 +4,5 @@ node_js:
   - "8"
   - "10"
 
-after_script:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+script:
+  - yarn test:coverage

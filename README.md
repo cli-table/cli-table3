@@ -163,16 +163,16 @@ console.log(table.toString());
 
 ## Build Targets
 
-Clone the repository and run `npm install` to install all its submodules, then run one of the following commands:
+Clone the repository and run `yarn install` to install all its submodules, then run one of the following commands:
 
 ###### Run the tests with coverage reports.
 ```bash
-$ gulp coverage
+$ yarn test:coverage
 ```
 
 ###### Run the tests every time a file changes.
 ```bash
-$ gulp watch-test
+$ yarn test:watch
 ```
 
 ###### Run the examples and print the output to the command line.
