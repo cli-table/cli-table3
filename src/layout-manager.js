@@ -1,4 +1,3 @@
-const kindOf = require('kind-of');
 const objectAssign = require('object-assign');
 const Cell = require('./cell');
 const { ColSpanCell, RowSpanCell } = Cell;
@@ -142,10 +141,10 @@ const { ColSpanCell, RowSpanCell } = Cell;
 
   function generateCells(rows) {
     return rows.map(function(row) {
-      if (kindOf(row) !== 'array') {
+      if (!Array.isArray(row)) {
         let key = Object.keys(row)[0];
         row = row[key];
-        if (kindOf(row) === 'array') {
+        if (Array.isArray(row)) {
           row = row.slice();
           row.unshift(key);
         } else {
@@ -193,7 +192,7 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
     });
 
     vals.forEach(function(val, index) {
-      if (kindOf(val) === 'number') {
+      if (typeof val === 'number') {
         result[index] = val;
       }
     });
@@ -204,17 +203,17 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
       let span = cell[colSpan];
       let col = cell[x];
       let existingWidth = result[col];
-      let editableCols = kindOf(vals[col]) === 'number' ? 0 : 1;
+      let editableCols = typeof vals[col] === 'number' ? 0 : 1;
       for (let i = 1; i < span; i++) {
         existingWidth += 1 + result[col + i];
-        if (kindOf(vals[col + i]) !== 'number') {
+        if (typeof vals[col + i] !== 'number') {
           editableCols++;
         }
       }
       if (cell[desiredWidth] > existingWidth) {
         let i = 0;
         while (editableCols > 0 && cell[desiredWidth] > existingWidth) {
-          if (kindOf(vals[col + i]) !== 'number') {
+          if (typeof vals[col + i] !== 'number') {
             let dif = Math.round((cell[desiredWidth] - existingWidth) / editableCols);
             existingWidth += dif;
             result[col + i] += dif;

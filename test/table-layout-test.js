@@ -2,7 +2,6 @@ describe('tableLayout', function() {
   const Cell = require('../src/cell');
   const layoutManager = require('../src/layout-manager');
   const { makeTableLayout, addRowSpanCells, fillInTable, computeWidths, computeHeights } = layoutManager;
-  const kindOf = require('kind-of');
 
   it('simple 2x2 layout', function() {
     let actual = makeTableLayout([['hello', 'goodbye'], ['hola', 'adios']]);
@@ -345,7 +344,7 @@ describe('tableLayout', function() {
   }
 
   function checkExpectation(actualCell, expectedCell, x, y, actualTable) {
-    if (kindOf(expectedCell) === 'string') {
+    if (typeof expectedCell === 'string') {
       expectedCell = { content: expectedCell };
     }
     if (expectedCell.hasOwnProperty('content')) {
