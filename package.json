@@ -11,7 +11,7 @@
     "test": "test"
   },
   "dependencies": {
-    "kind-of": "^3.0.4",
+    "kind-of": "^6.0.2",
     "object-assign": "^4.1.0",
     "string-width": "^1.0.1"
   },
