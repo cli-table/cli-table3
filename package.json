@@ -26,9 +26,8 @@
     "colors": "^1.1.2"
   },
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watchAll --notify",
-    "test:coverage": "jest --coverage"
+    "test": "jest --color",
+    "test:watch": "jest --color --watchAll --notify"
   },
   "repository": {
     "type": "git",
