@@ -18,16 +18,15 @@
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
     "cli-table": "^0.3.1",
-    "eslint": "^4.19.1",
     "git-rev": "^0.2.1",
     "gulp": "^3.9.0",
-    "jest": "^23.1.0"
+    "jest": "^23.1.0",
+    "jest-runner-eslint": "^0.6.0"
   },
   "optionalDependencies": {
     "colors": "^1.1.2"
   },
   "scripts": {
-    "lint": "eslint examples lib src test",
     "test": "jest --color",
     "test:watch": "jest --color --watchAll --notify"
   },
@@ -57,8 +56,23 @@
     "node": ">=6"
   },
   "jest": {
-    "testMatch": [
-      "**/test/**/*-test(s)?.js"
+    "projects": [
+      {
+        "displayName": "test",
+        "testMatch": [
+          "**/test/**/*-test(s)?.js"
+        ]
+      },
+      {
+        "runner": "jest-runner-eslint",
+        "displayName": "lint",
+        "testMatch": [
+          "<rootDir>/examples/**/*.js",
+          "<rootDir>/lib/**/*.js",
+          "<rootDir>/src/**/*.js",
+          "<rootDir>/test/**/*.js"
+        ]
+      }
     ]
   }
 }
