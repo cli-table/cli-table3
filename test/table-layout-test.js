@@ -8,8 +8,6 @@ describe('tableLayout', function () {
   var fillInTable = layoutManager.fillInTable;
   var computeWidths = layoutManager.computeWidths;
   var computeHeights = layoutManager.computeHeights;
-  var chai = require('chai');
-  var expect = chai.expect;
   var kindOf = require('kind-of');
 
   it('simple 2x2 layout',function(){
@@ -222,7 +220,7 @@ describe('tableLayout', function () {
 
       computeWidths(widths, cells);
 
-      expect(widths).to.eql([8, 9, 5]);
+      expect(widths).toEqual([8, 9, 5]);
     });
 
     it('won\'t touch hard coded values', function () {
@@ -235,14 +233,14 @@ describe('tableLayout', function () {
 
       computeWidths(widths, cells);
 
-      expect(widths).to.eql([8, 3, 5]);
+      expect(widths).toEqual([8, 3, 5]);
     });
 
     it('assumes undefined desiredWidth is 1', function () {
       var widths = [];
       var cells = [[{x:0,y:0}], [{x:0,y:1}], [{x:0,y:2}]];
       computeWidths(widths, cells);
-      expect(widths).to.eql([1])
+      expect(widths).toEqual([1])
     });
 
     it('takes into account colSpan and wont over expand', function () {
@@ -253,7 +251,7 @@ describe('tableLayout', function () {
         [mc(2,0,4), mc(2,1,2), mc(2,2,1)]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([5, 5, 5]);
+      expect(widths).toEqual([5, 5, 5]);
     });
 
     it('will expand rows involved in colSpan in a balanced way', function () {
@@ -264,7 +262,7 @@ describe('tableLayout', function () {
         [mc(2,0,4), mc(2,1,2),  mc(2,2,1)]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([6, 6, 5]);
+      expect(widths).toEqual([6, 6, 5]);
     });
 
     it('expands across 3 cols', function () {
@@ -275,7 +273,7 @@ describe('tableLayout', function () {
         [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([9, 9, 5]);
+      expect(widths).toEqual([9, 9, 5]);
     });
 
     it('multiple spans in same table', function () {
@@ -286,7 +284,7 @@ describe('tableLayout', function () {
         [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([11, 9, 8]);
+      expect(widths).toEqual([11, 9, 8]);
     });
 
     it('spans will only edit uneditable tables',function(){
@@ -296,7 +294,7 @@ describe('tableLayout', function () {
         [mc(1,0,4),    mc(1,1,20),  mc(1,2,5) ]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([7,3,8])
+      expect(widths).toEqual([7,3,8])
     });
 
     it('spans will only edit uneditable tables - first column uneditable',function(){
@@ -306,7 +304,7 @@ describe('tableLayout', function () {
         [mc(1,0,4),    mc(1,1,3),  mc(1,2,5) ]
       ];
       computeWidths(widths, cells);
-      expect(widths).to.eql([3,7,8])
+      expect(widths).toEqual([3,7,8])
     });
   });
     
@@ -325,7 +323,7 @@ describe('tableLayout', function () {
 
       computeHeights(heights,cells);
 
-      expect(heights).to.eql([7,8,9]);
+      expect(heights).toEqual([7,8,9]);
     });
 
     it('won\'t touch hard coded values',function(){
@@ -338,14 +336,14 @@ describe('tableLayout', function () {
 
       computeHeights(heights,cells);
 
-      expect(heights).to.eql([7,3,9]);
+      expect(heights).toEqual([7,3,9]);
     });
 
     it('assumes undefined desiredHeight is 1',function(){
       var heights = [];
       var cells = [[{x:0,y:0},{x:1,y:0},{x:2,y:0}]];
       computeHeights(heights,cells);
-      expect(heights).to.eql([1])
+      expect(heights).toEqual([1])
     });
 
     it('takes into account rowSpan and wont over expand',function(){
@@ -356,7 +354,7 @@ describe('tableLayout', function () {
         [mc(2,0,4),     mc(2,1,2),  mc(2,2,1)]
       ];
       computeHeights(heights,cells);
-      expect(heights).to.eql([5,5,4]);
+      expect(heights).toEqual([5,5,4]);
     });
 
     it('will expand rows involved in rowSpan in a balanced way',function(){
@@ -367,7 +365,7 @@ describe('tableLayout', function () {
         [mc(2,0,4),    mc(2,1,2), mc(2,2,1)]
       ];
       computeHeights(heights,cells);
-      expect(heights).to.eql([6,6,4]);
+      expect(heights).toEqual([6,6,4]);
     });
 
     it('expands across 3 rows',function(){
@@ -378,7 +376,7 @@ describe('tableLayout', function () {
         [              mc(2,1,2), mc(2,2,1)]
       ];
       computeHeights(heights,cells);
-      expect(heights).to.eql([9,9,5]);
+      expect(heights).toEqual([9,9,5]);
     });
 
     it('multiple spans in same table',function(){
@@ -389,7 +387,7 @@ describe('tableLayout', function () {
         [                            mc(2,2,1)]
       ];
       computeHeights(heights,cells);
-      expect(heights).to.eql([11,9,8]);
+      expect(heights).toEqual([11,9,8]);
     });
   });
 
@@ -442,21 +440,21 @@ describe('tableLayout', function () {
     }
     var address = '(' + y + ',' + x + ')';
     if(expectedCell.hasOwnProperty('content')){
-      expect(actualCell, address).to.be.instanceOf(Cell);
-      expect(actualCell.content,'content of ' + address).to.equal(expectedCell.content);
+      expect(actualCell).toBeInstanceOf(Cell);
+      expect(actualCell.content).toEqual(expectedCell.content);
     }
     if(expectedCell.hasOwnProperty('rowSpan')){
-      expect(actualCell, address).to.be.instanceOf(Cell);
-      expect(actualCell.rowSpan, 'rowSpan of ' + address).to.equal(expectedCell.rowSpan);
+      expect(actualCell).toBeInstanceOf(Cell);
+      expect(actualCell.rowSpan).toEqual(expectedCell.rowSpan);
     }
     if(expectedCell.hasOwnProperty('colSpan')){
-      expect(actualCell, address).to.be.instanceOf(Cell);
-      expect(actualCell.colSpan, 'colSpan of ' + address).to.equal(expectedCell.colSpan);
+      expect(actualCell).toBeInstanceOf(Cell);
+      expect(actualCell.colSpan).toEqual(expectedCell.colSpan);
     }
     if(expectedCell.hasOwnProperty('spannerFor')){
-      expect(actualCell, address).to.be.instanceOf(Cell.RowSpanCell);
-      expect(actualCell.originalCell,address + 'originalCell should be a cell').to.be.instanceOf(Cell);
-      expect(actualCell.originalCell,address + 'originalCell not right').to.equal(findCell(actualTable,
+      expect(actualCell).toBeInstanceOf(Cell.RowSpanCell);
+      expect(actualCell.originalCell).toBeInstanceOf(Cell);
+      expect(actualCell.originalCell).toEqual(findCell(actualTable,
         expectedCell.spannerFor[1],
         expectedCell.spannerFor[0]
       ));

@@ -8,14 +8,12 @@
   });
 
   function commonTests(Table){
-    var chai = require('chai');
-    var expect = chai.expect;
     var colors = require('colors/safe');
 
     it('empty table has a width of 0',function(){
       var table = new Table();
-      expect(table.width).to.equal(0);
-      expect(table.toString()).to.equal('');
+      expect(table.width).toEqual(0);
+      expect(table.toString()).toEqual('');
     });
 
     it('header text will be colored according to style',function(){
@@ -27,7 +25,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('tables with one row of data will not be treated as headers',function(){
@@ -41,7 +39,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('table with headers and data headers',function(){
@@ -57,7 +55,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('compact shorthand',function(){
@@ -72,7 +70,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('compact shorthand - headers are still rendered with separator',function(){
@@ -89,7 +87,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('compact longhand - headers are not rendered with separator',function(){
@@ -114,7 +112,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('compact longhand',function(){
@@ -137,7 +135,7 @@
         , '└───────┴─────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('objects with multiple properties in a cross-table',function(){
@@ -152,7 +150,7 @@
         , '│ a │ b │'
         , '└───┴───┘'
       ];
-      expect(table.toString()).to.equal(expected.join('\n'));
+      expect(table.toString()).toEqual(expected.join('\n'));
     });
   }
 })();

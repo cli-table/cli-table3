@@ -1,7 +1,5 @@
 describe('@api original-cli-table newline tests',function(){
   var Table = require('../src/table');
-  var chai = require('chai');
-  var expect = chai.expect;
 
   it('test table with newlines in headers', function() {
     var table = new Table({
@@ -22,12 +20,12 @@ describe('@api original-cli-table newline tests',function(){
       , '└──────┴───┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join("\n"));
+    expect(table.toString()).toEqual(expected.join("\n"));
   });
 
   it('test column width is accurately reflected when newlines are present', function() {
     var table = new Table({ head: ['Test\nWidth'], style: {head:[], border:[]} });
-    expect(table.width).to.equal(9);
+    expect(table.width).toEqual(9);
   });
 
   it('test newlines in body cells', function() {
@@ -43,7 +41,7 @@ describe('@api original-cli-table newline tests',function(){
       , '└───────────┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join("\n"));
+    expect(table.toString()).toEqual(expected.join("\n"));
   });
 
   it('test newlines in vertical cell header and body', function() {
@@ -60,7 +58,7 @@ describe('@api original-cli-table newline tests',function(){
       , '└───┴──────────────┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join("\n"));
+    expect(table.toString()).toEqual(expected.join("\n"));
   });
 
   it('test newlines in cross table header and body', function() {
@@ -79,7 +77,7 @@ describe('@api original-cli-table newline tests',function(){
       , '└──────┴─────────┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join("\n"));
+    expect(table.toString()).toEqual(expected.join("\n"));
   });
 
 });
