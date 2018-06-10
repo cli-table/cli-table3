@@ -8,18 +8,18 @@
   });
 
   function commonTests(Table) {
-    var colors = require('colors/safe');
+    const colors = require('colors/safe');
 
     it('empty table has a width of 0', function() {
-      var table = new Table();
+      let table = new Table();
       expect(table.width).toEqual(0);
       expect(table.toString()).toEqual('');
     });
 
     it('header text will be colored according to style', function() {
-      var table = new Table({ head: ['hello', 'goodbye'], style: { border: [], head: ['red', 'bgWhite'] } });
+      let table = new Table({ head: ['hello', 'goodbye'], style: { border: [], head: ['red', 'bgWhite'] } });
 
-      var expected = [
+      let expected = [
         '┌───────┬─────────┐',
         '│' + colors.bgWhite.red(' hello ') + '│' + colors.bgWhite.red(' goodbye ') + '│',
         '└───────┴─────────┘',
@@ -29,21 +29,21 @@
     });
 
     it('tables with one row of data will not be treated as headers', function() {
-      var table = new Table({ style: { border: [], head: ['red'] } });
+      let table = new Table({ style: { border: [], head: ['red'] } });
 
       table.push(['hello', 'goodbye']);
 
-      var expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '└───────┴─────────┘'];
+      let expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '└───────┴─────────┘'];
 
       expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('table with headers and data headers', function() {
-      var table = new Table({ head: ['hello', 'goodbye'], style: { border: [], head: ['red'] } });
+      let table = new Table({ head: ['hello', 'goodbye'], style: { border: [], head: ['red'] } });
 
       table.push(['hola', 'adios']);
 
-      var expected = [
+      let expected = [
         '┌───────┬─────────┐',
         '│' + colors.red(' hello ') + '│' + colors.red(' goodbye ') + '│',
         '├───────┼─────────┤',
@@ -55,21 +55,21 @@
     });
 
     it('compact shorthand', function() {
-      var table = new Table({ style: { compact: true, border: [], head: ['red'] } });
+      let table = new Table({ style: { compact: true, border: [], head: ['red'] } });
 
       table.push(['hello', 'goodbye'], ['hola', 'adios']);
 
-      var expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '│ hola  │ adios   │', '└───────┴─────────┘'];
+      let expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '│ hola  │ adios   │', '└───────┴─────────┘'];
 
       expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('compact shorthand - headers are still rendered with separator', function() {
-      var table = new Table({ head: ['hello', 'goodbye'], style: { compact: true, border: [], head: [] } });
+      let table = new Table({ head: ['hello', 'goodbye'], style: { compact: true, border: [], head: [] } });
 
       table.push(['hola', 'adios'], ['hi', 'bye']);
 
-      var expected = [
+      let expected = [
         '┌───────┬─────────┐',
         '│ hello │ goodbye │',
         '├───────┼─────────┤',
@@ -82,7 +82,7 @@
     });
 
     it('compact longhand - headers are not rendered with separator', function() {
-      var table = new Table({
+      let table = new Table({
         chars: {
           mid: '',
           'left-mid': '',
@@ -95,7 +95,7 @@
 
       table.push(['hola', 'adios'], ['hi', 'bye']);
 
-      var expected = [
+      let expected = [
         '┌───────┬─────────┐',
         '│ hello │ goodbye │',
         '│ hola  │ adios   │',
@@ -107,7 +107,7 @@
     });
 
     it('compact longhand', function() {
-      var table = new Table({
+      let table = new Table({
         chars: {
           mid: '',
           'left-mid': '',
@@ -119,19 +119,19 @@
 
       table.push(['hello', 'goodbye'], ['hola', 'adios']);
 
-      var expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '│ hola  │ adios   │', '└───────┴─────────┘'];
+      let expected = ['┌───────┬─────────┐', '│ hello │ goodbye │', '│ hola  │ adios   │', '└───────┴─────────┘'];
 
       expect(table.toString()).toEqual(expected.join('\n'));
     });
 
     it('objects with multiple properties in a cross-table', function() {
-      var table = new Table({ style: { border: [], head: [] } });
+      let table = new Table({ style: { border: [], head: [] } });
 
       table.push(
         { a: ['b'], c: ['d'] } // value of property 'c' will be discarded
       );
 
-      var expected = ['┌───┬───┐', '│ a │ b │', '└───┴───┘'];
+      let expected = ['┌───┬───┐', '│ a │ b │', '└───┴───┘'];
       expect(table.toString()).toEqual(expected.join('\n'));
     });
   }

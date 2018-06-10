@@ -1,5 +1,5 @@
-var utils = require('./utils');
-var tableLayout = require('./layout-manager');
+const utils = require('./utils');
+const tableLayout = require('./layout-manager');
 
 class Table extends Array {
   constructor(options) {
@@ -9,8 +9,8 @@ class Table extends Array {
   }
 
   toString() {
-    var array = this;
-    var headersPresent = this.options.head && this.options.head.length;
+    let array = this;
+    let headersPresent = this.options.head && this.options.head.length;
     if (headersPresent) {
       array = [this.options.head];
       if (this.length) {
@@ -20,7 +20,7 @@ class Table extends Array {
       this.options.style.head = [];
     }
 
-    var cells = tableLayout.makeTableLayout(array);
+    let cells = tableLayout.makeTableLayout(array);
 
     cells.forEach(function(row) {
       row.forEach(function(cell) {
@@ -37,17 +37,17 @@ class Table extends Array {
       }, this);
     }, this);
 
-    var result = [];
+    let result = [];
 
-    for (var rowIndex = 0; rowIndex < cells.length; rowIndex++) {
-      var row = cells[rowIndex];
-      var heightOfRow = this.options.rowHeights[rowIndex];
+    for (let rowIndex = 0; rowIndex < cells.length; rowIndex++) {
+      let row = cells[rowIndex];
+      let heightOfRow = this.options.rowHeights[rowIndex];
 
       if (rowIndex === 0 || !this.options.style.compact || (rowIndex == 1 && headersPresent)) {
         doDraw(row, 'top', result);
       }
 
-      for (var lineNum = 0; lineNum < heightOfRow; lineNum++) {
+      for (let lineNum = 0; lineNum < heightOfRow; lineNum++) {
         doDraw(row, lineNum, result);
       }
 
@@ -60,17 +60,17 @@ class Table extends Array {
   }
 
   get width() {
-    var str = this.toString().split('\n');
+    let str = this.toString().split('\n');
     return str[0].length;
   }
 }
 
 function doDraw(row, lineNum, result) {
-  var line = [];
+  let line = [];
   row.forEach(function(cell) {
     line.push(cell.draw(lineNum));
   });
-  var str = line.join('');
+  let str = line.join('');
   if (str.length) result.push(str);
 }
 

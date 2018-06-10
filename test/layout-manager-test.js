@@ -1,25 +1,23 @@
 describe('layout-manager', function() {
-  var layoutManager = require('../src/layout-manager');
-  var layoutTable = layoutManager.layoutTable;
-  var addRowSpanCells = layoutManager.addRowSpanCells;
-  var maxWidth = layoutManager.maxWidth;
-  var Cell = require('../src/cell');
-  var RowSpanCell = Cell.RowSpanCell;
+  const layoutManager = require('../src/layout-manager');
+  const { layoutTable, addRowSpanCells, maxWidth } = layoutManager;
+  const Cell = require('../src/cell');
+  const { RowSpanCell } = Cell;
 
   describe('layoutTable', function() {
     it('sets x and y', function() {
-      var table = [[{}, {}], [{}, {}]];
+      let table = [[{}, {}], [{}, {}]];
 
       layoutTable(table);
 
       expect(table).toEqual([[{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 0, y: 1 }, { x: 1, y: 1 }]]);
 
-      var w = maxWidth(table);
+      let w = maxWidth(table);
       expect(w).toEqual(2);
     });
 
     it('colSpan will push x values to the right', function() {
-      var table = [[{ colSpan: 2 }, {}], [{}, { colSpan: 2 }]];
+      let table = [[{ colSpan: 2 }, {}], [{}, { colSpan: 2 }]];
 
       layoutTable(table);
 
@@ -32,7 +30,7 @@ describe('layout-manager', function() {
     });
 
     it('rowSpan will push x values on cells below', function() {
-      var table = [[{ rowSpan: 2 }, {}], [{}]];
+      let table = [[{ rowSpan: 2 }, {}], [{}]];
 
       layoutTable(table);
 
@@ -42,7 +40,7 @@ describe('layout-manager', function() {
     });
 
     it('colSpan and rowSpan together', function() {
-      var table = [[{ rowSpan: 2, colSpan: 2 }, {}], [{}]];
+      let table = [[{ rowSpan: 2, colSpan: 2 }, {}], [{}]];
 
       layoutTable(table);
 
@@ -52,7 +50,7 @@ describe('layout-manager', function() {
     });
 
     it('complex layout', function() {
-      var table = [
+      let table = [
         [{ c: 'a' }, { c: 'b' }, { c: 'c', rowSpan: 3, colSpan: 2 }, { c: 'd' }],
         [{ c: 'e', rowSpan: 2, colSpan: 2 }, { c: 'f' }],
         [{ c: 'g' }],
@@ -73,7 +71,7 @@ describe('layout-manager', function() {
     });
 
     it('maxWidth of single element', function() {
-      var table = [[{}]];
+      let table = [[{}]];
       layoutTable(table);
       expect(maxWidth(table)).toEqual(1);
     });
@@ -81,7 +79,7 @@ describe('layout-manager', function() {
 
   describe('addRowSpanCells', function() {
     it('will insert a rowSpan cell - beginning of line', function() {
-      var table = [[{ x: 0, y: 0, rowSpan: 2 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]];
+      let table = [[{ x: 0, y: 0, rowSpan: 2 }, { x: 1, y: 0 }], [{ x: 1, y: 1 }]];
 
       addRowSpanCells(table);
 
@@ -92,7 +90,7 @@ describe('layout-manager', function() {
     });
 
     it('will insert a rowSpan cell - end of line', function() {
-      var table = [[{ x: 0, y: 0 }, { x: 1, y: 0, rowSpan: 2 }], [{ x: 0, y: 1 }]];
+      let table = [[{ x: 0, y: 0 }, { x: 1, y: 0, rowSpan: 2 }], [{ x: 0, y: 1 }]];
 
       addRowSpanCells(table);
 
@@ -103,7 +101,7 @@ describe('layout-manager', function() {
     });
 
     it('will insert a rowSpan cell - middle of line', function() {
-      var table = [[{ x: 0, y: 0 }, { x: 1, y: 0, rowSpan: 2 }, { x: 2, y: 0 }], [{ x: 0, y: 1 }, { x: 2, y: 1 }]];
+      let table = [[{ x: 0, y: 0 }, { x: 1, y: 0, rowSpan: 2 }, { x: 2, y: 0 }], [{ x: 0, y: 1 }, { x: 2, y: 1 }]];
 
       addRowSpanCells(table);
 
@@ -115,7 +113,7 @@ describe('layout-manager', function() {
     });
 
     it('will insert a rowSpan cell - multiple on the same line', function() {
-      var table = [
+      let table = [
         [{ x: 0, y: 0 }, { x: 1, y: 0, rowSpan: 2 }, { x: 2, y: 0, rowSpan: 2 }, { x: 3, y: 0 }],
         [{ x: 0, y: 1 }, { x: 3, y: 1 }],
       ];

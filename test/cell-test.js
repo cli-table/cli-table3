@@ -1,9 +1,8 @@
 describe('Cell', function() {
-  var colors = require('colors');
-  var Cell = require('../src/cell');
-  var RowSpanCell = Cell.RowSpanCell;
-  var ColSpanCell = Cell.ColSpanCell;
-  var mergeOptions = require('../src/utils').mergeOptions;
+  const colors = require('colors');
+  const Cell = require('../src/cell');
+  const { ColSpanCell, RowSpanCell } = Cell;
+  const { mergeOptions } = require('../src/utils');
 
   function defaultOptions() {
     //overwrite coloring of head and border by default for easier testing.
@@ -32,59 +31,59 @@ describe('Cell', function() {
 
   describe('constructor', function() {
     it('colSpan and rowSpan default to 1', function() {
-      var cell = new Cell();
+      let cell = new Cell();
       expect(cell.colSpan).toEqual(1);
       expect(cell.rowSpan).toEqual(1);
     });
 
     it('colSpan and rowSpan can be set via constructor', function() {
-      var cell = new Cell({ rowSpan: 2, colSpan: 3 });
+      let cell = new Cell({ rowSpan: 2, colSpan: 3 });
       expect(cell.rowSpan).toEqual(2);
       expect(cell.colSpan).toEqual(3);
     });
 
     it('content can be set as a string', function() {
-      var cell = new Cell('hello\nworld');
+      let cell = new Cell('hello\nworld');
       expect(cell.content).toEqual('hello\nworld');
     });
 
     it('content can be set as a options property', function() {
-      var cell = new Cell({ content: 'hello\nworld' });
+      let cell = new Cell({ content: 'hello\nworld' });
       expect(cell.content).toEqual('hello\nworld');
     });
 
     it('default content is an empty string', function() {
-      var cell = new Cell();
+      let cell = new Cell();
       expect(cell.content).toEqual('');
     });
 
     it('new Cell(null) will have empty string content', function() {
-      var cell = new Cell(null);
+      let cell = new Cell(null);
       expect(cell.content).toEqual('');
     });
 
     it('new Cell({content: null}) will have empty string content', function() {
-      var cell = new Cell({ content: null });
+      let cell = new Cell({ content: null });
       expect(cell.content).toEqual('');
     });
 
     it('new Cell(0) will have "0" as content', function() {
-      var cell = new Cell(0);
+      let cell = new Cell(0);
       expect(cell.content).toEqual('0');
     });
 
     it('new Cell({content: 0}) will have "0" as content', function() {
-      var cell = new Cell({ content: 0 });
+      let cell = new Cell({ content: 0 });
       expect(cell.content).toEqual('0');
     });
 
     it('new Cell(false) will have "false" as content', function() {
-      var cell = new Cell(false);
+      let cell = new Cell(false);
       expect(cell.content).toEqual('false');
     });
 
     it('new Cell({content: false}) will have "false" as content', function() {
-      var cell = new Cell({ content: false });
+      let cell = new Cell({ content: false });
       expect(cell.content).toEqual('false');
     });
   });
@@ -92,24 +91,24 @@ describe('Cell', function() {
   describe('mergeTableOptions', function() {
     describe('chars', function() {
       it('unset chars take on value of table', function() {
-        var cell = new Cell();
-        var tableOptions = defaultOptions();
+        let cell = new Cell();
+        let tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.chars).toEqual(defaultChars());
       });
 
       it('set chars override the value of table', function() {
-        var cell = new Cell({ chars: { bottomRight: '=' } });
+        let cell = new Cell({ chars: { bottomRight: '=' } });
         cell.mergeTableOptions(defaultOptions());
-        var chars = defaultChars();
+        let chars = defaultChars();
         chars.bottomRight = '=';
         expect(cell.chars).toEqual(chars);
       });
 
       it('hyphenated names will be converted to camel-case', function() {
-        var cell = new Cell({ chars: { 'bottom-left': '=' } });
+        let cell = new Cell({ chars: { 'bottom-left': '=' } });
         cell.mergeTableOptions(defaultOptions());
-        var chars = defaultChars();
+        let chars = defaultChars();
         chars.bottomLeft = '=';
         expect(cell.chars).toEqual(chars);
       });
@@ -117,13 +116,13 @@ describe('Cell', function() {
 
     describe('truncate', function() {
       it('if unset takes on value of table', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).toEqual('…');
       });
 
       it('if set overrides value of table', function() {
-        var cell = new Cell({ truncate: '...' });
+        let cell = new Cell({ truncate: '...' });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).toEqual('...');
       });
@@ -131,12 +130,12 @@ describe('Cell', function() {
 
     describe('style.padding-left', function() {
       it('if unset will be copied from tableOptions.style', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingLeft).toEqual(1);
 
         cell = new Cell();
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.style['padding-left'] = 2;
         cell.mergeTableOptions(tableOptions);
         expect(cell.paddingLeft).toEqual(2);
@@ -149,7 +148,7 @@ describe('Cell', function() {
       });
 
       it('if set will override tableOptions.style', function() {
-        var cell = new Cell({ style: { 'padding-left': 2 } });
+        let cell = new Cell({ style: { 'padding-left': 2 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingLeft).toEqual(2);
 
@@ -161,12 +160,12 @@ describe('Cell', function() {
 
     describe('style.padding-right', function() {
       it('if unset will be copied from tableOptions.style', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingRight).toEqual(1);
 
         cell = new Cell();
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.style['padding-right'] = 2;
         cell.mergeTableOptions(tableOptions);
         expect(cell.paddingRight).toEqual(2);
@@ -179,7 +178,7 @@ describe('Cell', function() {
       });
 
       it('if set will override tableOptions.style', function() {
-        var cell = new Cell({ style: { 'padding-right': 2 } });
+        let cell = new Cell({ style: { 'padding-right': 2 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingRight).toEqual(2);
 
@@ -191,21 +190,21 @@ describe('Cell', function() {
 
     describe('desiredWidth', function() {
       it('content(hello) padding(1,1) == 7', function() {
-        var cell = new Cell('hello');
+        let cell = new Cell('hello');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredWidth).toEqual(7);
       });
 
       it('content(hi) padding(1,2) == 5', function() {
-        var cell = new Cell({ content: 'hi', style: { paddingRight: 2 } });
-        var tableOptions = defaultOptions();
+        let cell = new Cell({ content: 'hi', style: { paddingRight: 2 } });
+        let tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.desiredWidth).toEqual(5);
       });
 
       it('content(hi) padding(3,2) == 7', function() {
-        var cell = new Cell({ content: 'hi', style: { paddingLeft: 3, paddingRight: 2 } });
-        var tableOptions = defaultOptions();
+        let cell = new Cell({ content: 'hi', style: { paddingLeft: 3, paddingRight: 2 } });
+        let tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.desiredWidth).toEqual(7);
       });
@@ -213,19 +212,19 @@ describe('Cell', function() {
 
     describe('desiredHeight', function() {
       it('1 lines of text', function() {
-        var cell = new Cell('hi');
+        let cell = new Cell('hi');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(1);
       });
 
       it('2 lines of text', function() {
-        var cell = new Cell('hi\nbye');
+        let cell = new Cell('hi\nbye');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(2);
       });
 
       it('2 lines of text', function() {
-        var cell = new Cell('hi\nbye\nyo');
+        let cell = new Cell('hi\nbye\nyo');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(3);
       });
@@ -235,9 +234,9 @@ describe('Cell', function() {
   describe('init', function() {
     describe('hAlign', function() {
       it('if unset takes colAlign value from tableOptions', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colAligns = ['left', 'right', 'both'];
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -255,9 +254,9 @@ describe('Cell', function() {
       });
 
       it('if set overrides tableOptions', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colAligns = ['left', 'right', 'both'];
-        var cell = new Cell({ hAlign: 'right' });
+        let cell = new Cell({ hAlign: 'right' });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -277,9 +276,9 @@ describe('Cell', function() {
 
     describe('vAlign', function() {
       it('if unset takes rowAlign value from tableOptions', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top', 'bottom', 'center'];
-        var cell = new Cell();
+        let cell = new Cell();
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -297,10 +296,10 @@ describe('Cell', function() {
       });
 
       it('if set overrides tableOptions', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.rowAligns = ['top', 'bottom', 'center'];
 
-        var cell = new Cell({ vAlign: 'bottom' });
+        let cell = new Cell({ vAlign: 'bottom' });
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -322,10 +321,10 @@ describe('Cell', function() {
 
     describe('width', function() {
       it('will match colWidth of x', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colWidths = [5, 10, 15];
 
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -345,10 +344,10 @@ describe('Cell', function() {
       });
 
       it('will add colWidths if colSpan > 1 with wordWrap false', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colWidths = [5, 10, 15];
 
-        var cell = new Cell({ colSpan: 2 });
+        let cell = new Cell({ colSpan: 2 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -368,11 +367,11 @@ describe('Cell', function() {
       });
 
       it('will add colWidths if colSpan > 1 with wordWrap true', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colWidths = [5, 10, 15];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({ colSpan: 2 });
+        let cell = new Cell({ colSpan: 2 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -392,11 +391,11 @@ describe('Cell', function() {
       });
 
       it('will use multiple columns for wordWrap text when using colSpan and wordWrap together', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colWidths = [7, 7, 17];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({ content: 'the quick brown fox', colSpan: 2 });
+        let cell = new Cell({ content: 'the quick brown fox', colSpan: 2 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -420,11 +419,11 @@ describe('Cell', function() {
       });
 
       it('will only use one column for wordWrap text when not using colSpan', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.colWidths = [7, 7, 7];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({ content: 'the quick brown fox' });
+        let cell = new Cell({ content: 'the quick brown fox' });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -436,10 +435,10 @@ describe('Cell', function() {
 
     describe('height', function() {
       it('will match rowHeight of x', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.rowHeights = [5, 10, 15];
 
-        var cell = new Cell();
+        let cell = new Cell();
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -459,10 +458,10 @@ describe('Cell', function() {
       });
 
       it('will add rowHeights if rowSpan > 1', function() {
-        var tableOptions = defaultOptions();
+        let tableOptions = defaultOptions();
         tableOptions.rowHeights = [5, 10, 15];
 
-        var cell = new Cell({ rowSpan: 2 });
+        let cell = new Cell({ rowSpan: 2 });
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -483,7 +482,7 @@ describe('Cell', function() {
     });
 
     describe('drawRight', function() {
-      var tableOptions;
+      let tableOptions;
 
       beforeEach(function() {
         tableOptions = defaultOptions();
@@ -491,7 +490,7 @@ describe('Cell', function() {
       });
 
       it('col 1 of 3, with default colspan', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -499,7 +498,7 @@ describe('Cell', function() {
       });
 
       it('col 2 of 3, with default colspan', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -507,7 +506,7 @@ describe('Cell', function() {
       });
 
       it('col 3 of 3, with default colspan', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 2;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -515,7 +514,7 @@ describe('Cell', function() {
       });
 
       it('col 3 of 4, with default colspan', function() {
-        var cell = new Cell();
+        let cell = new Cell();
         cell.x = 2;
         tableOptions.colWidths = [20, 20, 20, 20];
         cell.mergeTableOptions(tableOptions);
@@ -524,7 +523,7 @@ describe('Cell', function() {
       });
 
       it('col 2 of 3, with colspan of 2', function() {
-        var cell = new Cell({ colSpan: 2 });
+        let cell = new Cell({ colSpan: 2 });
         cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -532,7 +531,7 @@ describe('Cell', function() {
       });
 
       it('col 1 of 3, with colspan of 3', function() {
-        var cell = new Cell({ colSpan: 3 });
+        let cell = new Cell({ colSpan: 3 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -540,7 +539,7 @@ describe('Cell', function() {
       });
 
       it('col 1 of 3, with colspan of 2', function() {
-        var cell = new Cell({ colSpan: 2 });
+        let cell = new Cell({ colSpan: 2 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -550,7 +549,7 @@ describe('Cell', function() {
   });
 
   describe('drawLine', function() {
-    var cell;
+    let cell;
 
     beforeEach(function() {
       cell = new Cell();
@@ -916,7 +915,7 @@ describe('Cell', function() {
   });
 
   describe('RowSpanCell', function() {
-    var original, tableOptions;
+    let original, tableOptions;
 
     beforeEach(function() {
       original = {
@@ -930,7 +929,7 @@ describe('Cell', function() {
     });
 
     it('drawing top of the next row', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
       spanner.init(tableOptions);
@@ -940,7 +939,7 @@ describe('Cell', function() {
     });
 
     it('drawing line 0 of the next row', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
       spanner.init(tableOptions);
@@ -950,7 +949,7 @@ describe('Cell', function() {
     });
 
     it('drawing line 1 of the next row', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
       spanner.init(tableOptions);
@@ -960,7 +959,7 @@ describe('Cell', function() {
     });
 
     it('drawing top of two rows below', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
       spanner.init(tableOptions);
@@ -970,7 +969,7 @@ describe('Cell', function() {
     });
 
     it('drawing line 0 of two rows below', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
       spanner.init(tableOptions);
@@ -980,7 +979,7 @@ describe('Cell', function() {
     });
 
     it('drawing line 1 of two rows below', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
       spanner.init(tableOptions);
@@ -990,7 +989,7 @@ describe('Cell', function() {
     });
 
     it('drawing bottom', function() {
-      var spanner = new RowSpanCell(original);
+      let spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
       spanner.init(tableOptions);

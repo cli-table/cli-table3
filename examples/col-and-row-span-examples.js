@@ -1,22 +1,22 @@
-var Table = require('../src/table');
-var colors = require('colors/safe');
+const Table = require('../src/table');
+const colors = require('colors/safe');
 
 module.exports = function(runTest) {
   function it(name, fn) {
-    var result = fn();
+    let result = fn();
     runTest(name, result[0], result[1], result[2]);
   }
 
   it('use colSpan to span columns - (colSpan above normal cell)', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push([{ colSpan: 2, content: 'greetings' }], [{ colSpan: 2, content: 'greetings' }], ['hello', 'howdy']);
 
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────────────┐',
       '│ greetings     │',
       '├───────────────┤',
@@ -31,14 +31,14 @@ module.exports = function(runTest) {
 
   it('use colSpan to span columns - (colSpan below normal cell)', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(['hello', 'howdy'], [{ colSpan: 2, content: 'greetings' }], [{ colSpan: 2, content: 'greetings' }]);
 
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬───────┐',
       '│ hello │ howdy │',
       '├───────┴───────┤',
@@ -53,7 +53,7 @@ module.exports = function(runTest) {
 
   it('use rowSpan to span rows - (rowSpan on the left side)', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
         [{ rowSpan: 2, content: 'greetings' }, { rowSpan: 2, content: 'greetings', vAlign: 'center' }, 'hello'],
@@ -63,7 +63,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────────┬───────────┬───────┐',
       '│ greetings │           │ hello │',
       '│           │ greetings ├───────┤',
@@ -76,7 +76,7 @@ module.exports = function(runTest) {
 
   it('use rowSpan to span rows - (rowSpan on the right side)', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
         ['hello', { rowSpan: 2, content: 'greetings' }, { rowSpan: 2, content: 'greetings', vAlign: 'bottom' }],
@@ -86,7 +86,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬───────────┬───────────┐',
       '│ hello │ greetings │           │',
       '├───────┤           │           │',
@@ -99,7 +99,7 @@ module.exports = function(runTest) {
 
   it('mix rowSpan and colSpan together for complex table layouts', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
         [{ content: 'hello', colSpan: 2 }, { rowSpan: 2, colSpan: 2, content: 'sup' }, { rowSpan: 3, content: 'hi' }],
@@ -110,7 +110,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬─────┬────┐',
       '│ hello │ sup │ hi │',
       '├───────┤     │    │',
@@ -125,7 +125,7 @@ module.exports = function(runTest) {
 
   it('multi-line content will flow across rows in rowSpan cells', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
         ['hello', { rowSpan: 2, content: 'greetings\nfriends' }, { rowSpan: 2, content: 'greetings\nfriends' }],
@@ -135,7 +135,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬───────────┬───────────┐',
       '│ hello │ greetings │ greetings │',
       '├───────┤ friends   │ friends   │',
@@ -148,7 +148,7 @@ module.exports = function(runTest) {
 
   it('multi-line content will flow across rows in rowSpan cells - (complex layout)', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
         [
@@ -163,7 +163,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬─────┬────┐',
       '│ hello │ sup │ hi │',
       '├───────┤ man │ yo │',
@@ -178,28 +178,28 @@ module.exports = function(runTest) {
 
   it('rowSpan cells can have a staggered layout', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push([{ content: 'a', rowSpan: 2 }, 'b'], [{ content: 'c', rowSpan: 2 }], ['d']);
 
       return table;
     }
 
-    var expected = ['┌───┬───┐', '│ a │ b │', '│   ├───┤', '│   │ c │', '├───┤   │', '│ d │   │', '└───┴───┘'];
+    let expected = ['┌───┬───┐', '│ a │ b │', '│   ├───┤', '│   │ c │', '├───┤   │', '│ d │   │', '└───┴───┘'];
 
     return [makeTable, expected];
   });
 
   it('the layout manager automatically create empty cells to fill in the table', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       //notice we only create 3 cells here, but the table ends up having 6.
       table.push([{ content: 'a', rowSpan: 3, colSpan: 2 }, 'b'], [], [{ content: 'c', rowSpan: 2, colSpan: 2 }], []);
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───┬───┬──┐',
       '│ a │ b │  │', // top-right and bottom-left cells are automatically created to fill the empty space
       '│   ├───┤  │',
@@ -216,7 +216,7 @@ module.exports = function(runTest) {
 
   it('use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         rowHeights: [2],
         style: { head: [], border: [] },
       });
@@ -226,28 +226,28 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = ['┌───────┐', '│ hello │', '│ hi…   │', '└───────┘'];
+    let expected = ['┌───────┐', '│ hello │', '│ hi…   │', '└───────┘'];
 
     return [makeTable, expected];
   });
 
   it('if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content', function() {
     function makeTable() {
-      var table = new Table({ style: { head: [], border: [] } });
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push([{ colSpan: 2, content: 'hello there' }], ['hi', 'hi']);
 
       return table;
     }
 
-    var expected = ['┌─────────────┐', '│ hello there │', '├──────┬──────┤', '│ hi   │ hi   │', '└──────┴──────┘'];
+    let expected = ['┌─────────────┐', '│ hello there │', '├──────┬──────┤', '│ hi   │ hi   │', '└──────┴──────┘'];
 
     return [makeTable, expected];
   });
 
   it('you can specify a column width for only the first row, other rows will be automatically widened to fit content', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         colWidths: [4],
         style: { head: [], border: [] },
       });
@@ -257,14 +257,14 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = ['┌─────────────┐', '│ hello there │', '├────┬────────┤', '│ hi │   hi   │', '└────┴────────┘'];
+    let expected = ['┌─────────────┐', '│ hello there │', '├────┬────────┤', '│ hi │   hi   │', '└────┴────────┘'];
 
     return [makeTable, expected];
   });
 
   it('a column with a null column width will be automatically widened to fit content', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         colWidths: [null, 4],
         style: { head: [], border: [] },
       });
@@ -274,14 +274,14 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = ['┌─────────────┐', '│ hello there │', '├────────┬────┤', '│     hi │ hi │', '└────────┴────┘'];
+    let expected = ['┌─────────────┐', '│ hello there │', '├────────┬────┤', '│     hi │ hi │', '└────────┴────┘'];
 
     return [makeTable, expected];
   });
 
   it('feel free to use colors in your content strings, column widths will be calculated correctly', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         colWidths: [5],
         style: { head: [], border: [] },
       });
@@ -291,7 +291,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = ['┌─────┐', '│ ' + colors.red('he') + '… │', '└─────┘'];
+    let expected = ['┌─────┐', '│ ' + colors.red('he') + '… │', '└─────┘'];
 
     return [makeTable, expected, 'truncation-with-colors'];
   });
@@ -299,7 +299,7 @@ module.exports = function(runTest) {
 
 /*
 
- var expected = [
+ let expected = [
    '┌──┬───┬──┬──┐'
  , '│  │   │  │  │'
  , '├──┼───┼──┼──┤'
