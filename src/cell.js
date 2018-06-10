@@ -1,4 +1,3 @@
-const kindOf = require('kind-of');
 const utils = require('./utils');
 
 class Cell {
@@ -22,13 +21,13 @@ class Cell {
   }
 
   setOptions(options) {
-    if (['boolean', 'number', 'string'].indexOf(kindOf(options)) !== -1) {
+    if (['boolean', 'number', 'string'].indexOf(typeof options) !== -1) {
       options = { content: '' + options };
     }
     options = options || {};
     this.options = options;
     let content = options.content;
-    if (['boolean', 'number', 'string'].indexOf(kindOf(content)) !== -1) {
+    if (['boolean', 'number', 'string'].indexOf(typeof content) !== -1) {
       this.content = String(content);
     } else if (!content) {
       this.content = '';
