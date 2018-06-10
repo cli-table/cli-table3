@@ -408,7 +408,6 @@ describe('Cell',function(){
         cell.x=1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
-        console.log(cell.lines);
         expect(cell.lines.length).toEqual(1);
         expect(cell.lines[0]).toContain('fox');
 
@@ -416,7 +415,6 @@ describe('Cell',function(){
         cell.x=0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
-        console.log(cell.lines);
         expect(cell.lines.length).toEqual(1);
         expect(cell.lines[0]).toContain('fox');
       });
