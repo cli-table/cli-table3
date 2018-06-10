@@ -1,7 +1,8 @@
 cli-table3 
 ===============================================================================
 
-[![npm version](https://badge.fury.io/js/cli-table2.svg)](http://badge.fury.io/js/cli-table2) [![Build Status](https://travis-ci.org/jamestalmage/cli-table2.svg?branch=master)](https://travis-ci.org/jamestalmage/cli-table2) [![Coverage Status](https://coveralls.io/repos/jamestalmage/cli-table2/badge.png?branch=master)](https://coveralls.io/r/jamestalmage/cli-table2?branch=master)
+[![npm version](https://img.shields.io/npm/v/cli-table3.svg)](https://www.npmjs.com/package/cli-table3)
+[![Build Status](https://travis-ci.com/cli-table/cli-table3.svg?branch=master)](https://travis-ci.com/cli-table/cli-table3)
 
 This utility allows you to render unicode-aided tables on the command line from
 your node.js scripts. Based on (and api compatible with) the original [cli-table](https://github.com/Automattic/cli-table),
