@@ -24,7 +24,7 @@
     "growl": "^1.8.1",
     "gulp": "^3.9.0",
     "gulp-istanbul": "^0.10.3",
-    "gulp-mocha": "^2.2.0",
+    "gulp-mocha": "^6.0.0",
     "gulp-util": "^3.0.7",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
