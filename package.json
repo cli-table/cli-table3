@@ -1,6 +1,6 @@
 {
   "name": "cli-table3",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Pretty unicode tables for the command line. Based on the original cli-table.",
   "main": "index.js",
   "files": [
