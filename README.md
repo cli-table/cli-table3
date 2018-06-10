@@ -185,8 +185,6 @@ $ yarn test:watch
 $ yarn docs
 ```
 
-Other build targets are available, check `gulpfile.js` for a comprehensive list.
-
 ## Credits
 
 - James Talmage - author &lt;james.talmage@jrtechnical.com&gt; ([jamestalmage](http://github.com/jamestalmage))
