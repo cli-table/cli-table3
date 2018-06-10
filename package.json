@@ -56,5 +56,8 @@
   "bugs": {
     "url": "https://github.com/cli-table/cli-table3/issues"
   },
-  "homepage": "https://github.com/cli-table/cli-table3"
+  "homepage": "https://github.com/cli-table/cli-table3",
+  "engines": {
+    "node": ">=6"
+  }
 }
