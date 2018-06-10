@@ -5,10 +5,12 @@ cli-table3
 [![Build Status](https://travis-ci.com/cli-table/cli-table3.svg?branch=master)](https://travis-ci.com/cli-table/cli-table3)
 
 This utility allows you to render unicode-aided tables on the command line from
-your node.js scripts. Based on (and api compatible with) the original [cli-table](https://github.com/Automattic/cli-table),
-`cli-table3` is nearly a complete rewrite to accommodate column and row spanning.
-It passes the entire original cli-table test suite, and should be a drop in
-replacement for nearly all users.
+your node.js scripts.
+
+`cli-table3` is based on (and api compatible with) the original [cli-table](https://github.com/Automattic/cli-table),
+and [cli-table2](https://github.com/jamestalmage/cli-table2), which are both
+unmaintained. `cli-table3` includes all the additional features from
+`cli-table2`.
 
 ![Screenshot](http://i.imgur.com/sYq4T.png)
 
