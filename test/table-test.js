@@ -1,6 +1,4 @@
 describe('@api Table ',function(){
-  var chai = require('chai');
-  var expect = chai.expect;
   var Table = require('..');
   var colors = require('colors/safe');
 
@@ -18,7 +16,7 @@ describe('@api Table ',function(){
       , '└───────┴─────────┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join('\n'));
+    expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('allows numbers as `content` property of cells defined using object notation', function() {
@@ -32,7 +30,7 @@ describe('@api Table ',function(){
      , '└────┘'
      ];
 
-    expect(table.toString()).to.equal(expected.join('\n'));
+    expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('throws if content is not a string or number', function() {
@@ -41,7 +39,7 @@ describe('@api Table ',function(){
     expect(function() {
       table.push([{content: {a:'b'}}]);
       table.toString();
-    }).to.throw();
+    }).toThrow();
 
   });
 
@@ -67,7 +65,7 @@ describe('@api Table ',function(){
       , '└─────┴──────────┴─────┘'
     ];
 
-    expect(table.toString()).to.equal(expected.join("\n"));
+    expect(table.toString()).toEqual(expected.join("\n"));
   });
 });
 

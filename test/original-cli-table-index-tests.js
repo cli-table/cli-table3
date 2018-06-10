@@ -1,7 +1,5 @@
 describe('@api original-cli-table index tests',function(){
   var Table = require('../src/table');
-  var chai = require('chai');
-  var expect = chai.expect;
 
     it('test complete table', function (){
       var table = new Table({
@@ -30,7 +28,7 @@ describe('@api original-cli-table index tests',function(){
         , '└──────┴─────────────────────┴─────────────────────────┴─────────────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
       //expect(table.render()).should.eql(expected.join("\n"));
     });
 
@@ -43,7 +41,7 @@ describe('@api original-cli-table index tests',function(){
         }
       });
 
-      expect(table.width).to.equal(8);
+      expect(table.width).toEqual(8);
     });
 
     it('test vertical table output', function() {
@@ -62,7 +60,7 @@ describe('@api original-cli-table index tests',function(){
         , '└────┴──────────────────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test cross table output', function() {
@@ -83,7 +81,7 @@ describe('@api original-cli-table index tests',function(){
         , '└────────┴────────┴──────────────────────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test table colors', function(){
@@ -127,7 +125,7 @@ describe('@api original-cli-table index tests',function(){
         , grey + '└──────'+off+grey+'┴──────────────────┘' + off
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test custom chars', function (){
@@ -165,7 +163,7 @@ describe('@api original-cli-table index tests',function(){
         , '╚══════╧═════╧══════╝'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test compact shortand', function (){
@@ -189,7 +187,7 @@ describe('@api original-cli-table index tests',function(){
         , '└──────┴─────┴──────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test compact empty mid line', function (){
@@ -218,7 +216,7 @@ describe('@api original-cli-table index tests',function(){
         , '└──────┴─────┴──────┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test decoration lines disabled', function (){
@@ -258,7 +256,7 @@ describe('@api original-cli-table index tests',function(){
         , 'frobnicate bar quuz'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 
     it('test with null/undefined as values or column names', function (){
@@ -289,6 +287,6 @@ describe('@api original-cli-table index tests',function(){
         , '└──┴──┴───┘'
       ];
 
-      expect(table.toString()).to.equal(expected.join("\n"));
+      expect(table.toString()).toEqual(expected.join("\n"));
     });
 });

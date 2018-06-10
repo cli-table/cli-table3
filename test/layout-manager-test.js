@@ -1,7 +1,4 @@
 describe('layout-manager',function(){
-  var chai = require('chai');
-  var expect = chai.expect;
-
   var layoutManager = require('../src/layout-manager');
   var layoutTable = layoutManager.layoutTable;
   var addRowSpanCells = layoutManager.addRowSpanCells;
@@ -18,13 +15,13 @@ describe('layout-manager',function(){
 
       layoutTable(table);
 
-      expect(table).to.eql([
+      expect(table).toEqual([
         [{x:0,y:0},{x:1,y:0}],
         [{x:0,y:1},{x:1,y:1}]
       ]);
 
       var w = maxWidth(table);
-      expect(w).to.equal(2);
+      expect(w).toEqual(2);
     });
 
     it('colSpan will push x values to the right',function(){
@@ -35,12 +32,12 @@ describe('layout-manager',function(){
 
       layoutTable(table);
 
-      expect(table).to.eql([
+      expect(table).toEqual([
         [{x:0,y:0,colSpan:2},{x:2,y:0}],
         [{x:0,y:1},{x:1,y:1,colSpan:2}]
       ]);
 
-      expect(maxWidth(table)).to.equal(3);
+      expect(maxWidth(table)).toEqual(3);
     });
 
     it('rowSpan will push x values on cells below',function(){
@@ -51,12 +48,12 @@ describe('layout-manager',function(){
 
       layoutTable(table);
 
-      expect(table).to.eql([
+      expect(table).toEqual([
         [{x:0,y:0,rowSpan:2},{x:1,y:0}],
         [{x:1,y:1}]
       ]);
 
-      expect(maxWidth(table)).to.equal(2);
+      expect(maxWidth(table)).toEqual(2);
     });
 
     it('colSpan and rowSpan together',function(){
@@ -67,12 +64,12 @@ describe('layout-manager',function(){
 
       layoutTable(table);
 
-      expect(table).to.eql([
+      expect(table).toEqual([
         [{x:0,y:0,rowSpan:2,colSpan:2},{x:2,y:0}],
         [{x:2,y:1}]
       ]);
 
-      expect(maxWidth(table)).to.equal(3);
+      expect(maxWidth(table)).toEqual(3);
     });
 
     it('complex layout',function(){
@@ -85,7 +82,7 @@ describe('layout-manager',function(){
 
       layoutTable(table);
 
-      expect(table).to.eql([
+      expect(table).toEqual([
         [{c:'a',y:0,x:0},    {c:'b',y:0,x:1}, {c:'c',y:0,x:2,rowSpan:3,colSpan:2}, {c:'d',y:0,x:4}],
         [{c:'e',rowSpan:2,colSpan:2,y:1,x:0},                                       {c:'f',y:1,x:4}],
         [{c:'g',y:2,x:4}]
@@ -96,7 +93,7 @@ describe('layout-manager',function(){
     it('maxWidth of single element',function(){
       var table = [[{}]];
       layoutTable(table)
-      expect(maxWidth(table)).to.equal(1);
+      expect(maxWidth(table)).toEqual(1);
     });
   });
 
@@ -109,10 +106,10 @@ describe('layout-manager',function(){
 
       addRowSpanCells(table);
 
-      expect(table[0]).to.eql([{x:0,y:0,rowSpan:2},{x:1,y:0}]);
-      expect(table[1].length).to.equal(2);
-      expect(table[1][0]).to.be.instanceOf(RowSpanCell);
-      expect(table[1][1]).to.eql({x:1,y:1});
+      expect(table[0]).toEqual([{x:0,y:0,rowSpan:2},{x:1,y:0}]);
+      expect(table[1].length).toEqual(2);
+      expect(table[1][0]).toBeInstanceOf(RowSpanCell);
+      expect(table[1][1]).toEqual({x:1,y:1});
     });
 
     it('will insert a rowSpan cell - end of line',function(){
@@ -123,10 +120,10 @@ describe('layout-manager',function(){
 
       addRowSpanCells(table);
 
-      expect(table[0]).to.eql([{x:0,y:0},{rowSpan:2,x:1,y:0}]);
-      expect(table[1].length).to.equal(2);
-      expect(table[1][0]).to.eql({x:0,y:1});
-      expect(table[1][1]).to.be.instanceOf(RowSpanCell);
+      expect(table[0]).toEqual([{x:0,y:0},{rowSpan:2,x:1,y:0}]);
+      expect(table[1].length).toEqual(2);
+      expect(table[1][0]).toEqual({x:0,y:1});
+      expect(table[1][1]).toBeInstanceOf(RowSpanCell);
     });
 
     it('will insert a rowSpan cell - middle of line',function(){
@@ -137,11 +134,11 @@ describe('layout-manager',function(){
 
       addRowSpanCells(table);
 
-      expect(table[0]).to.eql([{x:0,y:0},{rowSpan:2,x:1,y:0},{x:2,y:0}]);
-      expect(table[1].length).to.equal(3);
-      expect(table[1][0]).to.eql({x:0,y:1});
-      expect(table[1][1]).to.be.instanceOf(RowSpanCell);
-      expect(table[1][2]).to.eql({x:2,y:1});
+      expect(table[0]).toEqual([{x:0,y:0},{rowSpan:2,x:1,y:0},{x:2,y:0}]);
+      expect(table[1].length).toEqual(3);
+      expect(table[1][0]).toEqual({x:0,y:1});
+      expect(table[1][1]).toBeInstanceOf(RowSpanCell);
+      expect(table[1][2]).toEqual({x:2,y:1});
     });
 
     it('will insert a rowSpan cell - multiple on the same line',function(){
@@ -152,12 +149,12 @@ describe('layout-manager',function(){
 
       addRowSpanCells(table);
 
-      expect(table[0]).to.eql([{x:0,y:0},{rowSpan:2,x:1,y:0},{rowSpan:2,x:2,y:0},{x:3,y:0}]);
-      expect(table[1].length).to.equal(4);
-      expect(table[1][0]).to.eql({x:0,y:1});
-      expect(table[1][1]).to.be.instanceOf(RowSpanCell);
-      expect(table[1][2]).to.be.instanceOf(RowSpanCell);
-      expect(table[1][3]).to.eql({x:3,y:1});
+      expect(table[0]).toEqual([{x:0,y:0},{rowSpan:2,x:1,y:0},{rowSpan:2,x:2,y:0},{x:3,y:0}]);
+      expect(table[1].length).toEqual(4);
+      expect(table[1][0]).toEqual({x:0,y:1});
+      expect(table[1][1]).toBeInstanceOf(RowSpanCell);
+      expect(table[1][2]).toBeInstanceOf(RowSpanCell);
+      expect(table[1][3]).toEqual({x:3,y:1});
     });
   });
 });
