@@ -1,13 +1,8 @@
 describe('utils', function() {
-  var colors = require('colors/safe');
-  var utils = require('../src/utils');
+  const colors = require('colors/safe');
+  const utils = require('../src/utils');
 
-  var strlen = utils.strlen;
-  var repeat = utils.repeat;
-  var pad = utils.pad;
-  var truncate = utils.truncate;
-  var mergeOptions = utils.mergeOptions;
-  var wordWrap = utils.wordWrap;
+  const { strlen, repeat, pad, truncate, mergeOptions, wordWrap } = utils;
 
   describe('strlen', function() {
     it('length of "hello" is 5', function() {
@@ -105,61 +100,61 @@ describe('utils', function() {
     });
 
     it('truncate(colors.zebra("goodnight moon"), 15, "…") == colors.zebra("goodnight moon")', function() {
-      var original = colors.zebra('goodnight moon');
+      let original = colors.zebra('goodnight moon');
       expect(truncate(original, 15, '…')).toEqual(original);
     });
 
     it('truncate(colors.zebra("goodnight moon"), 8, "…") == colors.zebra("goodnig") + "…"', function() {
-      var original = colors.zebra('goodnight moon');
-      var expected = colors.zebra('goodnig') + '…';
+      let original = colors.zebra('goodnight moon');
+      let expected = colors.zebra('goodnig') + '…';
       expect(truncate(original, 8, '…')).toEqual(expected);
     });
 
     it('truncate(colors.zebra("goodnight moon"), 9, "…") == colors.zebra("goodnig") + "…"', function() {
-      var original = colors.zebra('goodnight moon');
-      var expected = colors.zebra('goodnigh') + '…';
+      let original = colors.zebra('goodnight moon');
+      let expected = colors.zebra('goodnigh') + '…';
       expect(truncate(original, 9, '…')).toEqual(expected);
     });
 
     it('red(hello) + green(world) truncated to 9 chars', function() {
-      var original = colors.red('hello') + colors.green(' world');
-      var expected = colors.red('hello') + colors.green(' wo') + '…';
+      let original = colors.red('hello') + colors.green(' world');
+      let expected = colors.red('hello') + colors.green(' wo') + '…';
       expect(truncate(original, 9)).toEqual(expected);
     });
 
     it('red-on-green(hello) + green-on-red(world) truncated to 9 chars', function() {
-      var original = colors.red.bgGreen('hello') + colors.green.bgRed(' world');
-      var expected = colors.red.bgGreen('hello') + colors.green.bgRed(' wo') + '…';
+      let original = colors.red.bgGreen('hello') + colors.green.bgRed(' world');
+      let expected = colors.red.bgGreen('hello') + colors.green.bgRed(' wo') + '…';
       expect(truncate(original, 9)).toEqual(expected);
     });
 
     it('red-on-green(hello) + green-on-red(world) truncated to 10 chars - using inverse', function() {
-      var original = colors.red.bgGreen('hello' + colors.inverse(' world'));
-      var expected = colors.red.bgGreen('hello' + colors.inverse(' wor')) + '…';
+      let original = colors.red.bgGreen('hello' + colors.inverse(' world'));
+      let expected = colors.red.bgGreen('hello' + colors.inverse(' wor')) + '…';
       expect(truncate(original, 10)).toEqual(expected);
     });
 
     it('red-on-green( zebra (hello world) ) truncated to 11 chars', function() {
-      var original = colors.red.bgGreen(colors.zebra('hello world'));
-      var expected = colors.red.bgGreen(colors.zebra('hello world'));
+      let original = colors.red.bgGreen(colors.zebra('hello world'));
+      let expected = colors.red.bgGreen(colors.zebra('hello world'));
       expect(truncate(original, 11)).toEqual(expected);
     });
 
     it('red-on-green( zebra (hello world) ) truncated to 10 chars', function() {
-      var original = colors.red.bgGreen(colors.zebra('hello world'));
-      var expected = colors.red.bgGreen(colors.zebra('hello wor')) + '…';
+      let original = colors.red.bgGreen(colors.zebra('hello world'));
+      let expected = colors.red.bgGreen(colors.zebra('hello wor')) + '…';
       expect(truncate(original, 10)).toEqual(expected);
     });
 
     it('handles reset code', function() {
-      var original = '\x1b[31mhello\x1b[0m world';
-      var expected = '\x1b[31mhello\x1b[0m wor…';
+      let original = '\x1b[31mhello\x1b[0m world';
+      let expected = '\x1b[31mhello\x1b[0m wor…';
       expect(truncate(original, 10)).toEqual(expected);
     });
 
     it('handles reset code (EMPTY VERSION)', function() {
-      var original = '\x1b[31mhello\x1b[0m world';
-      var expected = '\x1b[31mhello\x1b[0m wor…';
+      let original = '\x1b[31mhello\x1b[0m world';
+      let expected = '\x1b[31mhello\x1b[0m wor…';
       expect(truncate(original, 10)).toEqual(expected);
     });
 
@@ -180,8 +175,8 @@ describe('utils', function() {
     });
 
     it('handles color code with CJK chars', function() {
-      var original = '漢字\x1b[31m漢字\x1b[0m漢字';
-      var expected = '漢字\x1b[31m漢字\x1b[0m漢…';
+      let original = '漢字\x1b[31m漢字\x1b[0m漢字';
+      let expected = '漢字\x1b[31m漢字\x1b[0m漢…';
       expect(truncate(original, 11)).toEqual(expected);
     });
   });
@@ -227,26 +222,26 @@ describe('utils', function() {
     });
 
     it('chars will be merged deeply', function() {
-      var expected = defaultOptions();
+      let expected = defaultOptions();
       expected.chars.left = 'L';
       expect(mergeOptions({ chars: { left: 'L' } })).toEqual(expected);
     });
 
     it('style will be merged deeply', function() {
-      var expected = defaultOptions();
+      let expected = defaultOptions();
       expected.style['padding-left'] = 2;
       expect(mergeOptions({ style: { 'padding-left': 2 } })).toEqual(expected);
     });
 
     it('head will be overwritten', function() {
-      var expected = defaultOptions();
+      let expected = defaultOptions();
       expected.style.head = [];
       //we can't use lodash's `merge()` in implementation because it would deeply copy array.
       expect(mergeOptions({ style: { head: [] } })).toEqual(expected);
     });
 
     it('border will be overwritten', function() {
-      var expected = defaultOptions();
+      let expected = defaultOptions();
       expected.style.border = [];
       //we can't use lodash's `merge()` in implementation because it would deeply copy array.
       expect(mergeOptions({ style: { border: [] } })).toEqual(expected);
@@ -255,127 +250,127 @@ describe('utils', function() {
 
   describe('wordWrap', function() {
     it('length', function() {
-      var input = 'Hello, how are you today? I am fine, thank you!';
+      let input = 'Hello, how are you today? I am fine, thank you!';
 
-      var expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
+      let expected = 'Hello, how\nare you\ntoday? I\nam fine,\nthank you!';
 
       expect(wordWrap(10, input).join('\n')).toEqual(expected);
     });
 
     it.skip('length with colors', function() {
-      var input = colors.red('Hello, how are') + colors.blue(' you today? I') + colors.green(' am fine, thank you!');
+      let input = colors.red('Hello, how are') + colors.blue(' you today? I') + colors.green(' am fine, thank you!');
 
-      var expected =
+      let expected =
         colors.red('Hello, how\nare') + colors.blue(' you\ntoday? I') + colors.green('\nam fine,\nthank you!');
 
       expect(wordWrap(10, input).join('\n')).toEqual(expected);
     });
 
     it('will not create an empty last line', function() {
-      var input = 'Hello Hello ';
+      let input = 'Hello Hello ';
 
-      var expected = 'Hello\nHello';
+      let expected = 'Hello\nHello';
 
       expect(wordWrap(5, input).join('\n')).toEqual(expected);
     });
 
     it('will handle color reset code', function() {
-      var input = '\x1b[31mHello\x1b[0m Hello ';
+      let input = '\x1b[31mHello\x1b[0m Hello ';
 
-      var expected = '\x1b[31mHello\x1b[0m\nHello';
+      let expected = '\x1b[31mHello\x1b[0m\nHello';
 
       expect(wordWrap(5, input).join('\n')).toEqual(expected);
     });
 
     it('will handle color reset code (EMPTY version)', function() {
-      var input = '\x1b[31mHello\x1b[m Hello ';
+      let input = '\x1b[31mHello\x1b[m Hello ';
 
-      var expected = '\x1b[31mHello\x1b[m\nHello';
+      let expected = '\x1b[31mHello\x1b[m\nHello';
 
       expect(wordWrap(5, input).join('\n')).toEqual(expected);
     });
 
     it('words longer than limit will not create extra newlines', function() {
-      var input = 'disestablishment is a multiplicity someotherlongword';
+      let input = 'disestablishment is a multiplicity someotherlongword';
 
-      var expected = 'disestablishment\nis a\nmultiplicity\nsomeotherlongword';
+      let expected = 'disestablishment\nis a\nmultiplicity\nsomeotherlongword';
 
       expect(wordWrap(7, input).join('\n')).toEqual(expected);
     });
 
     it('multiple line input', function() {
-      var input = 'a\nb\nc d e d b duck\nm\nn\nr';
-      var expected = ['a', 'b', 'c d', 'e d', 'b', 'duck', 'm', 'n', 'r'];
+      let input = 'a\nb\nc d e d b duck\nm\nn\nr';
+      let expected = ['a', 'b', 'c d', 'e d', 'b', 'duck', 'm', 'n', 'r'];
 
       expect(wordWrap(4, input)).toEqual(expected);
     });
 
     it('will not start a line with whitespace', function() {
-      var input = 'ab cd  ef gh  ij kl';
-      var expected = ['ab cd', 'ef gh', 'ij kl'];
+      let input = 'ab cd  ef gh  ij kl';
+      let expected = ['ab cd', 'ef gh', 'ij kl'];
       expect(wordWrap(7, input)).toEqual(expected);
     });
 
     it('wraps CJK chars', function() {
-      var input = '漢字 漢\n字 漢字';
-      var expected = ['漢字 漢', '字 漢字'];
+      let input = '漢字 漢\n字 漢字';
+      let expected = ['漢字 漢', '字 漢字'];
       expect(wordWrap(7, input)).toEqual(expected);
     });
 
     it('wraps CJK chars with colors', function() {
-      var input = '\x1b[31m漢字\x1b[0m\n 漢字';
-      var expected = ['\x1b[31m漢字\x1b[0m', ' 漢字'];
+      let input = '\x1b[31m漢字\x1b[0m\n 漢字';
+      let expected = ['\x1b[31m漢字\x1b[0m', ' 漢字'];
       expect(wordWrap(5, input)).toEqual(expected);
     });
   });
 
   describe('colorizeLines', function() {
     it('foreground colors continue on each line', function() {
-      var input = colors.red('Hello\nHi').split('\n');
+      let input = colors.red('Hello\nHi').split('\n');
 
       expect(utils.colorizeLines(input)).toEqual([colors.red('Hello'), colors.red('Hi')]);
     });
 
     it('foreground colors continue on each line', function() {
-      var input = colors.bgRed('Hello\nHi').split('\n');
+      let input = colors.bgRed('Hello\nHi').split('\n');
 
       expect(utils.colorizeLines(input)).toEqual([colors.bgRed('Hello'), colors.bgRed('Hi')]);
     });
 
     it('styles will continue on each line', function() {
-      var input = colors.underline('Hello\nHi').split('\n');
+      let input = colors.underline('Hello\nHi').split('\n');
 
       expect(utils.colorizeLines(input)).toEqual([colors.underline('Hello'), colors.underline('Hi')]);
     });
 
     it('styles that end before the break will not be applied to the next line', function() {
-      var input = (colors.underline('Hello') + '\nHi').split('\n');
+      let input = (colors.underline('Hello') + '\nHi').split('\n');
 
       expect(utils.colorizeLines(input)).toEqual([colors.underline('Hello'), 'Hi']);
     });
 
     it('the reset code can be used to drop styles', function() {
-      var input = '\x1b[31mHello\x1b[0m\nHi'.split('\n');
+      let input = '\x1b[31mHello\x1b[0m\nHi'.split('\n');
       expect(utils.colorizeLines(input)).toEqual(['\x1b[31mHello\x1b[0m', 'Hi']);
     });
 
     it('handles aixterm 16-color foreground', function() {
-      var input = '\x1b[90mHello\nHi\x1b[0m'.split('\n');
+      let input = '\x1b[90mHello\nHi\x1b[0m'.split('\n');
       expect(utils.colorizeLines(input)).toEqual(['\x1b[90mHello\x1b[39m', '\x1b[90mHi\x1b[0m']);
     });
 
     it('handles aixterm 16-color background', function() {
-      var input = '\x1b[100mHello\nHi\x1b[m\nHowdy'.split('\n');
+      let input = '\x1b[100mHello\nHi\x1b[m\nHowdy'.split('\n');
       expect(utils.colorizeLines(input)).toEqual(['\x1b[100mHello\x1b[49m', '\x1b[100mHi\x1b[m', 'Howdy']);
     });
 
     it('handles aixterm 256-color foreground', function() {
-      var input = '\x1b[48;5;8mHello\nHi\x1b[0m\nHowdy'.split('\n');
+      let input = '\x1b[48;5;8mHello\nHi\x1b[0m\nHowdy'.split('\n');
       expect(utils.colorizeLines(input)).toEqual(['\x1b[48;5;8mHello\x1b[49m', '\x1b[48;5;8mHi\x1b[0m', 'Howdy']);
     });
 
     it('handles CJK chars', function() {
-      var input = colors.red('漢字\nテスト').split('\n');
+      let input = colors.red('漢字\nテスト').split('\n');
 
       expect(utils.colorizeLines(input)).toEqual([colors.red('漢字'), colors.red('テスト')]);
     });

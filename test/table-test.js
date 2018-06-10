@@ -1,13 +1,13 @@
 describe('@api Table ', function() {
-  var Table = require('..');
-  var colors = require('colors/safe');
+  const Table = require('..');
+  const colors = require('colors/safe');
 
   it('wordWrap with colored text', function() {
-    var table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [7, 9] });
+    let table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [7, 9] });
 
     table.push([colors.red('Hello how are you?'), colors.blue('I am fine thanks!')]);
 
-    var expected = [
+    let expected = [
       '┌───────┬─────────┐',
       '│ ' + colors.red('Hello') + ' │ ' + colors.blue('I am') + '    │',
       '│ ' + colors.red('how') + '   │ ' + colors.blue('fine') + '    │',
@@ -20,17 +20,17 @@ describe('@api Table ', function() {
   });
 
   it('allows numbers as `content` property of cells defined using object notation', function() {
-    var table = new Table({ style: { border: [], head: [] } });
+    let table = new Table({ style: { border: [], head: [] } });
 
     table.push([{ content: 12 }]);
 
-    var expected = ['┌────┐', '│ 12 │', '└────┘'];
+    let expected = ['┌────┐', '│ 12 │', '└────┘'];
 
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('throws if content is not a string or number', function() {
-    var table = new Table({ style: { border: [], head: [] } });
+    let table = new Table({ style: { border: [], head: [] } });
 
     expect(function() {
       table.push([{ content: { a: 'b' } }]);
@@ -39,7 +39,7 @@ describe('@api Table ', function() {
   });
 
   it('works with CJK values', function() {
-    var table = new Table({ style: { border: [], head: [] }, colWidths: [5, 10, 5] });
+    let table = new Table({ style: { border: [], head: [] }, colWidths: [5, 10, 5] });
 
     table.push(
       ['foobar', 'English test', 'baz'],
@@ -48,7 +48,7 @@ describe('@api Table ', function() {
       ['foobar', '한국어테스트', 'baz']
     );
 
-    var expected = [
+    let expected = [
       '┌─────┬──────────┬─────┐',
       '│ fo… │ English… │ baz │',
       '├─────┼──────────┼─────┤',
@@ -66,7 +66,7 @@ describe('@api Table ', function() {
 
 /*
 
- var expected = [
+ let expected = [
    '┌──┬───┬──┬──┐'
  , '│  │   │  │  │'
  , '├──┼───┼──┼──┤'

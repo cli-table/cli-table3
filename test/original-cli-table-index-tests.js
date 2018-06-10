@@ -1,8 +1,8 @@
 describe('@api original-cli-table index tests', function() {
-  var Table = require('../src/table');
+  const Table = require('../src/table');
 
   it('test complete table', function() {
-    var table = new Table({
+    let table = new Table({
       head: ['Rel', 'Change', 'By', 'When'],
       style: {
         'padding-left': 1,
@@ -18,7 +18,7 @@ describe('@api original-cli-table index tests', function() {
       ['v0.1', 'Testing something cool', 'rauchg@gmail.com', '8 minutes ago']
     );
 
-    var expected = [
+    let expected = [
       '┌──────┬─────────────────────┬─────────────────────────┬─────────────────┐',
       '│ Rel  │ Change              │ By                      │ When            │',
       '├──────┼─────────────────────┼─────────────────────────┼─────────────────┤',
@@ -33,7 +33,7 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test width property', function() {
-    var table = new Table({
+    let table = new Table({
       head: ['Cool'],
       style: {
         head: [],
@@ -45,11 +45,11 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test vertical table output', function() {
-    var table = new Table({ style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] } }); // clear styles to prevent color output
+    let table = new Table({ style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] } }); // clear styles to prevent color output
 
     table.push({ 'v0.1': 'Testing something cool' }, { 'v0.1': 'Testing something cool' });
 
-    var expected = [
+    let expected = [
       '┌────┬──────────────────────┐',
       '│v0.1│Testing something cool│',
       '├────┼──────────────────────┤',
@@ -61,14 +61,14 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test cross table output', function() {
-    var table = new Table({
+    let table = new Table({
       head: ['', 'Header 1', 'Header 2'],
       style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
     }); // clear styles to prevent color output
 
     table.push({ 'Header 3': ['v0.1', 'Testing something cool'] }, { 'Header 4': ['v0.1', 'Testing something cool'] });
 
-    var expected = [
+    let expected = [
       '┌────────┬────────┬──────────────────────┐',
       '│        │Header 1│Header 2              │',
       '├────────┼────────┼──────────────────────┤',
@@ -82,16 +82,16 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test table colors', function() {
-    var table = new Table({
+    let table = new Table({
       head: ['Rel', 'By'],
       style: { head: ['red'], border: ['grey'] },
     });
 
-    /*var off = ''
+    /*let off = ''
         , red = ''
         , orange = ''
         , grey = ''*/
-    var off = '\u001b[39m',
+    let off = '\u001b[39m',
       red = '\u001b[31m',
       orange = '\u001b[38;5;221m',
       grey = '\u001b[90m',
@@ -103,7 +103,7 @@ describe('@api original-cli-table index tests', function() {
     // The output from cli-table2 will still look the same, but the border color is
     // toggled off and back on at the border of each cell.
 
-    /*var expected = [
+    /*let expected = [
           grey + '┌──────┬──────────────────┐' + off
         , grey + '│' + off + red + ' Rel  ' + off + grey + '│' + off + red + ' By               ' + off + grey + '│' + off
         , grey + '├──────┼──────────────────┤' + off
@@ -111,7 +111,7 @@ describe('@api original-cli-table index tests', function() {
         , grey + '└──────┴──────────────────┘' + off
       ];*/
 
-    var expected = [
+    let expected = [
       grey + '┌──────' + off + grey + '┬──────────────────┐' + off,
       grey + '│' + off + red + ' Rel  ' + off + grey + '│' + off + red + ' By               ' + off + grey + '│' + off,
       grey + '├──────' + off + grey + '┼──────────────────┤' + off,
@@ -123,7 +123,7 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test custom chars', function() {
-    var table = new Table({
+    let table = new Table({
       chars: {
         top: '═',
         'top-mid': '╤',
@@ -146,7 +146,7 @@ describe('@api original-cli-table index tests', function() {
 
     table.push(['foo', 'bar', 'baz'], ['frob', 'bar', 'quuz']);
 
-    var expected = [
+    let expected = [
       '╔══════╤═════╤══════╗',
       '║ foo  │ bar │ baz  ║',
       '╟──────┼─────┼──────╢',
@@ -158,7 +158,7 @@ describe('@api original-cli-table index tests', function() {
   });
 
   it('test compact shortand', function() {
-    var table = new Table({
+    let table = new Table({
       style: {
         head: [],
         border: [],
@@ -168,13 +168,13 @@ describe('@api original-cli-table index tests', function() {
 
     table.push(['foo', 'bar', 'baz'], ['frob', 'bar', 'quuz']);
 
-    var expected = ['┌──────┬─────┬──────┐', '│ foo  │ bar │ baz  │', '│ frob │ bar │ quuz │', '└──────┴─────┴──────┘'];
+    let expected = ['┌──────┬─────┬──────┐', '│ foo  │ bar │ baz  │', '│ frob │ bar │ quuz │', '└──────┴─────┴──────┘'];
 
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('test compact empty mid line', function() {
-    var table = new Table({
+    let table = new Table({
       chars: {
         mid: '',
         'left-mid': '',
@@ -189,13 +189,13 @@ describe('@api original-cli-table index tests', function() {
 
     table.push(['foo', 'bar', 'baz'], ['frob', 'bar', 'quuz']);
 
-    var expected = ['┌──────┬─────┬──────┐', '│ foo  │ bar │ baz  │', '│ frob │ bar │ quuz │', '└──────┴─────┴──────┘'];
+    let expected = ['┌──────┬─────┬──────┐', '│ foo  │ bar │ baz  │', '│ frob │ bar │ quuz │', '└──────┴─────┴──────┘'];
 
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('test decoration lines disabled', function() {
-    var table = new Table({
+    let table = new Table({
       chars: {
         top: '',
         'top-mid': '',
@@ -223,13 +223,13 @@ describe('@api original-cli-table index tests', function() {
 
     table.push(['foo', 'bar', 'baz'], ['frobnicate', 'bar', 'quuz']);
 
-    var expected = ['foo        bar baz ', 'frobnicate bar quuz'];
+    let expected = ['foo        bar baz ', 'frobnicate bar quuz'];
 
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
   it('test with null/undefined as values or column names', function() {
-    var table = new Table({
+    let table = new Table({
       style: {
         head: [],
         border: [],
@@ -242,13 +242,13 @@ describe('@api original-cli-table index tests', function() {
     // The empty columns have widths based on the strings `null` and `undefined`
     // That does not make sense to me, so I am deviating from the original behavior here.
 
-    /*var expected = [
+    /*let expected = [
           '┌──────┬───────────┬───┐'
         , '│      │           │ 0 │'
         , '└──────┴───────────┴───┘'
       ];  */
 
-    var expected = ['┌──┬──┬───┐', '│  │  │ 0 │', '└──┴──┴───┘'];
+    let expected = ['┌──┬──┬───┐', '│  │  │ 0 │', '└──┴──┴───┘'];
 
     expect(table.toString()).toEqual(expected.join('\n'));
   });

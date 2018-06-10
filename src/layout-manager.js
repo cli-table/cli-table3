@@ -1,8 +1,7 @@
-var kindOf = require('kind-of');
-var objectAssign = require('object-assign');
-var Cell = require('./cell');
-var RowSpanCell = Cell.RowSpanCell;
-var ColSpanCell = Cell.ColSpanCell;
+const kindOf = require('kind-of');
+const objectAssign = require('object-assign');
+const Cell = require('./cell');
+const { ColSpanCell, RowSpanCell } = Cell;
 
 (function() {
   function layoutTable(table) {
@@ -10,11 +9,11 @@ var ColSpanCell = Cell.ColSpanCell;
       row.forEach(function(cell, columnIndex) {
         cell.y = rowIndex;
         cell.x = columnIndex;
-        for (var y = rowIndex; y >= 0; y--) {
-          var row2 = table[y];
-          var xMax = y === rowIndex ? columnIndex : row2.length;
-          for (var x = 0; x < xMax; x++) {
-            var cell2 = row2[x];
+        for (let y = rowIndex; y >= 0; y--) {
+          let row2 = table[y];
+          let xMax = y === rowIndex ? columnIndex : row2.length;
+          for (let x = 0; x < xMax; x++) {
+            let cell2 = row2[x];
             while (cellsConflict(cell, cell2)) {
               cell.x++;
             }
@@ -25,7 +24,7 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function maxWidth(table) {
-    var mw = 0;
+    let mw = 0;
     table.forEach(function(row) {
       row.forEach(function(cell) {
         mw = Math.max(mw, cell.x + (cell.colSpan || 1));
@@ -39,27 +38,27 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function cellsConflict(cell1, cell2) {
-    var yMin1 = cell1.y;
-    var yMax1 = cell1.y - 1 + (cell1.rowSpan || 1);
-    var yMin2 = cell2.y;
-    var yMax2 = cell2.y - 1 + (cell2.rowSpan || 1);
-    var yConflict = !(yMin1 > yMax2 || yMin2 > yMax1);
+    let yMin1 = cell1.y;
+    let yMax1 = cell1.y - 1 + (cell1.rowSpan || 1);
+    let yMin2 = cell2.y;
+    let yMax2 = cell2.y - 1 + (cell2.rowSpan || 1);
+    let yConflict = !(yMin1 > yMax2 || yMin2 > yMax1);
 
-    var xMin1 = cell1.x;
-    var xMax1 = cell1.x - 1 + (cell1.colSpan || 1);
-    var xMin2 = cell2.x;
-    var xMax2 = cell2.x - 1 + (cell2.colSpan || 1);
-    var xConflict = !(xMin1 > xMax2 || xMin2 > xMax1);
+    let xMin1 = cell1.x;
+    let xMax1 = cell1.x - 1 + (cell1.colSpan || 1);
+    let xMin2 = cell2.x;
+    let xMax2 = cell2.x - 1 + (cell2.colSpan || 1);
+    let xConflict = !(xMin1 > xMax2 || xMin2 > xMax1);
 
     return yConflict && xConflict;
   }
 
   function conflictExists(rows, x, y) {
-    var i_max = Math.min(rows.length - 1, y);
-    var cell = { x: x, y: y };
-    for (var i = 0; i <= i_max; i++) {
-      var row = rows[i];
-      for (var j = 0; j < row.length; j++) {
+    let i_max = Math.min(rows.length - 1, y);
+    let cell = { x: x, y: y };
+    for (let i = 0; i <= i_max; i++) {
+      let row = rows[i];
+      for (let j = 0; j < row.length; j++) {
         if (cellsConflict(cell, row[j])) {
           return true;
         }
@@ -69,7 +68,7 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function allBlank(rows, y, xMin, xMax) {
-    for (var x = xMin; x < xMax; x++) {
+    for (let x = xMin; x < xMax; x++) {
       if (conflictExists(rows, x, y)) {
         return false;
       }
@@ -80,8 +79,8 @@ var ColSpanCell = Cell.ColSpanCell;
   function addRowSpanCells(table) {
     table.forEach(function(row, rowIndex) {
       row.forEach(function(cell) {
-        for (var i = 1; i < cell.rowSpan; i++) {
-          var rowSpanCell = new RowSpanCell(cell);
+        for (let i = 1; i < cell.rowSpan; i++) {
+          let rowSpanCell = new RowSpanCell(cell);
           rowSpanCell.x = cell.x;
           rowSpanCell.y = cell.y + i;
           rowSpanCell.colSpan = cell.colSpan;
@@ -92,12 +91,12 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function addColSpanCells(cellRows) {
-    for (var rowIndex = cellRows.length - 1; rowIndex >= 0; rowIndex--) {
-      var cellColumns = cellRows[rowIndex];
-      for (var columnIndex = 0; columnIndex < cellColumns.length; columnIndex++) {
-        var cell = cellColumns[columnIndex];
-        for (var k = 1; k < cell.colSpan; k++) {
-          var colSpanCell = new ColSpanCell();
+    for (let rowIndex = cellRows.length - 1; rowIndex >= 0; rowIndex--) {
+      let cellColumns = cellRows[rowIndex];
+      for (let columnIndex = 0; columnIndex < cellColumns.length; columnIndex++) {
+        let cell = cellColumns[columnIndex];
+        for (let k = 1; k < cell.colSpan; k++) {
+          let colSpanCell = new ColSpanCell();
           colSpanCell.x = cell.x + k;
           colSpanCell.y = cell.y;
           cellColumns.splice(columnIndex + 1, 0, colSpanCell);
@@ -107,7 +106,7 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function insertCell(cell, row) {
-    var x = 0;
+    let x = 0;
     while (x < row.length && row[x].x < cell.x) {
       x++;
     }
@@ -115,24 +114,24 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function fillInTable(table) {
-    var h_max = maxHeight(table);
-    var w_max = maxWidth(table);
-    for (var y = 0; y < h_max; y++) {
-      for (var x = 0; x < w_max; x++) {
+    let h_max = maxHeight(table);
+    let w_max = maxWidth(table);
+    for (let y = 0; y < h_max; y++) {
+      for (let x = 0; x < w_max; x++) {
         if (!conflictExists(table, x, y)) {
-          var opts = { x: x, y: y, colSpan: 1, rowSpan: 1 };
+          let opts = { x: x, y: y, colSpan: 1, rowSpan: 1 };
           x++;
           while (x < w_max && !conflictExists(table, x, y)) {
             opts.colSpan++;
             x++;
           }
-          var y2 = y + 1;
+          let y2 = y + 1;
           while (y2 < h_max && allBlank(table, y2, opts.x, opts.x + opts.colSpan)) {
             opts.rowSpan++;
             y2++;
           }
 
-          var cell = new Cell(opts);
+          let cell = new Cell(opts);
           cell.x = opts.x;
           cell.y = opts.y;
           insertCell(cell, table[y]);
@@ -144,7 +143,7 @@ var ColSpanCell = Cell.ColSpanCell;
   function generateCells(rows) {
     return rows.map(function(row) {
       if (kindOf(row) !== 'array') {
-        var key = Object.keys(row)[0];
+        let key = Object.keys(row)[0];
         row = row[key];
         if (kindOf(row) === 'array') {
           row = row.slice();
@@ -160,7 +159,7 @@ var ColSpanCell = Cell.ColSpanCell;
   }
 
   function makeTableLayout(rows) {
-    var cellRows = generateCells(rows);
+    let cellRows = generateCells(rows);
     layoutTable(cellRows);
     fillInTable(cellRows);
     addRowSpanCells(cellRows);
@@ -181,8 +180,8 @@ var ColSpanCell = Cell.ColSpanCell;
 
 function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
   return function(vals, table) {
-    var result = [];
-    var spanners = [];
+    let result = [];
+    let spanners = [];
     table.forEach(function(row) {
       row.forEach(function(cell) {
         if ((cell[colSpan] || 1) > 1) {
@@ -200,23 +199,23 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
     });
 
     //spanners.forEach(function(cell){
-    for (var k = spanners.length - 1; k >= 0; k--) {
-      var cell = spanners[k];
-      var span = cell[colSpan];
-      var col = cell[x];
-      var existingWidth = result[col];
-      var editableCols = kindOf(vals[col]) === 'number' ? 0 : 1;
-      for (var i = 1; i < span; i++) {
+    for (let k = spanners.length - 1; k >= 0; k--) {
+      let cell = spanners[k];
+      let span = cell[colSpan];
+      let col = cell[x];
+      let existingWidth = result[col];
+      let editableCols = kindOf(vals[col]) === 'number' ? 0 : 1;
+      for (let i = 1; i < span; i++) {
         existingWidth += 1 + result[col + i];
         if (kindOf(vals[col + i]) !== 'number') {
           editableCols++;
         }
       }
       if (cell[desiredWidth] > existingWidth) {
-        i = 0;
+        let i = 0;
         while (editableCols > 0 && cell[desiredWidth] > existingWidth) {
           if (kindOf(vals[col + i]) !== 'number') {
-            var dif = Math.round((cell[desiredWidth] - existingWidth) / editableCols);
+            let dif = Math.round((cell[desiredWidth] - existingWidth) / editableCols);
             existingWidth += dif;
             result[col + i] += dif;
             editableCols--;
@@ -227,7 +226,7 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
     }
 
     objectAssign(vals, result);
-    for (var j = 0; j < vals.length; j++) {
+    for (let j = 0; j < vals.length; j++) {
       vals[j] = Math.max(forcedMin, vals[j] || 0);
     }
   };

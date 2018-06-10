@@ -1,23 +1,23 @@
-var Table = require('../src/table');
-var colors = require('colors/safe');
+const Table = require('../src/table');
+const colors = require('colors/safe');
 
 module.exports = function(runTest) {
   function it(name, fn) {
-    var result = fn();
+    let result = fn();
     runTest(name, result[0], result[1], result[2]);
   }
 
   it('Basic Usage', function() {
     function makeTable() {
       // By default, headers will be red, and borders will be grey
-      var table = new Table({ head: ['a', 'b'] });
+      let table = new Table({ head: ['a', 'b'] });
 
       table.push(['c', 'd']);
 
       return table;
     }
 
-    var expected = [
+    let expected = [
       colors.gray('┌───') + colors.gray('┬───┐'),
       colors.gray('│') + colors.red(' a ') + colors.gray('│') + colors.red(' b ') + colors.gray('│'),
       colors.gray('├───') + colors.gray('┼───┤'),
@@ -33,7 +33,7 @@ module.exports = function(runTest) {
       // For most of these examples, and most of the unit tests we disable colors.
       // It makes unit tests easier to write/understand, and allows these pages to
       // display the examples as text instead of screen shots.
-      var table = new Table({
+      let table = new Table({
         head: ['Rel', 'Change', 'By', 'When'],
         style: {
           head: [], //disable colors in header cells
@@ -50,7 +50,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌──────┬─────────────────────┬─────────────────────────┬─────────────────┐',
       '│ Rel  │ Change              │ By                      │ When            │',
       '├──────┼─────────────────────┼─────────────────────────┼─────────────────┤',
@@ -65,7 +65,7 @@ module.exports = function(runTest) {
 
   it('Create vertical tables by adding objects a that specify key-value pairs', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
       });
 
@@ -74,7 +74,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌────┬──────────────────────┐',
       '│v0.1│Testing something cool│',
       '├────┼──────────────────────┤',
@@ -87,7 +87,7 @@ module.exports = function(runTest) {
 
   it('Cross tables are similar to vertical tables, but include an empty string for the first header', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         head: ['', 'Header 1', 'Header 2'],
         style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
       }); // clear styles to prevent color output
@@ -100,7 +100,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌────────┬────────┬──────────────────────┐',
       '│        │Header 1│Header 2              │',
       '├────────┼────────┼──────────────────────┤',
@@ -115,7 +115,7 @@ module.exports = function(runTest) {
 
   it('Stylize the table with custom border characters', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         chars: {
           top: '═',
           'top-mid': '╤',
@@ -141,7 +141,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '╔══════╤═════╤══════╗',
       '║ foo  │ bar │ baz  ║',
       '╟──────┼─────┼──────╢',
@@ -154,14 +154,14 @@ module.exports = function(runTest) {
 
   it('Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines', function() {
     function makeTable() {
-      var table = new Table({ style: { border: [], header: [] } });
+      let table = new Table({ style: { border: [], header: [] } });
 
       table.push([colors.red('Hello\nhow\nare\nyou?'), colors.blue('I\nam\nfine\nthanks!')]);
 
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬─────────┐',
       '│ ' + colors.red('Hello') + ' │ ' + colors.blue('I') + '       │',
       '│ ' + colors.red('how') + '   │ ' + colors.blue('am') + '      │',
@@ -175,7 +175,7 @@ module.exports = function(runTest) {
 
   it('Set `wordWrap` to true to make lines of text wrap instead of being truncated', function() {
     function makeTable() {
-      var table = new Table({
+      let table = new Table({
         style: { border: [], header: [] },
         colWidths: [7, 9],
         wordWrap: true,
@@ -186,7 +186,7 @@ module.exports = function(runTest) {
       return table;
     }
 
-    var expected = [
+    let expected = [
       '┌───────┬─────────┐',
       '│ Hello │ I am    │',
       '│ how   │ fine    │',
@@ -202,7 +202,7 @@ module.exports = function(runTest) {
 /* Expectation - ready to be copy/pasted and filled in. DO NOT DELETE THIS
 
 
- var expected = [
+ let expected = [
    '┌──┬───┬──┬──┐'
  , '│  │   │  │  │'
  , '├──┼───┼──┼──┤'

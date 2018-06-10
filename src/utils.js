@@ -1,14 +1,14 @@
-var objectAssign = require('object-assign');
-var stringWidth = require('string-width');
+const objectAssign = require('object-assign');
+const stringWidth = require('string-width');
 
 function codeRegex(capture) {
   return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g;
 }
 
 function strlen(str) {
-  var code = codeRegex();
-  var stripped = ('' + str).replace(code, '');
-  var split = stripped.split('\n');
+  let code = codeRegex();
+  let stripped = ('' + str).replace(code, '');
+  let split = stripped.split('\n');
   return split.reduce(function(memo, s) {
     return stringWidth(s) > memo ? stringWidth(s) : memo;
   }, 0);
@@ -19,29 +19,30 @@ function repeat(str, times) {
 }
 
 function pad(str, len, pad, dir) {
-  var length = strlen(str);
+  let length = strlen(str);
   if (len + 1 >= length) {
-    var padlen = len - length;
+    let padlen = len - length;
     switch (dir) {
-      case 'right':
+      case 'right': {
         str = repeat(pad, padlen) + str;
         break;
-
-      case 'center':
-        var right = Math.ceil(padlen / 2);
-        var left = padlen - right;
+      }
+      case 'center': {
+        let right = Math.ceil(padlen / 2);
+        let left = padlen - right;
         str = repeat(pad, left) + str + repeat(pad, right);
         break;
-
-      default:
+      }
+      default: {
         str = str + repeat(pad, padlen);
         break;
+      }
     }
   }
   return str;
 }
 
-var codeCache = {};
+let codeCache = {};
 
 function addToCodeCache(name, on, off) {
   on = '\u001b[' + on + 'm';
@@ -59,7 +60,7 @@ addToCodeCache('inverse', 7, 27);
 addToCodeCache('strikethrough', 9, 29);
 
 function updateState(state, controlChars) {
-  var controlCode = controlChars[1] ? parseInt(controlChars[1].split(';')[0]) : 0;
+  let controlCode = controlChars[1] ? parseInt(controlChars[1].split(';')[0]) : 0;
   if ((controlCode >= 30 && controlCode <= 39) || (controlCode >= 90 && controlCode <= 97)) {
     state.lastForegroundAdded = controlChars[0];
     return;
@@ -69,7 +70,7 @@ function updateState(state, controlChars) {
     return;
   }
   if (controlCode === 0) {
-    for (var i in state) {
+    for (let i in state) {
       /* istanbul ignore else */
       if (state.hasOwnProperty(i)) {
         delete state[i];
@@ -77,16 +78,16 @@ function updateState(state, controlChars) {
     }
     return;
   }
-  var info = codeCache[controlChars[0]];
+  let info = codeCache[controlChars[0]];
   if (info) {
     state[info.set] = info.to;
   }
 }
 
 function readState(line) {
-  var code = codeRegex(true);
-  var controlChars = code.exec(line);
-  var state = {};
+  let code = codeRegex(true);
+  let controlChars = code.exec(line);
+  let state = {};
   while (controlChars !== null) {
     updateState(state, controlChars);
     controlChars = code.exec(line);
@@ -95,8 +96,8 @@ function readState(line) {
 }
 
 function unwindState(state, ret) {
-  var lastBackgroundAdded = state.lastBackgroundAdded;
-  var lastForegroundAdded = state.lastForegroundAdded;
+  let lastBackgroundAdded = state.lastBackgroundAdded;
+  let lastForegroundAdded = state.lastForegroundAdded;
 
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
@@ -118,8 +119,8 @@ function unwindState(state, ret) {
 }
 
 function rewindState(state, ret) {
-  var lastBackgroundAdded = state.lastBackgroundAdded;
-  var lastForegroundAdded = state.lastForegroundAdded;
+  let lastBackgroundAdded = state.lastBackgroundAdded;
+  let lastForegroundAdded = state.lastForegroundAdded;
 
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
@@ -153,17 +154,17 @@ function truncateWidth(str, desiredLength) {
 }
 
 function truncateWidthWithAnsi(str, desiredLength) {
-  var code = codeRegex(true);
-  var split = str.split(codeRegex());
-  var splitIndex = 0;
-  var retLen = 0;
-  var ret = '';
-  var myArray;
-  var state = {};
+  let code = codeRegex(true);
+  let split = str.split(codeRegex());
+  let splitIndex = 0;
+  let retLen = 0;
+  let ret = '';
+  let myArray;
+  let state = {};
 
   while (retLen < desiredLength) {
     myArray = code.exec(str);
-    var toAdd = split[splitIndex];
+    let toAdd = split[splitIndex];
     splitIndex++;
     if (retLen + strlen(toAdd) > desiredLength) {
       toAdd = truncateWidth(toAdd, desiredLength - retLen);
@@ -185,13 +186,13 @@ function truncateWidthWithAnsi(str, desiredLength) {
 
 function truncate(str, desiredLength, truncateChar) {
   truncateChar = truncateChar || '…';
-  var lengthOfStr = strlen(str);
+  let lengthOfStr = strlen(str);
   if (lengthOfStr <= desiredLength) {
     return str;
   }
   desiredLength -= strlen(truncateChar);
 
-  var ret = truncateWidthWithAnsi(str, desiredLength);
+  let ret = truncateWidthWithAnsi(str, desiredLength);
 
   return ret + truncateChar;
 }
@@ -234,21 +235,21 @@ function defaultOptions() {
 function mergeOptions(options, defaults) {
   options = options || {};
   defaults = defaults || defaultOptions();
-  var ret = objectAssign({}, defaults, options);
+  let ret = objectAssign({}, defaults, options);
   ret.chars = objectAssign({}, defaults.chars, options.chars);
   ret.style = objectAssign({}, defaults.style, options.style);
   return ret;
 }
 
 function wordWrap(maxLength, input) {
-  var lines = [];
-  var split = input.split(/(\s+)/g);
-  var line = [];
-  var lineLength = 0;
-  var whitespace;
-  for (var i = 0; i < split.length; i += 2) {
-    var word = split[i];
-    var newLength = lineLength + strlen(word);
+  let lines = [];
+  let split = input.split(/(\s+)/g);
+  let line = [];
+  let lineLength = 0;
+  let whitespace;
+  for (let i = 0; i < split.length; i += 2) {
+    let word = split[i];
+    let newLength = lineLength + strlen(word);
     if (lineLength > 0 && whitespace) {
       newLength += whitespace.length;
     }
@@ -271,21 +272,21 @@ function wordWrap(maxLength, input) {
 }
 
 function multiLineWordWrap(maxLength, input) {
-  var output = [];
+  let output = [];
   input = input.split('\n');
-  for (var i = 0; i < input.length; i++) {
+  for (let i = 0; i < input.length; i++) {
     output.push.apply(output, wordWrap(maxLength, input[i]));
   }
   return output;
 }
 
 function colorizeLines(input) {
-  var state = {};
-  var output = [];
-  for (var i = 0; i < input.length; i++) {
-    var line = rewindState(state, input[i]);
+  let state = {};
+  let output = [];
+  for (let i = 0; i < input.length; i++) {
+    let line = rewindState(state, input[i]);
     state = readState(line);
-    var temp = objectAssign({}, state);
+    let temp = objectAssign({}, state);
     output.push(unwindState(temp, line));
   }
   return output;
