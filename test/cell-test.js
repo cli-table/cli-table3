@@ -1,113 +1,113 @@
-describe('Cell',function(){
+describe('Cell', function() {
   var colors = require('colors');
   var Cell = require('../src/cell');
   var RowSpanCell = Cell.RowSpanCell;
   var ColSpanCell = Cell.ColSpanCell;
   var mergeOptions = require('../src/utils').mergeOptions;
 
-  function defaultOptions(){
+  function defaultOptions() {
     //overwrite coloring of head and border by default for easier testing.
-    return mergeOptions({style:{head:[],border:[]}});
+    return mergeOptions({ style: { head: [], border: [] } });
   }
 
-  function defaultChars(){
+  function defaultChars() {
     return {
-      'top': '─'
-      , 'topMid': '┬'
-      , 'topLeft': '┌'
-      , 'topRight': '┐'
-      , 'bottom': '─'
-      , 'bottomMid': '┴'
-      , 'bottomLeft': '└'
-      , 'bottomRight': '┘'
-      , 'left': '│'
-      , 'leftMid': '├'
-      , 'mid': '─'
-      , 'midMid': '┼'
-      , 'right': '│'
-      , 'rightMid': '┤'
-      , 'middle': '│'
+      top: '─',
+      topMid: '┬',
+      topLeft: '┌',
+      topRight: '┐',
+      bottom: '─',
+      bottomMid: '┴',
+      bottomLeft: '└',
+      bottomRight: '┘',
+      left: '│',
+      leftMid: '├',
+      mid: '─',
+      midMid: '┼',
+      right: '│',
+      rightMid: '┤',
+      middle: '│',
     };
   }
 
-  describe('constructor',function(){
-    it('colSpan and rowSpan default to 1',function(){
+  describe('constructor', function() {
+    it('colSpan and rowSpan default to 1', function() {
       var cell = new Cell();
       expect(cell.colSpan).toEqual(1);
       expect(cell.rowSpan).toEqual(1);
     });
 
-    it('colSpan and rowSpan can be set via constructor',function(){
-      var cell = new Cell({rowSpan:2,colSpan:3});
+    it('colSpan and rowSpan can be set via constructor', function() {
+      var cell = new Cell({ rowSpan: 2, colSpan: 3 });
       expect(cell.rowSpan).toEqual(2);
       expect(cell.colSpan).toEqual(3);
     });
 
-    it('content can be set as a string',function(){
+    it('content can be set as a string', function() {
       var cell = new Cell('hello\nworld');
       expect(cell.content).toEqual('hello\nworld');
     });
 
-    it('content can be set as a options property',function(){
-      var cell = new Cell({content:'hello\nworld'});
+    it('content can be set as a options property', function() {
+      var cell = new Cell({ content: 'hello\nworld' });
       expect(cell.content).toEqual('hello\nworld');
     });
 
-    it('default content is an empty string',function(){
+    it('default content is an empty string', function() {
       var cell = new Cell();
       expect(cell.content).toEqual('');
     });
 
-    it('new Cell(null) will have empty string content',function(){
+    it('new Cell(null) will have empty string content', function() {
       var cell = new Cell(null);
       expect(cell.content).toEqual('');
     });
 
-    it('new Cell({content: null}) will have empty string content',function(){
-      var cell = new Cell({content: null});
+    it('new Cell({content: null}) will have empty string content', function() {
+      var cell = new Cell({ content: null });
       expect(cell.content).toEqual('');
     });
 
-    it('new Cell(0) will have "0" as content',function(){
+    it('new Cell(0) will have "0" as content', function() {
       var cell = new Cell(0);
       expect(cell.content).toEqual('0');
     });
 
-    it('new Cell({content: 0}) will have "0" as content',function(){
-      var cell = new Cell({content: 0});
+    it('new Cell({content: 0}) will have "0" as content', function() {
+      var cell = new Cell({ content: 0 });
       expect(cell.content).toEqual('0');
     });
 
-    it('new Cell(false) will have "false" as content',function(){
+    it('new Cell(false) will have "false" as content', function() {
       var cell = new Cell(false);
       expect(cell.content).toEqual('false');
     });
 
-    it('new Cell({content: false}) will have "false" as content',function(){
-      var cell = new Cell({content: false});
+    it('new Cell({content: false}) will have "false" as content', function() {
+      var cell = new Cell({ content: false });
       expect(cell.content).toEqual('false');
     });
   });
 
-  describe('mergeTableOptions',function(){
-    describe('chars',function(){
-      it('unset chars take on value of table',function(){
+  describe('mergeTableOptions', function() {
+    describe('chars', function() {
+      it('unset chars take on value of table', function() {
         var cell = new Cell();
         var tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.chars).toEqual(defaultChars());
       });
 
-      it('set chars override the value of table',function(){
-        var cell = new Cell({chars:{bottomRight:'='}});
+      it('set chars override the value of table', function() {
+        var cell = new Cell({ chars: { bottomRight: '=' } });
         cell.mergeTableOptions(defaultOptions());
         var chars = defaultChars();
         chars.bottomRight = '=';
         expect(cell.chars).toEqual(chars);
       });
 
-      it('hyphenated names will be converted to camel-case',function(){
-        var cell = new Cell({chars:{'bottom-left':'='}});
+      it('hyphenated names will be converted to camel-case', function() {
+        var cell = new Cell({ chars: { 'bottom-left': '=' } });
         cell.mergeTableOptions(defaultOptions());
         var chars = defaultChars();
         chars.bottomLeft = '=';
@@ -115,22 +115,22 @@ describe('Cell',function(){
       });
     });
 
-    describe('truncate',function(){
-      it('if unset takes on value of table',function(){
+    describe('truncate', function() {
+      it('if unset takes on value of table', function() {
         var cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).toEqual('…');
       });
 
-      it('if set overrides value of table',function(){
-        var cell = new Cell({truncate:'...'});
+      it('if set overrides value of table', function() {
+        var cell = new Cell({ truncate: '...' });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.truncate).toEqual('...');
       });
     });
 
-    describe('style.padding-left', function () {
-      it('if unset will be copied from tableOptions.style', function () {
+    describe('style.padding-left', function() {
+      it('if unset will be copied from tableOptions.style', function() {
         var cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingLeft).toEqual(1);
@@ -148,19 +148,19 @@ describe('Cell',function(){
         expect(cell.paddingLeft).toEqual(3);
       });
 
-      it('if set will override tableOptions.style', function () {
-        var cell = new Cell({style:{'padding-left':2}});
+      it('if set will override tableOptions.style', function() {
+        var cell = new Cell({ style: { 'padding-left': 2 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingLeft).toEqual(2);
 
-        cell = new Cell({style:{paddingLeft:3}});
+        cell = new Cell({ style: { paddingLeft: 3 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingLeft).toEqual(3);
       });
     });
 
-    describe('style.padding-right', function () {
-      it('if unset will be copied from tableOptions.style', function () {
+    describe('style.padding-right', function() {
+      it('if unset will be copied from tableOptions.style', function() {
         var cell = new Cell();
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingRight).toEqual(1);
@@ -178,53 +178,53 @@ describe('Cell',function(){
         expect(cell.paddingRight).toEqual(3);
       });
 
-      it('if set will override tableOptions.style', function () {
-        var cell = new Cell({style:{'padding-right':2}});
+      it('if set will override tableOptions.style', function() {
+        var cell = new Cell({ style: { 'padding-right': 2 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingRight).toEqual(2);
 
-        cell = new Cell({style:{paddingRight:3}});
+        cell = new Cell({ style: { paddingRight: 3 } });
         cell.mergeTableOptions(defaultOptions());
         expect(cell.paddingRight).toEqual(3);
       });
     });
 
-    describe('desiredWidth',function(){
-      it('content(hello) padding(1,1) == 7',function(){
+    describe('desiredWidth', function() {
+      it('content(hello) padding(1,1) == 7', function() {
         var cell = new Cell('hello');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredWidth).toEqual(7);
       });
 
-      it('content(hi) padding(1,2) == 5',function(){
-        var cell = new Cell({content:'hi',style:{paddingRight:2}});
+      it('content(hi) padding(1,2) == 5', function() {
+        var cell = new Cell({ content: 'hi', style: { paddingRight: 2 } });
         var tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.desiredWidth).toEqual(5);
       });
 
-      it('content(hi) padding(3,2) == 7',function(){
-        var cell = new Cell({content:'hi',style:{paddingLeft:3,paddingRight:2}});
+      it('content(hi) padding(3,2) == 7', function() {
+        var cell = new Cell({ content: 'hi', style: { paddingLeft: 3, paddingRight: 2 } });
         var tableOptions = defaultOptions();
         cell.mergeTableOptions(tableOptions);
         expect(cell.desiredWidth).toEqual(7);
       });
     });
 
-    describe('desiredHeight',function(){
-      it('1 lines of text',function(){
+    describe('desiredHeight', function() {
+      it('1 lines of text', function() {
         var cell = new Cell('hi');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(1);
       });
 
-      it('2 lines of text',function(){
+      it('2 lines of text', function() {
         var cell = new Cell('hi\nbye');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(2);
       });
 
-      it('2 lines of text',function(){
+      it('2 lines of text', function() {
         var cell = new Cell('hi\nbye\nyo');
         cell.mergeTableOptions(defaultOptions());
         expect(cell.desiredHeight).toEqual(3);
@@ -232,11 +232,11 @@ describe('Cell',function(){
     });
   });
 
-  describe('init',function(){
-    describe('hAlign',function(){
-      it('if unset takes colAlign value from tableOptions',function(){
+  describe('init', function() {
+    describe('hAlign', function() {
+      it('if unset takes colAlign value from tableOptions', function() {
         var tableOptions = defaultOptions();
-        tableOptions.colAligns = ['left','right','both'];
+        tableOptions.colAligns = ['left', 'right', 'both'];
         var cell = new Cell();
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
@@ -249,25 +249,25 @@ describe('Cell',function(){
         expect(cell.hAlign).toEqual('right');
         cell = new Cell();
         cell.mergeTableOptions(tableOptions);
-        cell.x=2;
+        cell.x = 2;
         cell.init(tableOptions);
         expect(cell.hAlign).toEqual('both');
       });
 
-      it('if set overrides tableOptions',function(){
+      it('if set overrides tableOptions', function() {
         var tableOptions = defaultOptions();
-        tableOptions.colAligns = ['left','right','both'];
-        var cell = new Cell({hAlign:'right'});
+        tableOptions.colAligns = ['left', 'right', 'both'];
+        var cell = new Cell({ hAlign: 'right' });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.hAlign).toEqual('right');
-        cell = new Cell({hAlign:'left'});
+        cell = new Cell({ hAlign: 'left' });
         cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.hAlign).toEqual('left');
-        cell = new Cell({hAlign:'right'});
+        cell = new Cell({ hAlign: 'right' });
         cell.x = 2;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -275,12 +275,12 @@ describe('Cell',function(){
       });
     });
 
-    describe('vAlign',function(){
-      it('if unset takes rowAlign value from tableOptions',function(){
+    describe('vAlign', function() {
+      it('if unset takes rowAlign value from tableOptions', function() {
         var tableOptions = defaultOptions();
-        tableOptions.rowAligns = ['top','bottom','center'];
+        tableOptions.rowAligns = ['top', 'bottom', 'center'];
         var cell = new Cell();
-        cell.y=0;
+        cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.vAlign).toEqual('top');
@@ -296,23 +296,23 @@ describe('Cell',function(){
         expect(cell.vAlign).toEqual('center');
       });
 
-      it('if set overrides tableOptions',function(){
+      it('if set overrides tableOptions', function() {
         var tableOptions = defaultOptions();
-        tableOptions.rowAligns = ['top','bottom','center'];
+        tableOptions.rowAligns = ['top', 'bottom', 'center'];
 
-        var cell = new Cell({vAlign:'bottom'});
+        var cell = new Cell({ vAlign: 'bottom' });
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.vAlign).toEqual('bottom');
 
-        cell = new Cell({vAlign:'top'});
+        cell = new Cell({ vAlign: 'top' });
         cell.y = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.vAlign).toEqual('top');
 
-        cell = new Cell({vAlign:'center'});
+        cell = new Cell({ vAlign: 'center' });
         cell.y = 2;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -320,10 +320,10 @@ describe('Cell',function(){
       });
     });
 
-    describe('width', function(){
-      it('will match colWidth of x',function(){
+    describe('width', function() {
+      it('will match colWidth of x', function() {
         var tableOptions = defaultOptions();
-        tableOptions.colWidths = [5,10,15];
+        tableOptions.colWidths = [5, 10, 15];
 
         var cell = new Cell();
         cell.x = 0;
@@ -344,139 +344,137 @@ describe('Cell',function(){
         expect(cell.width).toEqual(15);
       });
 
-      it('will add colWidths if colSpan > 1 with wordWrap false',function(){
+      it('will add colWidths if colSpan > 1 with wordWrap false', function() {
         var tableOptions = defaultOptions();
-        tableOptions.colWidths = [5,10,15];
+        tableOptions.colWidths = [5, 10, 15];
 
-        var cell = new Cell({colSpan:2});
-        cell.x=0;
+        var cell = new Cell({ colSpan: 2 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(16);
 
-        cell = new Cell({colSpan:2});
-        cell.x=1;
+        cell = new Cell({ colSpan: 2 });
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(26);
 
-        cell = new Cell({colSpan:3});
-        cell.x=0;
+        cell = new Cell({ colSpan: 3 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(32);
       });
 
-      it('will add colWidths if colSpan > 1 with wordWrap true',function(){
+      it('will add colWidths if colSpan > 1 with wordWrap true', function() {
         var tableOptions = defaultOptions();
-        tableOptions.colWidths = [5,10,15];
+        tableOptions.colWidths = [5, 10, 15];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({colSpan:2});
-        cell.x=0;
+        var cell = new Cell({ colSpan: 2 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(16);
 
-        cell = new Cell({colSpan:2});
-        cell.x=1;
+        cell = new Cell({ colSpan: 2 });
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(26);
 
-        cell = new Cell({colSpan:3});
-        cell.x=0;
+        cell = new Cell({ colSpan: 3 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.width).toEqual(32);
       });
 
-      it('will use multiple columns for wordWrap text when using colSpan and wordWrap together',function(){
+      it('will use multiple columns for wordWrap text when using colSpan and wordWrap together', function() {
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [7, 7, 17];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({content:"the quick brown fox", colSpan:2});
-        cell.x=0;
+        var cell = new Cell({ content: 'the quick brown fox', colSpan: 2 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.lines.length).toEqual(2);
         expect(cell.lines[0]).toContain('quick');
         expect(cell.lines[1]).toContain('fox');
 
-        cell = new Cell({content:"the quick brown fox", colSpan:2});
-        cell.x=1;
+        cell = new Cell({ content: 'the quick brown fox', colSpan: 2 });
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.lines.length).toEqual(1);
         expect(cell.lines[0]).toContain('fox');
 
-        cell = new Cell({content:"the quick brown fox", colSpan:3});
-        cell.x=0;
+        cell = new Cell({ content: 'the quick brown fox', colSpan: 3 });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.lines.length).toEqual(1);
         expect(cell.lines[0]).toContain('fox');
       });
 
-      it('will only use one column for wordWrap text when not using colSpan',function(){
+      it('will only use one column for wordWrap text when not using colSpan', function() {
         var tableOptions = defaultOptions();
         tableOptions.colWidths = [7, 7, 7];
         tableOptions.wordWrap = true;
 
-        var cell = new Cell({content:"the quick brown fox"});
-        cell.x=0;
+        var cell = new Cell({ content: 'the quick brown fox' });
+        cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.lines.length).toEqual(4);
         expect(cell.lines[1]).toContain('quick');
         expect(cell.lines[3]).toContain('fox');
       });
-
-
     });
 
-    describe('height', function(){
-      it('will match rowHeight of x',function(){
+    describe('height', function() {
+      it('will match rowHeight of x', function() {
         var tableOptions = defaultOptions();
-        tableOptions.rowHeights = [5,10,15];
+        tableOptions.rowHeights = [5, 10, 15];
 
         var cell = new Cell();
-        cell.y=0;
+        cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.height).toEqual(5);
 
         cell = new Cell();
-        cell.y=1;
+        cell.y = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.height).toEqual(10);
 
         cell = new Cell();
-        cell.y=2;
+        cell.y = 2;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.height).toEqual(15);
       });
 
-      it('will add rowHeights if rowSpan > 1',function(){
+      it('will add rowHeights if rowSpan > 1', function() {
         var tableOptions = defaultOptions();
-        tableOptions.rowHeights = [5,10,15];
+        tableOptions.rowHeights = [5, 10, 15];
 
-        var cell = new Cell({rowSpan:2});
+        var cell = new Cell({ rowSpan: 2 });
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.height).toEqual(16);
 
-        cell = new Cell({rowSpan:2});
+        cell = new Cell({ rowSpan: 2 });
         cell.y = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.height).toEqual(26);
 
-        cell = new Cell({rowSpan:3});
+        cell = new Cell({ rowSpan: 3 });
         cell.y = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -484,15 +482,15 @@ describe('Cell',function(){
       });
     });
 
-    describe('drawRight', function(){
+    describe('drawRight', function() {
       var tableOptions;
 
-      beforeEach(function(){
+      beforeEach(function() {
         tableOptions = defaultOptions();
-        tableOptions.colWidths = [20,20,20];
+        tableOptions.colWidths = [20, 20, 20];
       });
 
-      it('col 1 of 3, with default colspan',function(){
+      it('col 1 of 3, with default colspan', function() {
         var cell = new Cell();
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
@@ -500,7 +498,7 @@ describe('Cell',function(){
         expect(cell.drawRight).toEqual(false);
       });
 
-      it('col 2 of 3, with default colspan',function(){
+      it('col 2 of 3, with default colspan', function() {
         var cell = new Cell();
         cell.x = 1;
         cell.mergeTableOptions(tableOptions);
@@ -508,7 +506,7 @@ describe('Cell',function(){
         expect(cell.drawRight).toEqual(false);
       });
 
-      it('col 3 of 3, with default colspan',function(){
+      it('col 3 of 3, with default colspan', function() {
         var cell = new Cell();
         cell.x = 2;
         cell.mergeTableOptions(tableOptions);
@@ -516,33 +514,33 @@ describe('Cell',function(){
         expect(cell.drawRight).toEqual(true);
       });
 
-      it('col 3 of 4, with default colspan',function(){
+      it('col 3 of 4, with default colspan', function() {
         var cell = new Cell();
         cell.x = 2;
-        tableOptions.colWidths = [20,20,20,20];
+        tableOptions.colWidths = [20, 20, 20, 20];
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.drawRight).toEqual(false);
       });
 
-      it('col 2 of 3, with colspan of 2',function(){
-        var cell = new Cell({colSpan:2});
-        cell.x=1;
+      it('col 2 of 3, with colspan of 2', function() {
+        var cell = new Cell({ colSpan: 2 });
+        cell.x = 1;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.drawRight).toEqual(true);
       });
 
-      it('col 1 of 3, with colspan of 3',function(){
-        var cell = new Cell({colSpan:3});
+      it('col 1 of 3, with colspan of 3', function() {
+        var cell = new Cell({ colSpan: 3 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
         expect(cell.drawRight).toEqual(true);
       });
 
-      it('col 1 of 3, with colspan of 2',function(){
-        var cell = new Cell({colSpan:2});
+      it('col 1 of 3, with colspan of 2', function() {
+        var cell = new Cell({ colSpan: 2 });
         cell.x = 0;
         cell.mergeTableOptions(tableOptions);
         cell.init(tableOptions);
@@ -551,10 +549,10 @@ describe('Cell',function(){
     });
   });
 
-  describe('drawLine', function(){
+  describe('drawLine', function() {
     var cell;
 
-    beforeEach(function () {
+    beforeEach(function() {
       cell = new Cell();
 
       //manually init
@@ -572,15 +570,15 @@ describe('Cell',function(){
       cell.x = cell.y = 0;
     });
 
-    describe('top line',function(){
-      it('will draw the top left corner when x=0,y=0',function(){
+    describe('top line', function() {
+      it('will draw the top left corner when x=0,y=0', function() {
         cell.x = cell.y = 0;
         expect(cell.draw('top')).toEqual('┌───────');
         cell.drawRight = true;
         expect(cell.draw('top')).toEqual('┌───────┐');
       });
 
-      it('will draw the top mid corner when x=1,y=0',function(){
+      it('will draw the top mid corner when x=1,y=0', function() {
         cell.x = 1;
         cell.y = 0;
         expect(cell.draw('top')).toEqual('┬───────');
@@ -588,7 +586,7 @@ describe('Cell',function(){
         expect(cell.draw('top')).toEqual('┬───────┐');
       });
 
-      it('will draw the left mid corner when x=0,y=1',function(){
+      it('will draw the left mid corner when x=0,y=1', function() {
         cell.x = 0;
         cell.y = 1;
         expect(cell.draw('top')).toEqual('├───────');
@@ -596,7 +594,7 @@ describe('Cell',function(){
         expect(cell.draw('top')).toEqual('├───────┤');
       });
 
-      it('will draw the mid mid corner when x=1,y=1',function(){
+      it('will draw the mid mid corner when x=1,y=1', function() {
         cell.x = 1;
         cell.y = 1;
         expect(cell.draw('top')).toEqual('┼───────');
@@ -604,14 +602,14 @@ describe('Cell',function(){
         expect(cell.draw('top')).toEqual('┼───────┤');
       });
 
-      it('will draw in the color specified by border style',function(){
+      it('will draw in the color specified by border style', function() {
         cell.border = ['gray'];
-        expect(cell.draw('top')).toEqual(colors.gray('┌───────'))
+        expect(cell.draw('top')).toEqual(colors.gray('┌───────'));
       });
     });
 
-    describe('bottom line',function(){
-      it('will draw the bottom left corner if x=0',function(){
+    describe('bottom line', function() {
+      it('will draw the bottom left corner if x=0', function() {
         cell.x = 0;
         cell.y = 1;
         expect(cell.draw('bottom')).toEqual('└───────');
@@ -619,7 +617,7 @@ describe('Cell',function(){
         expect(cell.draw('bottom')).toEqual('└───────┘');
       });
 
-      it('will draw the bottom left corner if x=1',function(){
+      it('will draw the bottom left corner if x=1', function() {
         cell.x = 1;
         cell.y = 1;
         expect(cell.draw('bottom')).toEqual('┴───────');
@@ -627,19 +625,19 @@ describe('Cell',function(){
         expect(cell.draw('bottom')).toEqual('┴───────┘');
       });
 
-      it('will draw in the color specified by border style',function(){
+      it('will draw in the color specified by border style', function() {
         cell.border = ['gray'];
-        expect(cell.draw('bottom')).toEqual(colors.gray('└───────'))
+        expect(cell.draw('bottom')).toEqual(colors.gray('└───────'));
       });
     });
 
-    describe('drawBottom',function(){
-      it('draws an empty line',function(){
+    describe('drawBottom', function() {
+      it('draws an empty line', function() {
         expect(cell.drawEmpty()).toEqual('L       ');
         expect(cell.drawEmpty(true)).toEqual('L       R');
       });
 
-      it('draws an empty line',function(){
+      it('draws an empty line', function() {
         cell.border = ['gray'];
         cell.head = ['red'];
         expect(cell.drawEmpty()).toEqual(colors.gray('L') + colors.red('       '));
@@ -647,26 +645,26 @@ describe('Cell',function(){
       });
     });
 
-    describe('first line of text',function(){
-      beforeEach(function () {
+    describe('first line of text', function() {
+      beforeEach(function() {
         cell.width = 9;
       });
 
-      it('will draw left side if x=0',function(){
+      it('will draw left side if x=0', function() {
         cell.x = 0;
         expect(cell.draw(0)).toEqual('L  hello  ');
         cell.drawRight = true;
         expect(cell.draw(0)).toEqual('L  hello  R');
       });
 
-      it('will draw mid side if x=1',function(){
+      it('will draw mid side if x=1', function() {
         cell.x = 1;
         expect(cell.draw(0)).toEqual('M  hello  ');
         cell.drawRight = true;
         expect(cell.draw(0)).toEqual('M  hello  R');
       });
 
-      it('will align left',function(){
+      it('will align left', function() {
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(0)).toEqual('M hello   ');
@@ -674,7 +672,7 @@ describe('Cell',function(){
         expect(cell.draw(0)).toEqual('M hello   R');
       });
 
-      it('will align right',function(){
+      it('will align right', function() {
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(0)).toEqual('M   hello ');
@@ -682,7 +680,7 @@ describe('Cell',function(){
         expect(cell.draw(0)).toEqual('M   hello R');
       });
 
-      it('left and right will be drawn in color of border style',function(){
+      it('left and right will be drawn in color of border style', function() {
         cell.border = ['gray'];
         cell.x = 0;
         expect(cell.draw(0)).toEqual(colors.gray('L') + '  hello  ');
@@ -690,7 +688,7 @@ describe('Cell',function(){
         expect(cell.draw(0)).toEqual(colors.gray('L') + '  hello  ' + colors.gray('R'));
       });
 
-      it('text will be drawn in color of head style if y == 0',function(){
+      it('text will be drawn in color of head style if y == 0', function() {
         cell.head = ['red'];
         cell.x = cell.y = 0;
         expect(cell.draw(0)).toEqual('L' + colors.red('  hello  '));
@@ -698,7 +696,7 @@ describe('Cell',function(){
         expect(cell.draw(0)).toEqual('L' + colors.red('  hello  ') + 'R');
       });
 
-      it('text will NOT be drawn in color of head style if y == 1',function(){
+      it('text will NOT be drawn in color of head style if y == 1', function() {
         cell.head = ['red'];
         cell.x = cell.y = 1;
         expect(cell.draw(0)).toEqual('M  hello  ');
@@ -706,7 +704,7 @@ describe('Cell',function(){
         expect(cell.draw(0)).toEqual('M  hello  R');
       });
 
-      it('head and border colors together',function(){
+      it('head and border colors together', function() {
         cell.border = ['gray'];
         cell.head = ['red'];
         cell.x = cell.y = 0;
@@ -716,26 +714,26 @@ describe('Cell',function(){
       });
     });
 
-    describe('second line of text',function(){
-      beforeEach(function () {
+    describe('second line of text', function() {
+      beforeEach(function() {
         cell.width = 9;
       });
 
-      it('will draw left side if x=0',function(){
+      it('will draw left side if x=0', function() {
         cell.x = 0;
         expect(cell.draw(1)).toEqual('L  howdy  ');
         cell.drawRight = true;
         expect(cell.draw(1)).toEqual('L  howdy  R');
       });
 
-      it('will draw mid side if x=1',function(){
+      it('will draw mid side if x=1', function() {
         cell.x = 1;
         expect(cell.draw(1)).toEqual('M  howdy  ');
         cell.drawRight = true;
         expect(cell.draw(1)).toEqual('M  howdy  R');
       });
 
-      it('will align left',function(){
+      it('will align left', function() {
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(1)).toEqual('M howdy   ');
@@ -743,7 +741,7 @@ describe('Cell',function(){
         expect(cell.draw(1)).toEqual('M howdy   R');
       });
 
-      it('will align right',function(){
+      it('will align right', function() {
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(1)).toEqual('M   howdy ');
@@ -752,26 +750,26 @@ describe('Cell',function(){
       });
     });
 
-    describe('truncated line of text',function(){
-      beforeEach(function () {
+    describe('truncated line of text', function() {
+      beforeEach(function() {
         cell.width = 9;
       });
 
-      it('will draw left side if x=0',function(){
+      it('will draw left side if x=0', function() {
         cell.x = 0;
         expect(cell.draw(2)).toEqual('L goodni… ');
         cell.drawRight = true;
         expect(cell.draw(2)).toEqual('L goodni… R');
       });
 
-      it('will draw mid side if x=1',function(){
+      it('will draw mid side if x=1', function() {
         cell.x = 1;
         expect(cell.draw(2)).toEqual('M goodni… ');
         cell.drawRight = true;
         expect(cell.draw(2)).toEqual('M goodni… R');
       });
 
-      it('will not change when aligned left',function(){
+      it('will not change when aligned left', function() {
         cell.x = 1;
         cell.hAlign = 'left';
         expect(cell.draw(2)).toEqual('M goodni… ');
@@ -779,7 +777,7 @@ describe('Cell',function(){
         expect(cell.draw(2)).toEqual('M goodni… R');
       });
 
-      it('will not change when aligned right',function(){
+      it('will not change when aligned right', function() {
         cell.x = 1;
         cell.hAlign = 'right';
         expect(cell.draw(2)).toEqual('M goodni… ');
@@ -788,12 +786,12 @@ describe('Cell',function(){
       });
     });
 
-    describe('vAlign',function(){
-      beforeEach(function () {
+    describe('vAlign', function() {
+      beforeEach(function() {
         cell.height = '5';
       });
 
-      it('center',function(){
+      it('center', function() {
         cell.vAlign = 'center';
         expect(cell.draw(0)).toEqual('L       ');
         expect(cell.draw(1)).toEqual('L hello ');
@@ -817,7 +815,7 @@ describe('Cell',function(){
         expect(cell.draw(4)).toEqual('M       ');
       });
 
-      it('top',function(){
+      it('top', function() {
         cell.vAlign = 'top';
         expect(cell.draw(0)).toEqual('L hello ');
         expect(cell.draw(1)).toEqual('L howdy ');
@@ -842,7 +840,7 @@ describe('Cell',function(){
         expect(cell.draw(4)).toEqual('M       ');
       });
 
-      it('center',function(){
+      it('center', function() {
         cell.vAlign = 'bottom';
         expect(cell.draw(0)).toEqual('L       ');
         expect(cell.draw(1)).toEqual('L       ');
@@ -867,71 +865,71 @@ describe('Cell',function(){
       });
     });
 
-    it('vertically truncated will show truncation on last visible line',function(){
+    it('vertically truncated will show truncation on last visible line', function() {
       cell.height = 2;
       expect(cell.draw(0)).toEqual('L hello ');
       expect(cell.draw(1)).toEqual('L howd… ');
     });
 
-    it("won't vertically truncate if the lines just fit",function(){
+    it("won't vertically truncate if the lines just fit", function() {
       cell.height = 2;
-      cell.content = "hello\nhowdy";
-      cell.lines = cell.content.split("\n");
+      cell.content = 'hello\nhowdy';
+      cell.lines = cell.content.split('\n');
       expect(cell.draw(0)).toEqual('L hello ');
       expect(cell.draw(1)).toEqual('L howdy ');
     });
 
-    it("will vertically truncate even if last line is short",function(){
+    it('will vertically truncate even if last line is short', function() {
       cell.height = 2;
-      cell.content = "hello\nhi\nhowdy";
-      cell.lines = cell.content.split("\n");
+      cell.content = 'hello\nhi\nhowdy';
+      cell.lines = cell.content.split('\n');
       expect(cell.draw(0)).toEqual('L hello ');
       expect(cell.draw(1)).toEqual('L  hi…  ');
     });
 
-    it("allows custom truncation",function(){
+    it('allows custom truncation', function() {
       cell.height = 2;
       cell.truncate = '...';
-      cell.content = "hello\nhi\nhowdy";
-      cell.lines = cell.content.split("\n");
+      cell.content = 'hello\nhi\nhowdy';
+      cell.lines = cell.content.split('\n');
       expect(cell.draw(0)).toEqual('L hello ');
       expect(cell.draw(1)).toEqual('L hi... ');
 
-      cell.content = "hello\nhowdy\nhi";
-      cell.lines = cell.content.split("\n");
+      cell.content = 'hello\nhowdy\nhi';
+      cell.lines = cell.content.split('\n');
       expect(cell.draw(0)).toEqual('L hello ');
       expect(cell.draw(1)).toEqual('L ho... ');
     });
   });
 
-  describe("ColSpanCell",function(){
-    it('has an init function',function(){
+  describe('ColSpanCell', function() {
+    it('has an init function', function() {
       expect(new ColSpanCell()).toHaveProperty('init');
       new ColSpanCell().init(); // nothing happens.
     });
 
-    it('draw returns an empty string',function(){
+    it('draw returns an empty string', function() {
       expect(new ColSpanCell().draw('top')).toEqual('');
       expect(new ColSpanCell().draw('bottom')).toEqual('');
       expect(new ColSpanCell().draw(1)).toEqual('');
     });
   });
 
-  describe("RowSpanCell",function(){
+  describe('RowSpanCell', function() {
     var original, tableOptions;
 
-    beforeEach(function () {
+    beforeEach(function() {
       original = {
-        rowSpan:3,
-        y:0,
-        draw: jest.fn()
+        rowSpan: 3,
+        y: 0,
+        draw: jest.fn(),
       };
       tableOptions = {
-        rowHeights:[2,3,4,5]
-      }
+        rowHeights: [2, 3, 4, 5],
+      };
     });
 
-    it('drawing top of the next row',function(){
+    it('drawing top of the next row', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
@@ -941,7 +939,7 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(2, 1);
     });
 
-    it('drawing line 0 of the next row',function(){
+    it('drawing line 0 of the next row', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;
@@ -951,9 +949,9 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(3);
     });
 
-    it('drawing line 1 of the next row',function(){
+    it('drawing line 1 of the next row', function() {
       var spanner = new RowSpanCell(original);
-      spanner.x  = 0;
+      spanner.x = 0;
       spanner.y = 1;
       spanner.init(tableOptions);
       spanner.draw(1);
@@ -961,7 +959,7 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(4);
     });
 
-    it('drawing top of two rows below',function(){
+    it('drawing top of two rows below', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
@@ -971,7 +969,7 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(6, 2);
     });
 
-    it('drawing line 0 of two rows below',function(){
+    it('drawing line 0 of two rows below', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
@@ -981,7 +979,7 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(7);
     });
 
-    it('drawing line 1 of two rows below',function(){
+    it('drawing line 1 of two rows below', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 2;
@@ -991,7 +989,7 @@ describe('Cell',function(){
       expect(original.draw).toHaveBeenCalledWith(8);
     });
 
-    it('drawing bottom',function(){
+    it('drawing bottom', function() {
       var spanner = new RowSpanCell(original);
       spanner.x = 0;
       spanner.y = 1;

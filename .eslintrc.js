@@ -3,19 +3,21 @@ module.exports = {
     ecmaVersion: 6,
   },
   env: {
-    'node': true,
+    node: true,
   },
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'prettier'],
+  plugins: ['prettier'],
   rules: {
+    'prettier/prettier': 'error',
     'no-control-regex': 'off',
   },
-  overrides: [{
-    // tests
-    files: [
-      'test/**/*.js',
-    ],
-    env: {
-      jest: true,
+  overrides: [
+    {
+      // tests
+      files: ['test/**/*.js'],
+      env: {
+        jest: true,
+      },
     },
-  }],
+  ],
 };

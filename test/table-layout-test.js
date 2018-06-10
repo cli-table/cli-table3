@@ -1,4 +1,4 @@
-describe('tableLayout', function () {
+describe('tableLayout', function() {
   var Cell = require('../src/cell');
   var layoutManager = require('../src/layout-manager');
   var makeTableLayout = layoutManager.makeTableLayout;
@@ -8,212 +8,150 @@ describe('tableLayout', function () {
   var computeHeights = layoutManager.computeHeights;
   var kindOf = require('kind-of');
 
-  it('simple 2x2 layout',function(){
+  it('simple 2x2 layout', function() {
+    var actual = makeTableLayout([['hello', 'goodbye'], ['hola', 'adios']]);
+
+    var expected = [['hello', 'goodbye'], ['hola', 'adios']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('cross table', function() {
+    var actual = makeTableLayout([{ '1.0': ['yes', 'no'] }, { '2.0': ['hello', 'goodbye'] }]);
+
+    var expected = [['1.0', 'yes', 'no'], ['2.0', 'hello', 'goodbye']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('vertical table', function() {
+    var actual = makeTableLayout([{ '1.0': 'yes' }, { '2.0': 'hello' }]);
+
+    var expected = [['1.0', 'yes'], ['2.0', 'hello']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('colSpan adds RowSpanCells to the right', function() {
+    var actual = makeTableLayout([[{ content: 'hello', colSpan: 2 }], ['hola', 'adios']]);
+
+    var expected = [[{ content: 'hello', colSpan: 2 }, null], ['hola', 'adios']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('rowSpan adds RowSpanCell below', function() {
+    var actual = makeTableLayout([[{ content: 'hello', rowSpan: 2 }, 'goodbye'], ['adios']]);
+
+    var expected = [['hello', 'goodbye'], [{ spannerFor: [0, 0] }, 'adios']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('rowSpan and cellSpan together', function() {
+    var actual = makeTableLayout([[{ content: 'hello', rowSpan: 2, colSpan: 2 }, 'goodbye'], ['adios']]);
+
+    var expected = [['hello', null, 'goodbye'], [{ spannerFor: [0, 0] }, null, 'adios']];
+
+    checkLayout(actual, expected);
+  });
+
+  it('complex layout', function() {
     var actual = makeTableLayout([
-      ['hello','goodbye'],
-      ['hola','adios']
+      [{ content: 'hello', rowSpan: 2, colSpan: 2 }, { content: 'yo', rowSpan: 2, colSpan: 2 }, 'goodbye'],
+      ['adios'],
     ]);
 
     var expected = [
-      ['hello','goodbye'],
-      ['hola','adios']
+      ['hello', null, 'yo', null, 'goodbye'],
+      [{ spannerFor: [0, 0] }, null, { spannerFor: [0, 2] }, null, 'adios'],
     ];
 
-    checkLayout(actual,expected);
+    checkLayout(actual, expected);
   });
 
-  it('cross table',function(){
+  it('complex layout2', function() {
     var actual = makeTableLayout([
-      {'1.0':['yes','no']},
-      {'2.0':['hello','goodbye']}
+      ['a', 'b', { content: 'c', rowSpan: 3, colSpan: 2 }, 'd'],
+      [{ content: 'e', rowSpan: 2, colSpan: 2 }, 'f'],
+      ['g'],
     ]);
 
     var expected = [
-      ['1.0','yes','no'],
-      ['2.0','hello','goodbye']
+      ['a', 'b', 'c', null, 'd'],
+      ['e', null, { spannerFor: [0, 2] }, null, 'f'],
+      [{ spannerFor: [1, 0] }, null, { spannerFor: [0, 2] }, null, 'g'],
     ];
 
-    checkLayout(actual,expected);
+    checkLayout(actual, expected);
   });
 
-  it('vertical table',function(){
-    var actual = makeTableLayout([
-      {'1.0':'yes'},
-      {'2.0':'hello'}
-    ]);
+  it('stairstep spans', function() {
+    var actual = makeTableLayout([[{ content: '', rowSpan: 2 }, ''], [{ content: '', rowSpan: 2 }], ['']]);
 
     var expected = [
-      ['1.0','yes'],
-      ['2.0','hello']
+      [{ content: '', rowSpan: 2 }, ''],
+      [{ spannerFor: [0, 0] }, { content: '', rowSpan: 2 }],
+      ['', { spannerFor: [1, 1] }],
     ];
 
-    checkLayout(actual,expected);
+    checkLayout(actual, expected);
   });
 
-  it('colSpan adds RowSpanCells to the right',function(){
-    var actual = makeTableLayout([
-      [{content:'hello',colSpan:2}],
-      ['hola','adios']
-    ]);
-
-    var expected = [
-      [{content:'hello',colSpan:2},null],
-      ['hola','adios']
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  it('rowSpan adds RowSpanCell below',function(){
-     var actual = makeTableLayout([
-       [{content:'hello',rowSpan:2},'goodbye'],
-       ['adios']
-     ]);
-
-    var expected = [
-      ['hello'            , 'goodbye'],
-      [{spannerFor:[0,0]} , 'adios']
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  it('rowSpan and cellSpan together',function(){
-    var actual = makeTableLayout([
-      [{content:'hello',rowSpan:2,colSpan:2},'goodbye'],
-      ['adios']
-    ]);
-
-    var expected = [
-      ['hello'            , null, 'goodbye'],
-      [{spannerFor:[0,0]} , null, 'adios']
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  it('complex layout',function(){
-    var actual = makeTableLayout([
-      [{content:'hello',rowSpan:2,colSpan:2},{content:'yo',rowSpan:2,colSpan:2},'goodbye'],
-      ['adios']
-    ]);
-
-    var expected = [
-      ['hello'            , null, 'yo'               , null, 'goodbye'],
-      [{spannerFor:[0,0]} , null, {spannerFor:[0,2]} , null, 'adios']
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  it('complex layout2',function(){
-    var actual = makeTableLayout([
-      ['a','b',                          {content:'c',rowSpan:3,colSpan:2},'d'],
-      [{content:'e',rowSpan:2,colSpan:2}, 'f'],
-      ['g']
-    ]);
-
-    var expected = [
-      ['a',                 'b',   'c',                 null,  'd'],
-      ['e',                 null,  {spannerFor:[0,2]},  null,  'f'],
-      [{spannerFor:[1,0]},  null,  {spannerFor:[0,2]},  null,  'g']
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  it('stairstep spans',function(){
-    var actual = makeTableLayout([
-      [{content:'',rowSpan:2},''],
-      [{content:'',rowSpan:2}],
-      ['']
-    ]);
-
-    var expected = [
-      [{content:'',rowSpan:2}, ''],
-      [{spannerFor:[0,0]},{content:'',rowSpan:2}],
-      ['',{spannerFor:[1,1]}]
-    ];
-
-    checkLayout(actual,expected);
-  });
-
-  describe('fillInTable',function(){
-    function mc(opts,y,x){
+  describe('fillInTable', function() {
+    function mc(opts, y, x) {
       var cell = new Cell(opts);
       cell.x = x;
       cell.y = y;
       return cell;
     }
 
-    it('will blank out individual cells',function(){
-      var cells = [
-        [mc('a',0,1)],
-        [mc('b',1,0)]
-      ];
+    it('will blank out individual cells', function() {
+      var cells = [[mc('a', 0, 1)], [mc('b', 1, 0)]];
       fillInTable(cells);
 
-      checkLayout(cells,[
-        ['', 'a'],
-        ['b', '']
-      ]);
+      checkLayout(cells, [['', 'a'], ['b', '']]);
     });
 
-    it('will autospan to the right',function(){
-      var cells = [
-        [],
-        [mc('a',1,1)]
-      ];
+    it('will autospan to the right', function() {
+      var cells = [[], [mc('a', 1, 1)]];
       fillInTable(cells);
 
-      checkLayout(cells,[
-        [{content:'',colSpan:2}, null],
-        ['', 'a']
-      ]);
+      checkLayout(cells, [[{ content: '', colSpan: 2 }, null], ['', 'a']]);
     });
 
-    it('will autospan down',function(){
-      var cells = [
-        [ mc('a',0,1)],
-        []
-      ];
+    it('will autospan down', function() {
+      var cells = [[mc('a', 0, 1)], []];
       fillInTable(cells);
       addRowSpanCells(cells);
 
-      checkLayout(cells,[
-        [{content:'',rowSpan:2}, 'a'],
-        [{spannerFor:[0,0]}, '']
-      ]);
+      checkLayout(cells, [[{ content: '', rowSpan: 2 }, 'a'], [{ spannerFor: [0, 0] }, '']]);
     });
 
-    it('will autospan right and down',function(){
-      var cells = [
-        [               mc('a',0,2)],
-        [],
-        [  mc('b',2,1)]
-      ];
+    it('will autospan right and down', function() {
+      var cells = [[mc('a', 0, 2)], [], [mc('b', 2, 1)]];
       fillInTable(cells);
       addRowSpanCells(cells);
 
-      checkLayout(cells,[
-        [{content:'',colSpan:2, rowSpan:2}, null, 'a'],
-        [{spannerFor:[0,0]}, null, {content:'', colSpan:1, rowSpan:2}],
-        ['','b',{spannerFor:[1,2]}]
+      checkLayout(cells, [
+        [{ content: '', colSpan: 2, rowSpan: 2 }, null, 'a'],
+        [{ spannerFor: [0, 0] }, null, { content: '', colSpan: 1, rowSpan: 2 }],
+        ['', 'b', { spannerFor: [1, 2] }],
       ]);
     });
   });
 
-  describe('computeWidths',function() {
-    function mc(y,x,desiredWidth, colSpan) {
-      return {x:x,y:y,desiredWidth:desiredWidth,colSpan:colSpan};
+  describe('computeWidths', function() {
+    function mc(y, x, desiredWidth, colSpan) {
+      return { x: x, y: y, desiredWidth: desiredWidth, colSpan: colSpan };
     }
 
-    it('finds the maximum desired width of each column', function () {
+    it('finds the maximum desired width of each column', function() {
       var widths = [];
       var cells = [
-        [mc(0,0,7), mc(0,1,3), mc(0,2,5)],
-        [mc(1,0,8), mc(1,1,5), mc(1,2,2)],
-        [mc(2,0,6), mc(2,1,9), mc(2,2,1)]
+        [mc(0, 0, 7), mc(0, 1, 3), mc(0, 2, 5)],
+        [mc(1, 0, 8), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 6), mc(2, 1, 9), mc(2, 2, 1)],
       ];
 
       computeWidths(widths, cells);
@@ -221,12 +159,12 @@ describe('tableLayout', function () {
       expect(widths).toEqual([8, 9, 5]);
     });
 
-    it('won\'t touch hard coded values', function () {
+    it("won't touch hard coded values", function() {
       var widths = [null, 3];
       var cells = [
-        [mc(0,0,7), mc(0,1,3), mc(0,2,5)],
-        [mc(1,0,8), mc(1,1,5), mc(1,2,2)],
-        [mc(2,0,6), mc(2,1,9), mc(2,2,1)]
+        [mc(0, 0, 7), mc(0, 1, 3), mc(0, 2, 5)],
+        [mc(1, 0, 8), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 6), mc(2, 1, 9), mc(2, 2, 1)],
       ];
 
       computeWidths(widths, cells);
@@ -234,158 +172,136 @@ describe('tableLayout', function () {
       expect(widths).toEqual([8, 3, 5]);
     });
 
-    it('assumes undefined desiredWidth is 1', function () {
+    it('assumes undefined desiredWidth is 1', function() {
       var widths = [];
-      var cells = [[{x:0,y:0}], [{x:0,y:1}], [{x:0,y:2}]];
+      var cells = [[{ x: 0, y: 0 }], [{ x: 0, y: 1 }], [{ x: 0, y: 2 }]];
       computeWidths(widths, cells);
-      expect(widths).toEqual([1])
+      expect(widths).toEqual([1]);
     });
 
-    it('takes into account colSpan and wont over expand', function () {
+    it('takes into account colSpan and wont over expand', function() {
       var widths = [];
       var cells = [
-        [mc(0,0,10, 2),        mc(0,2,5)],
-        [mc(1,0,5), mc(1,1,5), mc(1,2,2)],
-        [mc(2,0,4), mc(2,1,2), mc(2,2,1)]
+        [mc(0, 0, 10, 2), mc(0, 2, 5)],
+        [mc(1, 0, 5), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)],
       ];
       computeWidths(widths, cells);
       expect(widths).toEqual([5, 5, 5]);
     });
 
-    it('will expand rows involved in colSpan in a balanced way', function () {
+    it('will expand rows involved in colSpan in a balanced way', function() {
       var widths = [];
       var cells = [
-        [mc(0,0,13,2),          mc(0,2,5)],
-        [mc(1,0,5), mc(1,1,5),  mc(1,2,2)],
-        [mc(2,0,4), mc(2,1,2),  mc(2,2,1)]
+        [mc(0, 0, 13, 2), mc(0, 2, 5)],
+        [mc(1, 0, 5), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)],
       ];
       computeWidths(widths, cells);
       expect(widths).toEqual([6, 6, 5]);
     });
 
-    it('expands across 3 cols', function () {
+    it('expands across 3 cols', function() {
       var widths = [];
-      var cells = [
-        [mc(0,0,25,3)                        ],
-        [mc(1,0,5),    mc(1,1,5),  mc(1,2,2) ],
-        [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
-      ];
+      var cells = [[mc(0, 0, 25, 3)], [mc(1, 0, 5), mc(1, 1, 5), mc(1, 2, 2)], [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)]];
       computeWidths(widths, cells);
       expect(widths).toEqual([9, 9, 5]);
     });
 
-    it('multiple spans in same table', function () {
+    it('multiple spans in same table', function() {
       var widths = [];
-      var cells = [
-        [mc(0,0,25,3)                        ],
-        [mc(1,0,30,3)                        ],
-        [mc(2,0,4),    mc(2,1,2),  mc(2,2,1) ]
-      ];
+      var cells = [[mc(0, 0, 25, 3)], [mc(1, 0, 30, 3)], [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)]];
       computeWidths(widths, cells);
       expect(widths).toEqual([11, 9, 8]);
     });
 
-    it('spans will only edit uneditable tables',function(){
+    it('spans will only edit uneditable tables', function() {
       var widths = [null, 3];
-      var cells = [
-        [mc(0,0,20,3)                         ],
-        [mc(1,0,4),    mc(1,1,20),  mc(1,2,5) ]
-      ];
+      var cells = [[mc(0, 0, 20, 3)], [mc(1, 0, 4), mc(1, 1, 20), mc(1, 2, 5)]];
       computeWidths(widths, cells);
-      expect(widths).toEqual([7,3,8])
+      expect(widths).toEqual([7, 3, 8]);
     });
 
-    it('spans will only edit uneditable tables - first column uneditable',function(){
+    it('spans will only edit uneditable tables - first column uneditable', function() {
       var widths = [3];
-      var cells = [
-        [mc(0,0,20,3)                        ],
-        [mc(1,0,4),    mc(1,1,3),  mc(1,2,5) ]
-      ];
+      var cells = [[mc(0, 0, 20, 3)], [mc(1, 0, 4), mc(1, 1, 3), mc(1, 2, 5)]];
       computeWidths(widths, cells);
-      expect(widths).toEqual([3,7,8])
+      expect(widths).toEqual([3, 7, 8]);
     });
   });
-    
-  describe('computeHeights',function(){
-    function mc(y,x,desiredHeight,colSpan){
-      return {x:x,y:y,desiredHeight:desiredHeight,rowSpan:colSpan};
+
+  describe('computeHeights', function() {
+    function mc(y, x, desiredHeight, colSpan) {
+      return { x: x, y: y, desiredHeight: desiredHeight, rowSpan: colSpan };
     }
 
-    it('finds the maximum desired height of each row',function(){
+    it('finds the maximum desired height of each row', function() {
       var heights = [];
       var cells = [
-        [mc(0,0,7),  mc(0,1,3),  mc(0,2,5) ],
-        [mc(1,0,8),  mc(1,1,5),  mc(1,2,2) ],
-        [mc(2,0,6),  mc(2,1,9),  mc(2,2,1) ]
+        [mc(0, 0, 7), mc(0, 1, 3), mc(0, 2, 5)],
+        [mc(1, 0, 8), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 6), mc(2, 1, 9), mc(2, 2, 1)],
       ];
 
-      computeHeights(heights,cells);
+      computeHeights(heights, cells);
 
-      expect(heights).toEqual([7,8,9]);
+      expect(heights).toEqual([7, 8, 9]);
     });
 
-    it('won\'t touch hard coded values',function(){
-      var heights = [null,3];
+    it("won't touch hard coded values", function() {
+      var heights = [null, 3];
       var cells = [
-        [mc(0,0,7),  mc(0,1,3),  mc(0,2,5)],
-        [mc(1,0,8),  mc(1,1,5),  mc(1,2,2)],
-        [mc(2,0,6),  mc(2,1,9),  mc(2,2,1)]
+        [mc(0, 0, 7), mc(0, 1, 3), mc(0, 2, 5)],
+        [mc(1, 0, 8), mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 6), mc(2, 1, 9), mc(2, 2, 1)],
       ];
 
-      computeHeights(heights,cells);
+      computeHeights(heights, cells);
 
-      expect(heights).toEqual([7,3,9]);
+      expect(heights).toEqual([7, 3, 9]);
     });
 
-    it('assumes undefined desiredHeight is 1',function(){
+    it('assumes undefined desiredHeight is 1', function() {
       var heights = [];
-      var cells = [[{x:0,y:0},{x:1,y:0},{x:2,y:0}]];
-      computeHeights(heights,cells);
-      expect(heights).toEqual([1])
+      var cells = [[{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]];
+      computeHeights(heights, cells);
+      expect(heights).toEqual([1]);
     });
 
-    it('takes into account rowSpan and wont over expand',function(){
-      var heights = [];
-      var cells = [
-        [mc(0,0,10,2),  mc(0,1,5),  mc(0,2,2)],
-        [               mc(1,1,5),  mc(1,2,2)],
-        [mc(2,0,4),     mc(2,1,2),  mc(2,2,1)]
-      ];
-      computeHeights(heights,cells);
-      expect(heights).toEqual([5,5,4]);
-    });
-
-    it('will expand rows involved in rowSpan in a balanced way',function(){
+    it('takes into account rowSpan and wont over expand', function() {
       var heights = [];
       var cells = [
-        [mc(0,0,13,2), mc(0,1,5), mc(0,2,5)],
-        [              mc(1,1,5), mc(1,2,2)],
-        [mc(2,0,4),    mc(2,1,2), mc(2,2,1)]
+        [mc(0, 0, 10, 2), mc(0, 1, 5), mc(0, 2, 2)],
+        [mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)],
       ];
-      computeHeights(heights,cells);
-      expect(heights).toEqual([6,6,4]);
+      computeHeights(heights, cells);
+      expect(heights).toEqual([5, 5, 4]);
     });
 
-    it('expands across 3 rows',function(){
+    it('will expand rows involved in rowSpan in a balanced way', function() {
       var heights = [];
       var cells = [
-        [mc(0,0,25,3), mc(0,1,5), mc(0,2,4)],
-        [              mc(1,1,5), mc(1,2,2)],
-        [              mc(2,1,2), mc(2,2,1)]
+        [mc(0, 0, 13, 2), mc(0, 1, 5), mc(0, 2, 5)],
+        [mc(1, 1, 5), mc(1, 2, 2)],
+        [mc(2, 0, 4), mc(2, 1, 2), mc(2, 2, 1)],
       ];
-      computeHeights(heights,cells);
-      expect(heights).toEqual([9,9,5]);
+      computeHeights(heights, cells);
+      expect(heights).toEqual([6, 6, 4]);
     });
 
-    it('multiple spans in same table',function(){
+    it('expands across 3 rows', function() {
       var heights = [];
-      var cells = [
-        [mc(0,0,25,3), mc(0,1,30,3), mc(0,2,4)],
-        [                            mc(1,2,2)],
-        [                            mc(2,2,1)]
-      ];
-      computeHeights(heights,cells);
-      expect(heights).toEqual([11,9,8]);
+      var cells = [[mc(0, 0, 25, 3), mc(0, 1, 5), mc(0, 2, 4)], [mc(1, 1, 5), mc(1, 2, 2)], [mc(2, 1, 2), mc(2, 2, 1)]];
+      computeHeights(heights, cells);
+      expect(heights).toEqual([9, 9, 5]);
+    });
+
+    it('multiple spans in same table', function() {
+      var heights = [];
+      var cells = [[mc(0, 0, 25, 3), mc(0, 1, 30, 3), mc(0, 2, 4)], [mc(1, 2, 2)], [mc(2, 2, 1)]];
+      computeHeights(heights, cells);
+      expect(heights).toEqual([11, 9, 8]);
     });
   });
 
@@ -409,52 +325,51 @@ describe('tableLayout', function () {
    * @param expectedRows - a table of shorthand assertions.
    */
 
-  function checkLayout(actualTable,expectedTable){
-    expectedTable.forEach(function(expectedRow,y){
-      expectedRow.forEach(function(expectedCell,x){
-        if(expectedCell !== null){
-          var actualCell = findCell(actualTable,x,y);
-          checkExpectation(actualCell,expectedCell,x,y,actualTable);
+  function checkLayout(actualTable, expectedTable) {
+    expectedTable.forEach(function(expectedRow, y) {
+      expectedRow.forEach(function(expectedCell, x) {
+        if (expectedCell !== null) {
+          var actualCell = findCell(actualTable, x, y);
+          checkExpectation(actualCell, expectedCell, x, y, actualTable);
         }
       });
     });
   }
 
-  function findCell(table,x,y){
-    for(var i = 0; i < table.length; i++){
+  function findCell(table, x, y) {
+    for (var i = 0; i < table.length; i++) {
       var row = table[i];
-      for(var j = 0; j < row.length; j++){
+      for (var j = 0; j < row.length; j++) {
         var cell = row[j];
-        if(cell.x === x && cell.y === y){
+        if (cell.x === x && cell.y === y) {
           return cell;
         }
       }
     }
   }
 
-  function checkExpectation(actualCell,expectedCell,x,y,actualTable){
-    if(kindOf(expectedCell) === 'string'){
-      expectedCell = {content:expectedCell};
+  function checkExpectation(actualCell, expectedCell, x, y, actualTable) {
+    if (kindOf(expectedCell) === 'string') {
+      expectedCell = { content: expectedCell };
     }
-    if(expectedCell.hasOwnProperty('content')){
+    if (expectedCell.hasOwnProperty('content')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.content).toEqual(expectedCell.content);
     }
-    if(expectedCell.hasOwnProperty('rowSpan')){
+    if (expectedCell.hasOwnProperty('rowSpan')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.rowSpan).toEqual(expectedCell.rowSpan);
     }
-    if(expectedCell.hasOwnProperty('colSpan')){
+    if (expectedCell.hasOwnProperty('colSpan')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.colSpan).toEqual(expectedCell.colSpan);
     }
-    if(expectedCell.hasOwnProperty('spannerFor')){
+    if (expectedCell.hasOwnProperty('spannerFor')) {
       expect(actualCell).toBeInstanceOf(Cell.RowSpanCell);
       expect(actualCell.originalCell).toBeInstanceOf(Cell);
-      expect(actualCell.originalCell).toEqual(findCell(actualTable,
-        expectedCell.spannerFor[1],
-        expectedCell.spannerFor[0]
-      ));
+      expect(actualCell.originalCell).toEqual(
+        findCell(actualTable, expectedCell.spannerFor[1], expectedCell.spannerFor[0])
+      );
       //TODO: retest here x,y coords
     }
   }
