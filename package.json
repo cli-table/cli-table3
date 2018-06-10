@@ -20,8 +20,6 @@
     "cli-table": "^0.3.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "git-rev": "^0.2.1",
-    "gulp": "^3.9.0",
     "jest": "^23.1.0",
     "jest-runner-eslint": "^0.6.0",
     "prettier": "1.13.5"
@@ -30,7 +28,8 @@
     "colors": "^1.1.2"
   },
   "scripts": {
-    "prettier": "prettier --write '{examples,lib,src,test}/**/*.js'",
+    "docs": "node ./scripts/update-docs.js",
+    "prettier": "prettier --write '{examples,lib,scripts,src,test}/**/*.js'",
     "test": "jest --color",
     "test:watch": "jest --color --watchAll --notify"
   },
@@ -73,6 +72,7 @@
         "testMatch": [
           "<rootDir>/examples/**/*.js",
           "<rootDir>/lib/**/*.js",
+          "<rootDir>/scripts/**/*.js",
           "<rootDir>/src/**/*.js",
           "<rootDir>/test/**/*.js"
         ]

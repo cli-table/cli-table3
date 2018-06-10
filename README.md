@@ -180,12 +180,10 @@ $ yarn test:coverage
 $ yarn test:watch
 ```
 
-###### Run the examples and print the output to the command line.
+###### Update the documentation.
 ```bash
-$ gulp example
+$ yarn docs
 ```
-
-Other build targets are available, check `gulpfile.js` for a comprehensive list.
 
 ## Credits
 
