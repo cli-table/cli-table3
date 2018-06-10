@@ -18,14 +18,19 @@
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
     "cli-table": "^0.3.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "git-rev": "^0.2.1",
     "gulp": "^3.9.0",
-    "jest": "^23.1.0"
+    "jest": "^23.1.0",
+    "jest-runner-eslint": "^0.6.0",
+    "prettier": "1.13.5"
   },
   "optionalDependencies": {
     "colors": "^1.1.2"
   },
   "scripts": {
+    "prettier": "prettier --write '{examples,lib,src,test}/**/*.js'",
     "test": "jest --color",
     "test:watch": "jest --color --watchAll --notify"
   },
@@ -55,8 +60,29 @@
     "node": ">=6"
   },
   "jest": {
-    "testMatch": [
-      "**/test/**/*-test(s)?.js"
+    "projects": [
+      {
+        "displayName": "test",
+        "testMatch": [
+          "**/test/**/*-test(s)?.js"
+        ]
+      },
+      {
+        "runner": "jest-runner-eslint",
+        "displayName": "lint",
+        "testMatch": [
+          "<rootDir>/examples/**/*.js",
+          "<rootDir>/lib/**/*.js",
+          "<rootDir>/src/**/*.js",
+          "<rootDir>/test/**/*.js"
+        ]
+      }
     ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }

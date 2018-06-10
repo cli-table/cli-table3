@@ -1,18 +1,20 @@
 var objectAssign = require('object-assign');
 var stringWidth = require('string-width');
 
-function codeRegex(capture){
-  return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g
+function codeRegex(capture) {
+  return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g;
 }
 
-function strlen(str){
+function strlen(str) {
   var code = codeRegex();
-  var stripped = ("" + str).replace(code,'');
-  var split = stripped.split("\n");
-  return split.reduce(function (memo, s) { return (stringWidth(s) > memo) ? stringWidth(s) : memo }, 0);
+  var stripped = ('' + str).replace(code, '');
+  var split = stripped.split('\n');
+  return split.reduce(function(memo, s) {
+    return stringWidth(s) > memo ? stringWidth(s) : memo;
+  }, 0);
 }
 
-function repeat(str,times){
+function repeat(str, times) {
   return Array(times + 1).join(str);
 }
 
@@ -26,13 +28,13 @@ function pad(str, len, pad, dir) {
         break;
 
       case 'center':
-        var right = Math.ceil((padlen) / 2);
+        var right = Math.ceil(padlen / 2);
         var left = padlen - right;
         str = repeat(pad, left) + str + repeat(pad, right);
         break;
 
-      default :
-        str = str + repeat(pad,padlen);
+      default:
+        str = str + repeat(pad, padlen);
         break;
     }
   }
@@ -41,12 +43,12 @@ function pad(str, len, pad, dir) {
 
 var codeCache = {};
 
-function addToCodeCache(name,on,off){
+function addToCodeCache(name, on, off) {
   on = '\u001b[' + on + 'm';
   off = '\u001b[' + off + 'm';
-  codeCache[on] = {set:name,to:true};
-  codeCache[off] = {set:name,to:false};
-  codeCache[name] = {on:on,off:off};
+  codeCache[on] = { set: name, to: true };
+  codeCache[off] = { set: name, to: false };
+  codeCache[name] = { on: on, off: off };
 }
 
 //https://github.com/Marak/colors.js/blob/master/lib/styles.js
@@ -56,18 +58,13 @@ addToCodeCache('underline', 4, 24);
 addToCodeCache('inverse', 7, 27);
 addToCodeCache('strikethrough', 9, 29);
 
-
-function updateState(state, controlChars){
+function updateState(state, controlChars) {
   var controlCode = controlChars[1] ? parseInt(controlChars[1].split(';')[0]) : 0;
-  if ( (controlCode >= 30 && controlCode <= 39)
-     || (controlCode >= 90 && controlCode <= 97)
-  ) {
+  if ((controlCode >= 30 && controlCode <= 39) || (controlCode >= 90 && controlCode <= 97)) {
     state.lastForegroundAdded = controlChars[0];
     return;
   }
-  if ( (controlCode >= 40 && controlCode <= 49)
-     || (controlCode >= 100 && controlCode <= 107)
-  ) {
+  if ((controlCode >= 40 && controlCode <= 49) || (controlCode >= 100 && controlCode <= 107)) {
     state.lastBackgroundAdded = controlChars[0];
     return;
   }
@@ -86,76 +83,76 @@ function updateState(state, controlChars){
   }
 }
 
-function readState(line){
+function readState(line) {
   var code = codeRegex(true);
   var controlChars = code.exec(line);
   var state = {};
-  while(controlChars !== null){
+  while (controlChars !== null) {
     updateState(state, controlChars);
     controlChars = code.exec(line);
   }
   return state;
 }
 
-function unwindState(state,ret){
+function unwindState(state, ret) {
   var lastBackgroundAdded = state.lastBackgroundAdded;
   var lastForegroundAdded = state.lastForegroundAdded;
 
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  Object.keys(state).forEach(function(key){
-    if(state[key]){
+  Object.keys(state).forEach(function(key) {
+    if (state[key]) {
       ret += codeCache[key].off;
     }
   });
 
-  if(lastBackgroundAdded && (lastBackgroundAdded != '\u001b[49m')){
+  if (lastBackgroundAdded && lastBackgroundAdded != '\u001b[49m') {
     ret += '\u001b[49m';
   }
-  if(lastForegroundAdded && (lastForegroundAdded != '\u001b[39m')){
+  if (lastForegroundAdded && lastForegroundAdded != '\u001b[39m') {
     ret += '\u001b[39m';
   }
 
   return ret;
 }
 
-function rewindState(state,ret){
+function rewindState(state, ret) {
   var lastBackgroundAdded = state.lastBackgroundAdded;
   var lastForegroundAdded = state.lastForegroundAdded;
 
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  Object.keys(state).forEach(function(key){
-    if(state[key]){
+  Object.keys(state).forEach(function(key) {
+    if (state[key]) {
       ret = codeCache[key].on + ret;
     }
   });
 
-  if(lastBackgroundAdded && (lastBackgroundAdded != '\u001b[49m')){
+  if (lastBackgroundAdded && lastBackgroundAdded != '\u001b[49m') {
     ret = lastBackgroundAdded + ret;
   }
-  if(lastForegroundAdded && (lastForegroundAdded != '\u001b[39m')){
+  if (lastForegroundAdded && lastForegroundAdded != '\u001b[39m') {
     ret = lastForegroundAdded + ret;
   }
 
   return ret;
 }
 
-function truncateWidth(str, desiredLength){
+function truncateWidth(str, desiredLength) {
   if (str.length === strlen(str)) {
     return str.substr(0, desiredLength);
   }
 
-  while (strlen(str) > desiredLength){
+  while (strlen(str) > desiredLength) {
     str = str.slice(0, -1);
   }
 
   return str;
 }
 
-function truncateWidthWithAnsi(str, desiredLength){
+function truncateWidthWithAnsi(str, desiredLength) {
   var code = codeRegex(true);
   var split = str.split(codeRegex());
   var splitIndex = 0;
@@ -164,30 +161,32 @@ function truncateWidthWithAnsi(str, desiredLength){
   var myArray;
   var state = {};
 
-  while(retLen < desiredLength){
+  while (retLen < desiredLength) {
     myArray = code.exec(str);
     var toAdd = split[splitIndex];
     splitIndex++;
-    if (retLen + strlen(toAdd) > desiredLength){
+    if (retLen + strlen(toAdd) > desiredLength) {
       toAdd = truncateWidth(toAdd, desiredLength - retLen);
     }
     ret += toAdd;
     retLen += strlen(toAdd);
 
-    if(retLen < desiredLength){
-      if (!myArray) { break; }  // full-width chars may cause a whitespace which cannot be filled
+    if (retLen < desiredLength) {
+      if (!myArray) {
+        break;
+      } // full-width chars may cause a whitespace which cannot be filled
       ret += myArray[0];
-      updateState(state,myArray);
+      updateState(state, myArray);
     }
   }
 
-  return unwindState(state,ret);
+  return unwindState(state, ret);
 }
 
-function truncate(str, desiredLength, truncateChar){
+function truncate(str, desiredLength, truncateChar) {
   truncateChar = truncateChar || '…';
   var lengthOfStr = strlen(str);
-  if(lengthOfStr <= desiredLength){
+  if (lengthOfStr <= desiredLength) {
     return str;
   }
   desiredLength -= strlen(truncateChar);
@@ -197,43 +196,42 @@ function truncate(str, desiredLength, truncateChar){
   return ret + truncateChar;
 }
 
-
-function defaultOptions(){
-  return{
+function defaultOptions() {
+  return {
     chars: {
-      'top': '─'
-      , 'top-mid': '┬'
-      , 'top-left': '┌'
-      , 'top-right': '┐'
-      , 'bottom': '─'
-      , 'bottom-mid': '┴'
-      , 'bottom-left': '└'
-      , 'bottom-right': '┘'
-      , 'left': '│'
-      , 'left-mid': '├'
-      , 'mid': '─'
-      , 'mid-mid': '┼'
-      , 'right': '│'
-      , 'right-mid': '┤'
-      , 'middle': '│'
-    }
-    , truncate: '…'
-    , colWidths: []
-    , rowHeights: []
-    , colAligns: []
-    , rowAligns: []
-    , style: {
-      'padding-left': 1
-      , 'padding-right': 1
-      , head: ['red']
-      , border: ['grey']
-      , compact : false
-    }
-    , head: []
+      top: '─',
+      'top-mid': '┬',
+      'top-left': '┌',
+      'top-right': '┐',
+      bottom: '─',
+      'bottom-mid': '┴',
+      'bottom-left': '└',
+      'bottom-right': '┘',
+      left: '│',
+      'left-mid': '├',
+      mid: '─',
+      'mid-mid': '┼',
+      right: '│',
+      'right-mid': '┤',
+      middle: '│',
+    },
+    truncate: '…',
+    colWidths: [],
+    rowHeights: [],
+    colAligns: [],
+    rowAligns: [],
+    style: {
+      'padding-left': 1,
+      'padding-right': 1,
+      head: ['red'],
+      border: ['grey'],
+      compact: false,
+    },
+    head: [],
   };
 }
 
-function mergeOptions(options,defaults){
+function mergeOptions(options, defaults) {
   options = options || {};
   defaults = defaults || defaultOptions();
   var ret = objectAssign({}, defaults, options);
@@ -242,7 +240,7 @@ function mergeOptions(options,defaults){
   return ret;
 }
 
-function wordWrap(maxLength,input){
+function wordWrap(maxLength, input) {
   var lines = [];
   var split = input.split(/(\s+)/g);
   var line = [];
@@ -254,8 +252,8 @@ function wordWrap(maxLength,input){
     if (lineLength > 0 && whitespace) {
       newLength += whitespace.length;
     }
-    if(newLength > maxLength){
-      if(lineLength !== 0){
+    if (newLength > maxLength) {
+      if (lineLength !== 0) {
         lines.push(line.join(''));
       }
       line = [word];
@@ -264,41 +262,41 @@ function wordWrap(maxLength,input){
       line.push(whitespace || '', word);
       lineLength = newLength;
     }
-    whitespace = split[i+1];
+    whitespace = split[i + 1];
   }
-  if(lineLength){
+  if (lineLength) {
     lines.push(line.join(''));
   }
   return lines;
 }
 
-function multiLineWordWrap(maxLength, input){
+function multiLineWordWrap(maxLength, input) {
   var output = [];
   input = input.split('\n');
-  for(var i = 0; i < input.length; i++){
-    output.push.apply(output,wordWrap(maxLength,input[i]));
+  for (var i = 0; i < input.length; i++) {
+    output.push.apply(output, wordWrap(maxLength, input[i]));
   }
   return output;
 }
 
-function colorizeLines(input){
+function colorizeLines(input) {
   var state = {};
   var output = [];
-  for(var i = 0; i < input.length; i++){
-    var line = rewindState(state,input[i]) ;
+  for (var i = 0; i < input.length; i++) {
+    var line = rewindState(state, input[i]);
     state = readState(line);
-    var temp = objectAssign({},state);
-    output.push(unwindState(temp,line));
+    var temp = objectAssign({}, state);
+    output.push(unwindState(temp, line));
   }
   return output;
 }
 
 module.exports = {
-  strlen:strlen,
-  repeat:repeat,
-  pad:pad,
-  truncate:truncate,
-  mergeOptions:mergeOptions,
-  wordWrap:multiLineWordWrap,
-  colorizeLines:colorizeLines
+  strlen: strlen,
+  repeat: repeat,
+  pad: pad,
+  truncate: truncate,
+  mergeOptions: mergeOptions,
+  wordWrap: multiLineWordWrap,
+  colorizeLines: colorizeLines,
 };
