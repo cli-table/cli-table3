@@ -265,7 +265,7 @@ describe('utils',function(){
       expect(wordWrap(10,input).join('\n')).to.equal(expected);
     });
 
-    it('length with colors',function(){
+    it.skip('length with colors',function(){
       var input = colors.red('Hello, how are') + colors.blue(' you today? I') + colors.green(' am fine, thank you!');
 
       var expected = colors.red('Hello, how\nare') + colors.blue(' you\ntoday? I') + colors.green('\nam fine,\nthank you!');
