@@ -21,12 +21,14 @@
     "eslint-plugin-prettier": "^2.6.0",
     "jest": "^23.1.0",
     "jest-runner-eslint": "^0.6.0",
+    "lerna-changelog": "^0.7.0",
     "prettier": "1.13.5"
   },
   "optionalDependencies": {
     "colors": "^1.1.2"
   },
   "scripts": {
+    "changelog": "lerna-changelog",
     "docs": "node ./scripts/update-docs.js",
     "prettier": "prettier --write '{examples,lib,scripts,src,test}/**/*.js'",
     "test": "jest --color",
@@ -56,6 +58,16 @@
   "homepage": "https://github.com/cli-table/cli-table3",
   "engines": {
     "node": ">=6"
+  },
+  "changelog": {
+    "repo": "cli-table/cli-table3",
+    "labels": {
+      "breaking": ":boom: Breaking Change",
+      "enhancement": ":rocket: Enhancement",
+      "bug": ":bug: Bug Fix",
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
+    }
   },
   "jest": {
     "projects": [
