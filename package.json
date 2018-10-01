@@ -20,7 +20,7 @@
     "ansi-256-colors": "^1.1.0",
     "cli-table": "^0.3.1",
     "eslint-config-prettier": "^3.0.1",
-    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "jest": "^23.1.0",
     "jest-runner-eslint": "^0.6.0",
     "lerna-changelog": "^0.8.0",
