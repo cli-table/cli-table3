@@ -20,13 +20,13 @@ declare namespace CliTable3 {
     type VerticalAlignment = "top" | "center" | "bottom";
 
     interface TableOptions {
-        truncate: string;
-        colWidths: Array<number | null>;
-        rowHeights: Array<number | null>;
-        colAligns: HorizontalAlignment[];
-        rowAligns: VerticalAlignment[];
-        head: string[];
-        wordWrap: boolean;
+        truncate?: string;
+        colWidths?: Array<number | null>;
+        rowHeights?: Array<number | null>;
+        colAligns?: HorizontalAlignment[];
+        rowAligns?: VerticalAlignment[];
+        head?: string[];
+        wordWrap?: boolean;
     }
 
     interface TableInstanceOptions extends TableOptions {
