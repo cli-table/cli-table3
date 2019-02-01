@@ -2519,9 +2519,9 @@ jest-resolve@^23.6.0:
     realpath-native "^1.0.0"
 
 jest-runner-eslint@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/jest-runner-eslint/-/jest-runner-eslint-0.7.0.tgz#40d67c4b67f2432f1bcad18828942add31880335"
-  integrity sha512-NvHm+FslAIGPHUTZu8p3yH6UkMCXJt0xsW8NH3gvnLkxZErsiI4hdrHJcDegF61orIvdFSS5bUWsCQjGcCLM9g==
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/jest-runner-eslint/-/jest-runner-eslint-0.7.3.tgz#1dd876115eb2c779c6726d4cc18f0ed526ff9954"
+  integrity sha512-MywU/1Fm+0PisAyYSeJ0MsmSD3oGfWyCbkgvBWu7xEChCIiCMaQ+3Cm3AvAIJZPvVlDtQtKN6lEa2QcMyF3DGQ==
   dependencies:
     chalk "^2.4.1"
     cosmiconfig "^5.0.0"
