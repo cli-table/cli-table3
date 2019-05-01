@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "object-assign": "^4.1.0",
-    "stringz": "^1.0.0"
+    "string-width": "^3.0.0"
   },
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
@@ -76,7 +76,7 @@
       {
         "displayName": "test",
         "testMatch": [
-          "**/test/**/*-test(s)?.js"
+          "<rootDir>/test/*.js"
         ]
       },
       {
