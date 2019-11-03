@@ -72,7 +72,7 @@ function updateState(state, controlChars) {
   if (controlCode === 0) {
     for (let i in state) {
       /* istanbul ignore else */
-      if (state.hasOwnProperty(i)) {
+      if (Object.prototype.hasOwnProperty.call(state, i)) {
         delete state[i];
       }
     }
