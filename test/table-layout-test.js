@@ -347,19 +347,19 @@ describe('tableLayout', function() {
     if (typeof expectedCell === 'string') {
       expectedCell = { content: expectedCell };
     }
-    if (expectedCell.hasOwnProperty('content')) {
+    if (Object.prototype.hasOwnProperty.call(expectedCell, 'content')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.content).toEqual(expectedCell.content);
     }
-    if (expectedCell.hasOwnProperty('rowSpan')) {
+    if (Object.prototype.hasOwnProperty.call(expectedCell, 'rowSpan')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.rowSpan).toEqual(expectedCell.rowSpan);
     }
-    if (expectedCell.hasOwnProperty('colSpan')) {
+    if (Object.prototype.hasOwnProperty.call(expectedCell, 'colSpan')) {
       expect(actualCell).toBeInstanceOf(Cell);
       expect(actualCell.colSpan).toEqual(expectedCell.colSpan);
     }
-    if (expectedCell.hasOwnProperty('spannerFor')) {
+    if (Object.prototype.hasOwnProperty.call(expectedCell, 'spannerFor')) {
       expect(actualCell).toBeInstanceOf(Cell.RowSpanCell);
       expect(actualCell.originalCell).toBeInstanceOf(Cell);
       expect(actualCell.originalCell).toEqual(
