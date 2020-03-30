@@ -9,7 +9,7 @@ function strlen(str) {
   let code = codeRegex();
   let stripped = ('' + str).replace(code, '');
   let split = stripped.split('\n');
-  return split.reduce(function(memo, s) {
+  return split.reduce(function (memo, s) {
     return stringWidth(s) > memo ? stringWidth(s) : memo;
   }, 0);
 }
@@ -102,7 +102,7 @@ function unwindState(state, ret) {
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  Object.keys(state).forEach(function(key) {
+  Object.keys(state).forEach(function (key) {
     if (state[key]) {
       ret += codeCache[key].off;
     }
@@ -125,7 +125,7 @@ function rewindState(state, ret) {
   delete state.lastBackgroundAdded;
   delete state.lastForegroundAdded;
 
-  Object.keys(state).forEach(function(key) {
+  Object.keys(state).forEach(function (key) {
     if (state[key]) {
       ret = codeCache[key].on + ret;
     }
