@@ -1,13 +1,13 @@
 const Table = require('../src/table');
 const colors = require('colors/safe');
 
-module.exports = function(runTest) {
+module.exports = function (runTest) {
   function it(name, fn) {
     let result = fn();
     runTest(name, result[0], result[1], result[2]);
   }
 
-  it('Basic Usage', function() {
+  it('Basic Usage', function () {
     function makeTable() {
       // By default, headers will be red, and borders will be grey
       let table = new Table({ head: ['a', 'b'] });
@@ -28,7 +28,7 @@ module.exports = function(runTest) {
     return [makeTable, expected, 'basic-usage-with-colors'];
   });
 
-  it('Basic Usage - disable colors - (used often in the examples and tests)', function() {
+  it('Basic Usage - disable colors - (used often in the examples and tests)', function () {
     function makeTable() {
       // For most of these examples, and most of the unit tests we disable colors.
       // It makes unit tests easier to write/understand, and allows these pages to
@@ -63,7 +63,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('Create vertical tables by adding objects a that specify key-value pairs', function() {
+  it('Create vertical tables by adding objects a that specify key-value pairs', function () {
     function makeTable() {
       let table = new Table({
         style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
@@ -85,7 +85,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('Cross tables are similar to vertical tables, but include an empty string for the first header', function() {
+  it('Cross tables are similar to vertical tables, but include an empty string for the first header', function () {
     function makeTable() {
       let table = new Table({
         head: ['', 'Header 1', 'Header 2'],
@@ -113,7 +113,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('Stylize the table with custom border characters', function() {
+  it('Stylize the table with custom border characters', function () {
     function makeTable() {
       let table = new Table({
         chars: {
@@ -152,7 +152,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines', function() {
+  it('Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines', function () {
     function makeTable() {
       let table = new Table({ style: { border: [], header: [] } });
 
@@ -173,7 +173,7 @@ module.exports = function(runTest) {
     return [makeTable, expected, 'multi-line-colors'];
   });
 
-  it('Set `wordWrap` to true to make lines of text wrap instead of being truncated', function() {
+  it('Set `wordWrap` to true to make lines of text wrap instead of being truncated', function () {
     function makeTable() {
       let table = new Table({
         style: { border: [], header: [] },

@@ -1,13 +1,13 @@
 const Table = require('../src/table');
 const colors = require('colors/safe');
 
-module.exports = function(runTest) {
+module.exports = function (runTest) {
   function it(name, fn) {
     let result = fn();
     runTest(name, result[0], result[1], result[2]);
   }
 
-  it('use colSpan to span columns - (colSpan above normal cell)', function() {
+  it('use colSpan to span columns - (colSpan above normal cell)', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -29,7 +29,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('use colSpan to span columns - (colSpan below normal cell)', function() {
+  it('use colSpan to span columns - (colSpan below normal cell)', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -51,7 +51,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('use rowSpan to span rows - (rowSpan on the left side)', function() {
+  it('use rowSpan to span rows - (rowSpan on the left side)', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -74,7 +74,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('use rowSpan to span rows - (rowSpan on the right side)', function() {
+  it('use rowSpan to span rows - (rowSpan on the right side)', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -97,12 +97,16 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('mix rowSpan and colSpan together for complex table layouts', function() {
+  it('mix rowSpan and colSpan together for complex table layouts', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{ content: 'hello', colSpan: 2 }, { rowSpan: 2, colSpan: 2, content: 'sup' }, { rowSpan: 3, content: 'hi' }],
+        [
+          { content: 'hello', colSpan: 2 },
+          { rowSpan: 2, colSpan: 2, content: 'sup' },
+          { rowSpan: 3, content: 'hi' },
+        ],
         [{ content: 'howdy', colSpan: 2 }],
         ['o', 'k', '', '']
       );
@@ -123,7 +127,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('multi-line content will flow across rows in rowSpan cells', function() {
+  it('multi-line content will flow across rows in rowSpan cells', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -146,7 +150,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('multi-line content will flow across rows in rowSpan cells - (complex layout)', function() {
+  it('multi-line content will flow across rows in rowSpan cells - (complex layout)', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -176,7 +180,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('rowSpan cells can have a staggered layout', function() {
+  it('rowSpan cells can have a staggered layout', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -190,7 +194,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('the layout manager automatically create empty cells to fill in the table', function() {
+  it('the layout manager automatically create empty cells to fill in the table', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -214,7 +218,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.', function() {
+  it('use table `rowHeights` option to fix row height. The truncation symbol will be shown on the last line.', function () {
     function makeTable() {
       let table = new Table({
         rowHeights: [2],
@@ -231,7 +235,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content', function() {
+  it('if `colWidths` is not specified, the layout manager will automatically widen rows to fit the content', function () {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
@@ -245,7 +249,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('you can specify a column width for only the first row, other rows will be automatically widened to fit content', function() {
+  it('you can specify a column width for only the first row, other rows will be automatically widened to fit content', function () {
     function makeTable() {
       let table = new Table({
         colWidths: [4],
@@ -262,7 +266,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('a column with a null column width will be automatically widened to fit content', function() {
+  it('a column with a null column width will be automatically widened to fit content', function () {
     function makeTable() {
       let table = new Table({
         colWidths: [null, 4],
@@ -279,7 +283,7 @@ module.exports = function(runTest) {
     return [makeTable, expected];
   });
 
-  it('feel free to use colors in your content strings, column widths will be calculated correctly', function() {
+  it('feel free to use colors in your content strings, column widths will be calculated correctly', function () {
     function makeTable() {
       let table = new Table({
         colWidths: [5],

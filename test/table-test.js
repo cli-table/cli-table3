@@ -1,8 +1,8 @@
-describe('@api Table ', function() {
+describe('@api Table ', function () {
   const Table = require('..');
   const colors = require('colors/safe');
 
-  it('wordWrap with colored text', function() {
+  it('wordWrap with colored text', function () {
     let table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [7, 9] });
 
     table.push([colors.red('Hello how are you?'), colors.blue('I am fine thanks!')]);
@@ -19,7 +19,7 @@ describe('@api Table ', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('allows numbers as `content` property of cells defined using object notation', function() {
+  it('allows numbers as `content` property of cells defined using object notation', function () {
     let table = new Table({ style: { border: [], head: [] } });
 
     table.push([{ content: 12 }]);
@@ -29,16 +29,16 @@ describe('@api Table ', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('throws if content is not a string or number', function() {
+  it('throws if content is not a string or number', function () {
     let table = new Table({ style: { border: [], head: [] } });
 
-    expect(function() {
+    expect(function () {
       table.push([{ content: { a: 'b' } }]);
       table.toString();
     }).toThrow();
   });
 
-  it('works with CJK values', function() {
+  it('works with CJK values', function () {
     let table = new Table({ style: { border: [], head: [] }, colWidths: [5, 10, 5] });
 
     table.push(

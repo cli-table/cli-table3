@@ -1,7 +1,7 @@
-describe('@api original-cli-table index tests', function() {
+describe('@api original-cli-table index tests', function () {
   const Table = require('../src/table');
 
-  it('test complete table', function() {
+  it('test complete table', function () {
     let table = new Table({
       head: ['Rel', 'Change', 'By', 'When'],
       style: {
@@ -32,7 +32,7 @@ describe('@api original-cli-table index tests', function() {
     //expect(table.render()).should.eql(expected.join("\n"));
   });
 
-  it('test width property', function() {
+  it('test width property', function () {
     let table = new Table({
       head: ['Cool'],
       style: {
@@ -44,7 +44,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.width).toEqual(8);
   });
 
-  it('test vertical table output', function() {
+  it('test vertical table output', function () {
     let table = new Table({ style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] } }); // clear styles to prevent color output
 
     table.push({ 'v0.1': 'Testing something cool' }, { 'v0.1': 'Testing something cool' });
@@ -60,7 +60,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test cross table output', function() {
+  it('test cross table output', function () {
     let table = new Table({
       head: ['', 'Header 1', 'Header 2'],
       style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
@@ -81,7 +81,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test table colors', function() {
+  it('test table colors', function () {
     let table = new Table({
       head: ['Rel', 'By'],
       style: { head: ['red'], border: ['grey'] },
@@ -122,7 +122,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test custom chars', function() {
+  it('test custom chars', function () {
     let table = new Table({
       chars: {
         top: '═',
@@ -157,7 +157,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test compact shortand', function() {
+  it('test compact shortand', function () {
     let table = new Table({
       style: {
         head: [],
@@ -173,7 +173,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test compact empty mid line', function() {
+  it('test compact empty mid line', function () {
     let table = new Table({
       chars: {
         mid: '',
@@ -194,7 +194,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test decoration lines disabled', function() {
+  it('test decoration lines disabled', function () {
     let table = new Table({
       chars: {
         top: '',
@@ -228,7 +228,7 @@ describe('@api original-cli-table index tests', function() {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
-  it('test with null/undefined as values or column names', function() {
+  it('test with null/undefined as values or column names', function () {
     let table = new Table({
       style: {
         head: [],
