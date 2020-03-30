@@ -59,7 +59,7 @@
   },
   "homepage": "https://github.com/cli-table/cli-table3",
   "engines": {
-    "node": ">=6"
+    "node": "10.* || >= 12.*"
   },
   "changelog": {
     "repo": "cli-table/cli-table3",
