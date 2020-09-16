@@ -188,7 +188,7 @@ $ yarn docs
 ## Credits
 
 - James Talmage - author &lt;james.talmage@jrtechnical.com&gt; ([jamestalmage](https://github.com/jamestalmage))
-- Guillermo Rauch - author of the original cli-table &lt;guillermo@learnboost.com&gt; ([Guille](https://github.com/guille))
+- Guillermo Rauch - author of the original cli-table &lt;guillermo@learnboost.com&gt; ([Rauchg](https://github.com/rauchg))
 
 ## License
 
