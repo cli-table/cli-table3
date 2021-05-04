@@ -106,6 +106,48 @@ describe('layout-manager', function () {
       ]);
     });
 
+    it('complex layout 2', function () {
+      let table = [
+        [
+          { c: 'a', rowSpan: 3 },
+          { c: 'b', rowSpan: 2 },
+          { c: 'cd', colSpan: 2 },
+          { c: 'e', rowSpan: 2 },
+        ],
+        [{ c: 'c' }, { c: 'd' }],
+        [{ c: 'b' }, { c: 'c' }, { c: 'd' }, { c: 'e' }],
+        [{ c: 'a' }, { c: 'b' }, { c: 'c' }, { c: 'd' }, { c: 'e' }],
+      ];
+
+      layoutTable(table);
+
+      expect(table).toEqual([
+        [
+          { c: 'a', y: 0, x: 0, rowSpan: 3 },
+          { c: 'b', y: 0, x: 1, rowSpan: 2 },
+          { c: 'cd', y: 0, x: 2, colSpan: 2 },
+          { c: 'e', y: 0, x: 4, rowSpan: 2 },
+        ],
+        [
+          { c: 'c', y: 1, x: 2 },
+          { c: 'd', y: 1, x: 3 },
+        ],
+        [
+          { c: 'b', y: 2, x: 1 },
+          { c: 'c', y: 2, x: 2 },
+          { c: 'd', y: 2, x: 3 },
+          { c: 'e', y: 2, x: 4 },
+        ],
+        [
+          { c: 'a', y: 3, x: 0 },
+          { c: 'b', y: 3, x: 1 },
+          { c: 'c', y: 3, x: 2 },
+          { c: 'd', y: 3, x: 3 },
+          { c: 'e', y: 3, x: 4 },
+        ],
+      ]);
+    });
+
     it('maxWidth of single element', function () {
       let table = [[{}]];
       layoutTable(table);

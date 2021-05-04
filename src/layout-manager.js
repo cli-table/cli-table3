@@ -5,9 +5,10 @@ const { ColSpanCell, RowSpanCell } = Cell;
 (function () {
   function layoutTable(table) {
     table.forEach(function (row, rowIndex) {
+      let prevCell = null;
       row.forEach(function (cell, columnIndex) {
         cell.y = rowIndex;
-        cell.x = columnIndex;
+        cell.x = prevCell ? prevCell.x + 1 : columnIndex;
         for (let y = rowIndex; y >= 0; y--) {
           let row2 = table[y];
           let xMax = y === rowIndex ? columnIndex : row2.length;
@@ -17,6 +18,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
               cell.x++;
             }
           }
+          prevCell = cell;
         }
       });
     });
