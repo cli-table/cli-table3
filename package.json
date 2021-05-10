@@ -24,7 +24,7 @@
     "jest": "^25.2.4",
     "jest-runner-eslint": "^0.7.0",
     "lerna-changelog": "^1.0.1",
-    "prettier": "2.2.1"
+    "prettier": "2.3.0"
   },
   "optionalDependencies": {
     "colors": "^1.1.2"
