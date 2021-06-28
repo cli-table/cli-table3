@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "object-assign": "^4.1.0",
-    "string-width": "^4.2.0"
+    "string-width": "^5.0.0"
   },
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
