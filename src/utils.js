@@ -271,11 +271,31 @@ function wordWrap(maxLength, input) {
   return lines;
 }
 
-function multiLineWordWrap(maxLength, input) {
+function wrapWords(maxLength, input) {
+  let lines = [];
+  let line = '';
+  function pushLine(str, ws) {
+    if (line.length && ws) line += ws;
+    line += str;
+    while (line.length > maxLength) {
+      lines.push(line.slice(0, maxLength));
+      line = line.slice(maxLength);
+    }
+  }
+  let split = input.split(/(\s+)/g);
+  for (let i = 0; i < split.length; i += 2) {
+    pushLine(split[i], i && split[i - 1]);
+  }
+  if (line.length) lines.push(line);
+  return lines;
+}
+
+function multiLineWordWrap(maxLength, input, words = false) {
   let output = [];
   input = input.split('\n');
+  const handler = words ? wrapWords : wordWrap;
   for (let i = 0; i < input.length; i++) {
-    output.push.apply(output, wordWrap(maxLength, input[i]));
+    output.push.apply(output, handler(maxLength, input[i]));
   }
   return output;
 }

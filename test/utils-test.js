@@ -322,6 +322,18 @@ describe('utils', function () {
       let expected = ['\x1b[31m漢字\x1b[0m', ' 漢字'];
       expect(wordWrap(5, input)).toEqual(expected);
     });
+
+    describe('wrapWords', function () {
+      it('wraps long words', function () {
+        expect(wordWrap(10, 'abcdefghijklmnopqrstuvwxyz', true)).toEqual(['abcdefghij', 'klmnopqrst', 'uvwxyz']);
+        expect(wordWrap(10, 'abcdefghijk lmnopqrstuv wxyz', true)).toEqual(['abcdefghij', 'k lmnopqrs', 'tuv wxyz']);
+        expect(wordWrap(10, 'ab cdefghijk lmnopqrstuv wx yz', true)).toEqual([
+          'ab cdefghi',
+          'jk lmnopqr',
+          'stuv wx yz',
+        ]);
+      });
+    });
   });
 
   describe('colorizeLines', function () {

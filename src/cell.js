@@ -67,7 +67,7 @@ class Cell {
           i++;
         }
       }
-      this.lines = utils.colorizeLines(utils.wordWrap(fixedWidth, this.content));
+      this.lines = utils.colorizeLines(utils.wordWrap(fixedWidth, this.content, tableOptions.wrapWords));
     } else {
       this.lines = utils.colorizeLines(this.content.split('\n'));
     }
