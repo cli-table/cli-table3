@@ -1,4 +1,3 @@
-const objectAssign = require('object-assign');
 const Cell = require('./cell');
 const { ColSpanCell, RowSpanCell } = Cell;
 
@@ -226,7 +225,7 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
       }
     }
 
-    objectAssign(vals, result);
+    Object.assign(vals, result);
     for (let j = 0; j < vals.length; j++) {
       vals[j] = Math.max(forcedMin, vals[j] || 0);
     }
