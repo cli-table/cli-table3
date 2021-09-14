@@ -13,7 +13,7 @@
     "test": "test"
   },
   "dependencies": {
-    "string-width": "^4.2.0"
+    "string-width": "^5.0.1"
   },
   "devDependencies": {
     "ansi-256-colors": "^1.1.0",
