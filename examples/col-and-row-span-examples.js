@@ -1,5 +1,5 @@
 const Table = require('../src/table');
-const colors = require('colors/safe');
+const chalk = require('chalk');
 
 module.exports = function (runTest) {
   function it(name, fn) {
@@ -290,12 +290,12 @@ module.exports = function (runTest) {
         style: { head: [], border: [] },
       });
 
-      table.push([colors.red('hello')]);
+      table.push([chalk.red('hello')]);
 
       return table;
     }
 
-    let expected = ['┌─────┐', '│ ' + colors.red('he') + '… │', '└─────┘'];
+    let expected = ['┌─────┐', '│ ' + chalk.red('he') + '… │', '└─────┘'];
 
     return [makeTable, expected, 'truncation-with-colors'];
   });

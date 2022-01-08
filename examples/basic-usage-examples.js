@@ -1,5 +1,5 @@
 const Table = require('../src/table');
-const colors = require('colors/safe');
+const chalk = require('chalk');
 
 module.exports = function (runTest) {
   function it(name, fn) {
@@ -18,11 +18,11 @@ module.exports = function (runTest) {
     }
 
     let expected = [
-      colors.gray('┌───') + colors.gray('┬───┐'),
-      colors.gray('│') + colors.red(' a ') + colors.gray('│') + colors.red(' b ') + colors.gray('│'),
-      colors.gray('├───') + colors.gray('┼───┤'),
-      colors.gray('│') + ' c ' + colors.gray('│') + ' d ' + colors.gray('│'),
-      colors.gray('└───') + colors.gray('┴───┘'),
+      chalk.gray('┌───') + chalk.gray('┬───┐'),
+      chalk.gray('│') + chalk.red(' a ') + chalk.gray('│') + chalk.red(' b ') + chalk.gray('│'),
+      chalk.gray('├───') + chalk.gray('┼───┤'),
+      chalk.gray('│') + ' c ' + chalk.gray('│') + ' d ' + chalk.gray('│'),
+      chalk.gray('└───') + chalk.gray('┴───┘'),
     ];
 
     return [makeTable, expected, 'basic-usage-with-colors'];
@@ -152,21 +152,21 @@ module.exports = function (runTest) {
     return [makeTable, expected];
   });
 
-  it('Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines', function () {
+  it('Use ansi colors (i.e. chalk) to style text within the cells at will, even across multiple lines', function () {
     function makeTable() {
       let table = new Table({ style: { border: [], header: [] } });
 
-      table.push([colors.red('Hello\nhow\nare\nyou?'), colors.blue('I\nam\nfine\nthanks!')]);
+      table.push([chalk.red('Hello\nhow\nare\nyou?'), chalk.blue('I\nam\nfine\nthanks!')]);
 
       return table;
     }
 
     let expected = [
       '┌───────┬─────────┐',
-      '│ ' + colors.red('Hello') + ' │ ' + colors.blue('I') + '       │',
-      '│ ' + colors.red('how') + '   │ ' + colors.blue('am') + '      │',
-      '│ ' + colors.red('are') + '   │ ' + colors.blue('fine') + '    │',
-      '│ ' + colors.red('you?') + '  │ ' + colors.blue('thanks!') + ' │',
+      '│ ' + chalk.red('Hello') + ' │ ' + chalk.blue('I') + '       │',
+      '│ ' + chalk.red('how') + '   │ ' + chalk.blue('am') + '      │',
+      '│ ' + chalk.red('are') + '   │ ' + chalk.blue('fine') + '    │',
+      '│ ' + chalk.red('you?') + '  │ ' + chalk.blue('thanks!') + ' │',
       '└───────┴─────────┘',
     ];
 

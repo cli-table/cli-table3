@@ -241,7 +241,7 @@
 ```javascript
       var table = new Table({colWidths:[5],style:{head:[],border:[]}});
 
-      table.push([colors.red('hello')]);
+      table.push([chalk.red('hello')]);
 
 ```
 

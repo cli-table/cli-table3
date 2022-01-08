@@ -1,8 +1,10 @@
 describe('Cell', function () {
-  const colors = require('colors');
+  const chalk = require('chalk');
   const Cell = require('../src/cell');
   const { ColSpanCell, RowSpanCell } = Cell;
   const { mergeOptions } = require('../src/utils');
+
+  chalk.level = 3;
 
   function defaultOptions() {
     //overwrite coloring of head and border by default for easier testing.
@@ -603,7 +605,7 @@ describe('Cell', function () {
 
       it('will draw in the color specified by border style', function () {
         cell.border = ['gray'];
-        expect(cell.draw('top')).toEqual(colors.gray('┌───────'));
+        expect(cell.draw('top')).toEqual(chalk.gray('┌───────'));
       });
     });
 
@@ -626,7 +628,7 @@ describe('Cell', function () {
 
       it('will draw in the color specified by border style', function () {
         cell.border = ['gray'];
-        expect(cell.draw('bottom')).toEqual(colors.gray('└───────'));
+        expect(cell.draw('bottom')).toEqual(chalk.gray('└───────'));
       });
     });
 
@@ -639,8 +641,8 @@ describe('Cell', function () {
       it('draws an empty line', function () {
         cell.border = ['gray'];
         cell.head = ['red'];
-        expect(cell.drawEmpty()).toEqual(colors.gray('L') + colors.red('       '));
-        expect(cell.drawEmpty(true)).toEqual(colors.gray('L') + colors.red('       ') + colors.gray('R'));
+        expect(cell.drawEmpty()).toEqual(chalk.gray('L') + chalk.red('       '));
+        expect(cell.drawEmpty(true)).toEqual(chalk.gray('L') + chalk.red('       ') + chalk.gray('R'));
       });
     });
 
@@ -682,17 +684,17 @@ describe('Cell', function () {
       it('left and right will be drawn in color of border style', function () {
         cell.border = ['gray'];
         cell.x = 0;
-        expect(cell.draw(0)).toEqual(colors.gray('L') + '  hello  ');
+        expect(cell.draw(0)).toEqual(chalk.gray('L') + '  hello  ');
         cell.drawRight = true;
-        expect(cell.draw(0)).toEqual(colors.gray('L') + '  hello  ' + colors.gray('R'));
+        expect(cell.draw(0)).toEqual(chalk.gray('L') + '  hello  ' + chalk.gray('R'));
       });
 
       it('text will be drawn in color of head style if y == 0', function () {
         cell.head = ['red'];
         cell.x = cell.y = 0;
-        expect(cell.draw(0)).toEqual('L' + colors.red('  hello  '));
+        expect(cell.draw(0)).toEqual('L' + chalk.red('  hello  '));
         cell.drawRight = true;
-        expect(cell.draw(0)).toEqual('L' + colors.red('  hello  ') + 'R');
+        expect(cell.draw(0)).toEqual('L' + chalk.red('  hello  ') + 'R');
       });
 
       it('text will NOT be drawn in color of head style if y == 1', function () {
@@ -707,9 +709,9 @@ describe('Cell', function () {
         cell.border = ['gray'];
         cell.head = ['red'];
         cell.x = cell.y = 0;
-        expect(cell.draw(0)).toEqual(colors.gray('L') + colors.red('  hello  '));
+        expect(cell.draw(0)).toEqual(chalk.gray('L') + chalk.red('  hello  '));
         cell.drawRight = true;
-        expect(cell.draw(0)).toEqual(colors.gray('L') + colors.red('  hello  ') + colors.gray('R'));
+        expect(cell.draw(0)).toEqual(chalk.gray('L') + chalk.red('  hello  ') + chalk.gray('R'));
       });
     });
 

@@ -186,11 +186,11 @@ class Cell {
   wrapWithStyleColors(styleProperty, content) {
     if (this[styleProperty] && this[styleProperty].length) {
       try {
-        let colors = require('colors/safe');
+        let chalk = require('chalk');
         for (let i = this[styleProperty].length - 1; i >= 0; i--) {
-          colors = colors[this[styleProperty][i]];
+          chalk = chalk[this[styleProperty][i]];
         }
-        return colors(content);
+        return chalk(content);
       } catch (e) {
         return content;
       }

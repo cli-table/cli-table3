@@ -1,18 +1,20 @@
 describe('@api Table ', function () {
   const Table = require('..');
-  const colors = require('colors/safe');
+  const chalk = require('chalk');
+
+  chalk.level = 3;
 
   it('wordWrap with colored text', function () {
     let table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [7, 9] });
 
-    table.push([colors.red('Hello how are you?'), colors.blue('I am fine thanks!')]);
+    table.push([chalk.red('Hello how are you?'), chalk.blue('I am fine thanks!')]);
 
     let expected = [
       '┌───────┬─────────┐',
-      '│ ' + colors.red('Hello') + ' │ ' + colors.blue('I am') + '    │',
-      '│ ' + colors.red('how') + '   │ ' + colors.blue('fine') + '    │',
-      '│ ' + colors.red('are') + '   │ ' + colors.blue('thanks!') + ' │',
-      '│ ' + colors.red('you?') + '  │         │',
+      '│ ' + chalk.red('Hello') + ' │ ' + chalk.blue('I am') + '    │',
+      '│ ' + chalk.red('how') + '   │ ' + chalk.blue('fine') + '    │',
+      '│ ' + chalk.red('are') + '   │ ' + chalk.blue('thanks!') + ' │',
+      '│ ' + chalk.red('you?') + '  │         │',
       '└───────┴─────────┘',
     ];
 

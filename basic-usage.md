@@ -110,14 +110,14 @@
 ```
 
 
-##### Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines
+##### Use ansi colors (i.e. chalk) to style text within the cells at will, even across multiple lines
 ![table image](./examples/screenshots/multi-line-colors.png)
 ```javascript
       var table = new Table({style:{border:[],header:[]}});
 
       table.push([
-        colors.red('Hello\nhow\nare\nyou?'),
-        colors.blue('I\nam\nfine\nthanks!')
+        chalk.red('Hello\nhow\nare\nyou?'),
+        chalk.blue('I\nam\nfine\nthanks!')
       ]);
 
 ```
