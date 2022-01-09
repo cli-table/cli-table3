@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.6.1 (2022-01-09)
+
+* [#251](https://github.com/cli-table/cli-table3/pull/251) Pin `colors` to 1.4.0 ([@JJ](https://github.com/JJ))
+
 ## v0.6.0 (2020-03-30)
 
 #### :boom: Breaking Change
