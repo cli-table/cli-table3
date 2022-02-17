@@ -1,5 +1,5 @@
 const Table = require('../src/table');
-const colors = require('colors/safe');
+const colors = require('@colors/colors/safe');
 
 module.exports = function (runTest) {
   function it(name, fn) {

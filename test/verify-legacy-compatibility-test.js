@@ -8,7 +8,7 @@
   });
 
   function commonTests(Table) {
-    const colors = require('colors/safe');
+    const colors = require('@colors/colors/safe');
 
     it('empty table has a width of 0', function () {
       let table = new Table();

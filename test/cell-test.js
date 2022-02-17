@@ -1,5 +1,5 @@
 describe('Cell', function () {
-  const colors = require('colors');
+  const colors = require('@colors/colors');
   const Cell = require('../src/cell');
   const { ColSpanCell, RowSpanCell } = Cell;
   const { mergeOptions } = require('../src/utils');

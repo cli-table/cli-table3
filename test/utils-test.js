@@ -1,5 +1,5 @@
 describe('utils', function () {
-  const colors = require('colors/safe');
+  const colors = require('@colors/colors/safe');
   const utils = require('../src/utils');
 
   const { strlen, repeat, pad, truncate, mergeOptions, wordWrap } = utils;
