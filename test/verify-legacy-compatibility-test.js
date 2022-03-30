@@ -1,3 +1,4 @@
+jest.mock('colors/safe', () => jest.requireActual('@colors/colors/safe'));
 (function () {
   describe('verify original cli-table behavior', function () {
     commonTests(require('cli-table'));
