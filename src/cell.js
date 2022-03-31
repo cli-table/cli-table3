@@ -58,7 +58,7 @@ class Cell {
     this.border = style.border || tableStyle.border;
 
     let fixedWidth = tableOptions.colWidths[this.x];
-    if (tableOptions.wordWrap && fixedWidth) {
+    if ((tableOptions.wordWrap || tableOptions.textWrap) && fixedWidth) {
       fixedWidth -= this.paddingLeft + this.paddingRight;
       if (this.colSpan) {
         let i = 1;
@@ -67,7 +67,8 @@ class Cell {
           i++;
         }
       }
-      this.lines = utils.colorizeLines(utils.wordWrap(fixedWidth, this.content));
+      const { wrapOnWordBoundary = true } = tableOptions;
+      this.lines = utils.colorizeLines(utils.wordWrap(fixedWidth, this.content, wrapOnWordBoundary));
     } else {
       this.lines = utils.colorizeLines(this.content.split('\n'));
     }
