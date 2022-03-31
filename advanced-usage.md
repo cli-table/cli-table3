@@ -7,12 +7,12 @@
     │ hello │ howdy │
     └───────┴───────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{colSpan:2,content:'greetings'}],
-        [{colSpan:2,content:'greetings'}],
-        ['hello','howdy']
+        [{ colSpan: 2, content: 'greetings' }],
+        [{ colSpan: 2, content: 'greetings' }],
+        ['hello', 'howdy']
       );
 
 ```
@@ -27,12 +27,12 @@
     │ greetings     │
     └───────────────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        ['hello','howdy'],
-        [{colSpan:2,content:'greetings'}],
-        [{colSpan:2,content:'greetings'}]
+        ['hello', 'howdy'],
+        [{ colSpan: 2, content: 'greetings' }],
+        [{ colSpan: 2, content: 'greetings' }]
       );
 
 ```
@@ -45,10 +45,10 @@
     │           │           │ howdy │
     └───────────┴───────────┴───────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings',vAlign:'center'},'hello'],
+        [{ rowSpan: 2, content: 'greetings' }, { rowSpan: 2, content: 'greetings', vAlign: 'center' }, 'hello'],
         ['howdy']
       );
 
@@ -62,10 +62,10 @@
     │ howdy │           │ greetings │
     └───────┴───────────┴───────────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        ['hello',{rowSpan:2,content:'greetings'},{rowSpan:2,content:'greetings',vAlign:'bottom'}],
+        ['hello', { rowSpan: 2, content: 'greetings' }, { rowSpan: 2, content: 'greetings', vAlign: 'bottom' }],
         ['howdy']
       );
 
@@ -81,12 +81,16 @@
     │ o │ k │  │  │    │
     └───┴───┴──┴──┴────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup'},{rowSpan:3,content:'hi'}],
-        [{content:'howdy',colSpan:2}],
-        ['o','k','','']
+        [
+          { content: 'hello', colSpan: 2 },
+          { rowSpan: 2, colSpan: 2, content: 'sup' },
+          { rowSpan: 3, content: 'hi' },
+        ],
+        [{ content: 'howdy', colSpan: 2 }],
+        ['o', 'k', '', '']
       );
 
 ```
@@ -99,10 +103,10 @@
     │ howdy │           │           │
     └───────┴───────────┴───────────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        ['hello',{rowSpan:2,content:'greetings\nfriends'},{rowSpan:2,content:'greetings\nfriends'}],
+        ['hello', { rowSpan: 2, content: 'greetings\nfriends' }, { rowSpan: 2, content: 'greetings\nfriends' }],
         ['howdy']
       );
 
@@ -118,12 +122,16 @@
     │ o │ k │  │  │    │
     └───┴───┴──┴──┴────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{content:'hello',colSpan:2},{rowSpan:2, colSpan:2,content:'sup\nman\nhey'},{rowSpan:3,content:'hi\nyo'}],
-        [{content:'howdy',colSpan:2}],
-        ['o','k','','']
+        [
+          { content: 'hello', colSpan: 2 },
+          { rowSpan: 2, colSpan: 2, content: 'sup\nman\nhey' },
+          { rowSpan: 3, content: 'hi\nyo' },
+        ],
+        [{ content: 'howdy', colSpan: 2 }],
+        ['o', 'k', '', '']
       );
 
 ```
@@ -138,11 +146,11 @@
     │ d │   │
     └───┴───┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{content:'a',rowSpan:2},'b'],
-        [{content:'c',rowSpan:2}],
+        [{ content: 'a', rowSpan: 2 }, 'b'],
+        [{ content: 'c', rowSpan: 2 }],
         ['d']
       );
 
@@ -160,13 +168,13 @@
     │   │      │
     └───┴──────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       //notice we only create 3 cells here, but the table ends up having 6.
       table.push(
-        [{content:'a',rowSpan:3,colSpan:2},'b'],
+        [{ content: 'a', rowSpan: 3, colSpan: 2 }, 'b'],
         [],
-        [{content:'c',rowSpan:2,colSpan:2}],
+        [{ content: 'c', rowSpan: 2, colSpan: 2 }],
         []
       );
 ```
@@ -178,7 +186,10 @@
     │ hi…   │
     └───────┘
 ```javascript
-      var table = new Table({rowHeights:[2],style:{head:[],border:[]}});
+      let table = new Table({
+        rowHeights: [2],
+        style: { head: [], border: [] },
+      });
 
       table.push(['hello\nhi\nsup']);
 
@@ -192,10 +203,10 @@
     │ hi   │ hi   │
     └──────┴──────┘
 ```javascript
-      var table = new Table({style:{head:[],border:[]}});
+      let table = new Table({ style: { head: [], border: [] } });
 
       table.push(
-        [{colSpan:2,content:'hello there'}],
+        [{ colSpan: 2, content: 'hello there' }],
         ['hi', 'hi']
       );
 
@@ -209,11 +220,14 @@
     │ hi │   hi   │
     └────┴────────┘
 ```javascript
-      var table = new Table({colWidths:[4],style:{head:[],border:[]}});
+      let table = new Table({
+        colWidths: [4],
+        style: { head: [], border: [] },
+      });
 
       table.push(
-        [{colSpan:2,content:'hello there'}],
-        ['hi',{hAlign:'center',content:'hi'}]
+        [{ colSpan: 2, content: 'hello there' }],
+        ['hi', { hAlign: 'center', content: 'hi' }]
       );
 
 ```
@@ -226,11 +240,14 @@
     │     hi │ hi │
     └────────┴────┘
 ```javascript
-      var table = new Table({colWidths:[null, 4],style:{head:[],border:[]}});
+      let table = new Table({
+        colWidths: [null, 4],
+        style: { head: [], border: [] },
+      });
 
       table.push(
-        [{colSpan:2,content:'hello there'}],
-        [{hAlign:'right',content:'hi'}, 'hi']
+        [{ colSpan: 2, content: 'hello there' }],
+        [{ hAlign: 'right', content: 'hi' }, 'hi']
       );
 
 ```
@@ -239,7 +256,10 @@
 ##### feel free to use colors in your content strings, column widths will be calculated correctly
 ![table image](./examples/screenshots/truncation-with-colors.png)
 ```javascript
-      var table = new Table({colWidths:[5],style:{head:[],border:[]}});
+      let table = new Table({
+        colWidths: [5],
+        style: { head: [], border: [] },
+      });
 
       table.push([colors.red('hello')]);
 

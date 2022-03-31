@@ -1,6 +1,9 @@
 const Table = require('../src/table');
 const colors = require('@colors/colors/safe');
 
+// prettier-ignore
+// Disable prettier so that examples are formatted more clearly
+
 module.exports = function (runTest) {
   function it(name, fn) {
     let result = fn();
@@ -69,7 +72,10 @@ module.exports = function (runTest) {
         style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
       });
 
-      table.push({ 'v0.1': 'Testing something cool' }, { 'v0.1': 'Testing something cool' });
+      table.push(
+        { 'v0.1': 'Testing something cool' },
+        { 'v0.1': 'Testing something cool' }
+      );
 
       return table;
     }
@@ -136,7 +142,10 @@ module.exports = function (runTest) {
         },
       });
 
-      table.push(['foo', 'bar', 'baz'], ['frob', 'bar', 'quuz']);
+      table.push(
+        ['foo', 'bar', 'baz'],
+        ['frob', 'bar', 'quuz']
+      );
 
       return table;
     }
