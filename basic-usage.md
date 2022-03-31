@@ -2,9 +2,9 @@
 ![table image](./examples/screenshots/basic-usage-with-colors.png)
 ```javascript
       // By default, headers will be red, and borders will be grey
-      var table = new Table({head:['a','b']});
+      let table = new Table({ head: ['a', 'b'] });
 
-      table.push(['c','d']);
+      table.push(['c', 'd']);
 
 ```
 
@@ -21,18 +21,18 @@
       // For most of these examples, and most of the unit tests we disable colors.
       // It makes unit tests easier to write/understand, and allows these pages to
       // display the examples as text instead of screen shots.
-      var table = new Table({
-           head: ['Rel', 'Change', 'By', 'When']
-        , style: {
-            head: []    //disable colors in header cells
-          , border: []  //disable colors for the border
-        }
-        , colWidths: [6, 21, 25, 17]  //set the widths of each column (optional)
+      let table = new Table({
+        head: ['Rel', 'Change', 'By', 'When'],
+        style: {
+          head: [], //disable colors in header cells
+          border: [], //disable colors for the border
+        },
+        colWidths: [6, 21, 25, 17], //set the widths of each column (optional)
       });
 
       table.push(
-          ['v0.1', 'Testing something cool', 'rauchg@gmail.com', '7 minutes ago']
-        , ['v0.1', 'Testing something cool', 'rauchg@gmail.com', '8 minutes ago']
+        ['v0.1', 'Testing something cool', 'rauchg@gmail.com', '7 minutes ago'],
+        ['v0.1', 'Testing something cool', 'rauchg@gmail.com', '8 minutes ago']
       );
 
 ```
@@ -45,11 +45,13 @@
     │v0.1│Testing something cool│
     └────┴──────────────────────┘
 ```javascript
-      var table = new Table({ style: {'padding-left':0, 'padding-right':0, head:[], border:[]} });
+      let table = new Table({
+        style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
+      });
 
       table.push(
-          {'v0.1': 'Testing something cool'}
-        , {'v0.1': 'Testing something cool'}
+        { 'v0.1': 'Testing something cool' },
+        { 'v0.1': 'Testing something cool' }
       );
 
 ```
@@ -64,11 +66,14 @@
     │Header 4│v0.1    │Testing something cool│
     └────────┴────────┴──────────────────────┘
 ```javascript
-      var table = new Table({ head: ["", "Header 1", "Header 2"], style: {'padding-left':0, 'padding-right':0, head:[], border:[]} }); // clear styles to prevent color output
+      let table = new Table({
+        head: ['', 'Header 1', 'Header 2'],
+        style: { 'padding-left': 0, 'padding-right': 0, head: [], border: [] },
+      }); // clear styles to prevent color output
 
       table.push(
-        {"Header 3": ['v0.1', 'Testing something cool'] }
-        , {"Header 4": ['v0.1', 'Testing something cool'] }
+        { 'Header 3': ['v0.1', 'Testing something cool'] },
+        { 'Header 4': ['v0.1', 'Testing something cool'] }
       );
 
 ```
@@ -81,30 +86,30 @@
     ║ frob │ bar │ quuz ║
     ╚══════╧═════╧══════╝
 ```javascript
-      var table = new Table({
+      let table = new Table({
         chars: {
-          'top': '═'
-          , 'top-mid': '╤'
-          , 'top-left': '╔'
-          , 'top-right': '╗'
-          , 'bottom': '═'
-          , 'bottom-mid': '╧'
-          , 'bottom-left': '╚'
-          , 'bottom-right': '╝'
-          , 'left': '║'
-          , 'left-mid': '╟'
-          , 'right': '║'
-          , 'right-mid': '╢'
+          top: '═',
+          'top-mid': '╤',
+          'top-left': '╔',
+          'top-right': '╗',
+          bottom: '═',
+          'bottom-mid': '╧',
+          'bottom-left': '╚',
+          'bottom-right': '╝',
+          left: '║',
+          'left-mid': '╟',
+          right: '║',
+          'right-mid': '╢',
         },
         style: {
-          head: []
-          , border: []
-        }
+          head: [],
+          border: [],
+        },
       });
 
       table.push(
-        ['foo', 'bar', 'baz']
-        , ['frob', 'bar', 'quuz']
+        ['foo', 'bar', 'baz'],
+        ['frob', 'bar', 'quuz']
       );
 
 ```
@@ -113,12 +118,9 @@
 ##### Use ansi colors (i.e. colors.js) to style text within the cells at will, even across multiple lines
 ![table image](./examples/screenshots/multi-line-colors.png)
 ```javascript
-      var table = new Table({style:{border:[],header:[]}});
+      let table = new Table({ style: { border: [], header: [] } });
 
-      table.push([
-        colors.red('Hello\nhow\nare\nyou?'),
-        colors.blue('I\nam\nfine\nthanks!')
-      ]);
+      table.push([colors.red('Hello\nhow\nare\nyou?'), colors.blue('I\nam\nfine\nthanks!')]);
 
 ```
 
@@ -131,16 +133,13 @@
     │ you?  │         │
     └───────┴─────────┘
 ```javascript
-      var table = new Table({
-        style:{border:[],header:[]},
-        colWidths:[7,9],
-        wordWrap:true
+      let table = new Table({
+        style: { border: [], header: [] },
+        colWidths: [7, 9],
+        wordWrap: true,
       });
 
-      table.push([
-        'Hello how are you?',
-        'I am fine thanks!'
-      ]);
+      table.push(['Hello how are you?', 'I am fine thanks!']);
 
 ```
 

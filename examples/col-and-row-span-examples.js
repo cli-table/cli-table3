@@ -1,6 +1,9 @@
 const Table = require('../src/table');
 const colors = require('@colors/colors/safe');
 
+// prettier-ignore
+// Disable prettier so that examples are formatted more clearly
+
 module.exports = function (runTest) {
   function it(name, fn) {
     let result = fn();
@@ -11,7 +14,11 @@ module.exports = function (runTest) {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
-      table.push([{ colSpan: 2, content: 'greetings' }], [{ colSpan: 2, content: 'greetings' }], ['hello', 'howdy']);
+      table.push(
+        [{ colSpan: 2, content: 'greetings' }],
+        [{ colSpan: 2, content: 'greetings' }],
+        ['hello', 'howdy']
+      );
 
       return table;
     }
@@ -33,7 +40,11 @@ module.exports = function (runTest) {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
-      table.push(['hello', 'howdy'], [{ colSpan: 2, content: 'greetings' }], [{ colSpan: 2, content: 'greetings' }]);
+      table.push(
+        ['hello', 'howdy'],
+        [{ colSpan: 2, content: 'greetings' }],
+        [{ colSpan: 2, content: 'greetings' }]
+      );
 
       return table;
     }
@@ -184,7 +195,11 @@ module.exports = function (runTest) {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
-      table.push([{ content: 'a', rowSpan: 2 }, 'b'], [{ content: 'c', rowSpan: 2 }], ['d']);
+      table.push(
+        [{ content: 'a', rowSpan: 2 }, 'b'],
+        [{ content: 'c', rowSpan: 2 }],
+        ['d']
+      );
 
       return table;
     }
@@ -199,7 +214,12 @@ module.exports = function (runTest) {
       let table = new Table({ style: { head: [], border: [] } });
 
       //notice we only create 3 cells here, but the table ends up having 6.
-      table.push([{ content: 'a', rowSpan: 3, colSpan: 2 }, 'b'], [], [{ content: 'c', rowSpan: 2, colSpan: 2 }], []);
+      table.push(
+        [{ content: 'a', rowSpan: 3, colSpan: 2 }, 'b'],
+        [],
+        [{ content: 'c', rowSpan: 2, colSpan: 2 }],
+        []
+      );
       return table;
     }
 
@@ -239,7 +259,10 @@ module.exports = function (runTest) {
     function makeTable() {
       let table = new Table({ style: { head: [], border: [] } });
 
-      table.push([{ colSpan: 2, content: 'hello there' }], ['hi', 'hi']);
+      table.push(
+        [{ colSpan: 2, content: 'hello there' }],
+        ['hi', 'hi']
+      );
 
       return table;
     }
@@ -256,7 +279,10 @@ module.exports = function (runTest) {
         style: { head: [], border: [] },
       });
 
-      table.push([{ colSpan: 2, content: 'hello there' }], ['hi', { hAlign: 'center', content: 'hi' }]);
+      table.push(
+        [{ colSpan: 2, content: 'hello there' }],
+        ['hi', { hAlign: 'center', content: 'hi' }]
+      );
 
       return table;
     }
@@ -273,7 +299,10 @@ module.exports = function (runTest) {
         style: { head: [], border: [] },
       });
 
-      table.push([{ colSpan: 2, content: 'hello there' }], [{ hAlign: 'right', content: 'hi' }, 'hi']);
+      table.push(
+        [{ colSpan: 2, content: 'hello there' }],
+        [{ hAlign: 'right', content: 'hi' }, 'hi']
+      );
 
       return table;
     }
