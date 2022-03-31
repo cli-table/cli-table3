@@ -182,26 +182,55 @@ module.exports = function (runTest) {
     return [makeTable, expected, 'multi-line-colors'];
   });
 
-  it('Set `wordWrap` to true to make lines of text wrap instead of being truncated', function () {
+  it('Set `wordWrap` to true to wrap text on word boundaries', function () {
     function makeTable() {
       let table = new Table({
         style: { border: [], header: [] },
-        colWidths: [7, 9],
+        colWidths: [7, 9], // Requires fixed column widths
         wordWrap: true,
       });
 
-      table.push(['Hello how are you?', 'I am fine thanks!']);
+      table.push([
+        'Hello how are you?',
+        'I am fine thanks! Looooooong',
+        ['Words that exceed', 'the colWidth will', 'be truncated.'].join('\n'),
+        ['Text is only', 'wrapped for', 'fixed width', 'columns.'].join('\n'),
+      ]);
 
       return table;
     }
 
     let expected = [
-      '┌───────┬─────────┐',
-      '│ Hello │ I am    │',
-      '│ how   │ fine    │',
-      '│ are   │ thanks! │',
-      '│ you?  │         │',
-      '└───────┴─────────┘',
+      '┌───────┬─────────┬───────────────────┬──────────────┐',
+      '│ Hello │ I am    │ Words that exceed │ Text is only │',
+      '│ how   │ fine    │ the colWidth will │ wrapped for  │',
+      '│ are   │ thanks! │ be truncated.     │ fixed width  │',
+      '│ you?  │ Looooo… │                   │ columns.     │',
+      '└───────┴─────────┴───────────────────┴──────────────┘',
+    ];
+
+    return [makeTable, expected];
+  });
+
+  it('Using `wordWrap`, set `wrapOnWordBoundary` to false to ignore word boundaries', function () {
+    function makeTable() {
+      const table = new Table({
+        style: { border: [], header: [] },
+        colWidths: [3, 3], // colWidths must all be greater than 2!!!!
+        wordWrap: true,
+        wrapOnWordBoundary: false,
+      });
+      table.push(['Wrap', 'Text']);
+      return table;
+    }
+
+    let expected = [
+      '┌───┬───┐',
+      '│ W │ T │',
+      '│ r │ e │',
+      '│ a │ x │',
+      '│ p │ t │',
+      '└───┴───┘',
     ];
 
     return [makeTable, expected];

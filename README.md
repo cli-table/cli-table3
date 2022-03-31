@@ -19,7 +19,7 @@ unmaintained. `cli-table3` includes all the additional features from
 - Ability to make cells span columns and/or rows.
 - Ability to set custom styles per cell (border characters/colors, padding, etc).
 - Vertical alignment (top, bottom, center).
-- Automatic word wrapping.
+- [Word wrapping options](./basic-usage.md#set-wordwrap-to-true-to-wrap-text-on-word-boundaries).
 - More robust truncation of cell text that contains ansi color characters.
 - Better handling of text color that spans multiple lines.
 - API compatible with the original cli-table.
