@@ -30,7 +30,8 @@ unmaintained. `cli-table3` includes all the additional features from
 
 - Customizable characters that constitute the table.
 - Color/background styling in the header through
-  [colors.js](https://github.com/marak/colors.js)
+  [<s>colors.js</s>](https://github.com/marak/colors.js)
+  [@colors/colors](https://github.com/DABH/colors.js)
 - Column width customization
 - Text truncation based on predefined widths
 - Text alignment (left, right, center)
