@@ -76,7 +76,7 @@
       {
         "displayName": "test",
         "testMatch": [
-          "<rootDir>/test/*.js"
+          "<rootDir>/test/**/*.js"
         ]
       },
       {

@@ -2,23 +2,33 @@ const Cell = require('./cell');
 const { ColSpanCell, RowSpanCell } = Cell;
 
 (function () {
+  function next(alloc, col) {
+    if (alloc[col] > 0) {
+      return next(alloc, col + 1);
+    }
+    return col;
+  }
+
   function layoutTable(table) {
+    let alloc = {};
     table.forEach(function (row, rowIndex) {
-      let prevCell = null;
-      row.forEach(function (cell, columnIndex) {
+      let col = 0;
+      row.forEach(function (cell) {
         cell.y = rowIndex;
-        cell.x = prevCell ? prevCell.x + 1 : columnIndex;
-        for (let y = rowIndex; y >= 0; y--) {
-          let row2 = table[y];
-          let xMax = y === rowIndex ? columnIndex : row2.length;
-          for (let x = 0; x < xMax; x++) {
-            let cell2 = row2[x];
-            while (cellsConflict(cell, cell2)) {
-              cell.x++;
-            }
+        // Avoid erroneous call to next() on first row
+        cell.x = rowIndex ? next(alloc, col) : col;
+        const rowSpan = cell.rowSpan || 1;
+        const colSpan = cell.colSpan || 1;
+        if (rowSpan > 1) {
+          for (let cs = 0; cs < colSpan; cs++) {
+            alloc[cell.x + cs] = rowSpan;
           }
-          prevCell = cell;
         }
+        col = cell.x + colSpan;
+      });
+      Object.keys(alloc).forEach((idx) => {
+        alloc[idx]--;
+        if (alloc[idx] < 1) delete alloc[idx];
       });
     });
   }
