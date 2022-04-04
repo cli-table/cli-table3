@@ -192,6 +192,7 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
   return function (vals, table) {
     let result = [];
     let spanners = [];
+    let auto = {};
     table.forEach(function (row) {
       row.forEach(function (cell) {
         if ((cell[colSpan] || 1) > 1) {
@@ -215,12 +216,20 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
       let col = cell[x];
       let existingWidth = result[col];
       let editableCols = typeof vals[col] === 'number' ? 0 : 1;
-      for (let i = 1; i < span; i++) {
-        existingWidth += 1 + result[col + i];
-        if (typeof vals[col + i] !== 'number') {
-          editableCols++;
+      if (typeof existingWidth === 'number') {
+        for (let i = 1; i < span; i++) {
+          existingWidth += 1 + result[col + i];
+          if (typeof vals[col + i] !== 'number') {
+            editableCols++;
+          }
+        }
+      } else {
+        existingWidth = desiredWidth === 'desiredWidth' ? cell.desiredWidth - 1 : 1;
+        if (!auto[col] || auto[col] < existingWidth) {
+          auto[col] = existingWidth;
         }
       }
+
       if (cell[desiredWidth] > existingWidth) {
         let i = 0;
         while (editableCols > 0 && cell[desiredWidth] > existingWidth) {
@@ -235,7 +244,7 @@ function makeComputeWidths(colSpan, desiredWidth, x, forcedMin) {
       }
     }
 
-    Object.assign(vals, result);
+    Object.assign(vals, result, auto);
     for (let j = 0; j < vals.length; j++) {
       vals[j] = Math.max(forcedMin, vals[j] || 0);
     }
