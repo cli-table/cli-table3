@@ -313,6 +313,17 @@ function colorizeLines(input) {
   return output;
 }
 
+/**
+ * Credit: Matheus Sampaio https://github.com/matheussampaio
+ */
+function hyperlink(url, text) {
+  const OSC = '\u001B]';
+  const BEL = '\u0007';
+  const SEP = ';';
+
+  return [OSC, '8', SEP, SEP, url || text, BEL, text, OSC, '8', SEP, SEP, BEL].join('');
+}
+
 module.exports = {
   strlen: strlen,
   repeat: repeat,
@@ -321,4 +332,5 @@ module.exports = {
   mergeOptions: mergeOptions,
   wordWrap: multiLineWordWrap,
   colorizeLines: colorizeLines,
+  hyperlink,
 };

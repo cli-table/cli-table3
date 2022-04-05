@@ -387,4 +387,16 @@ describe('utils', function () {
       expect(utils.colorizeLines(input)).toEqual([colors.red('漢字'), colors.red('テスト')]);
     });
   });
+
+  describe('hyperlink', function () {
+    const url = 'http://example.com';
+    const text = 'hello link';
+    const expected = (u, t) => `\x1B]8;;${u}\x07${t}\x1B]8;;\x07`;
+    it('wraps text with link', () => {
+      expect(utils.hyperlink(url, text)).toEqual(expected(url, text));
+    });
+    it('defaults text to link', () => {
+      expect(utils.hyperlink(url, url)).toEqual(expected(url, url));
+    });
+  });
 });

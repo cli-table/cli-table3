@@ -1,5 +1,6 @@
 const Table = require('../src/table');
 const colors = require('@colors/colors/safe');
+const { hyperlink } = require('../src/utils');
 
 // prettier-ignore
 // Disable prettier so that examples are formatted more clearly
@@ -235,6 +236,40 @@ module.exports = function (runTest) {
 
     return [makeTable, expected];
   });
+
+  it('Supports hyperlinking cell content using the href option', () => {
+    function link(text) {
+      return hyperlink('http://example.com', text);
+    }
+    function makeTable() {
+      const table = new Table({
+        colWidths: [11, 5, 5],
+        style: { border: [], head: [] },
+        wordWrap: true,
+        wrapOnWordBoundary: false,
+      });
+      const href = 'http://example.com';
+      table.push(
+        [{ content: 'Text Link', href }, { content: 'Hello Link', href }, { href }],
+        [{ href, colSpan: 3 }]
+      );
+      return table;
+    }
+
+    let expected = [
+      '┌───────────┬─────┬─────┐',
+      `│ ${link('Text Link')} │ ${link('Hel')} │ ${link('htt')} │`,
+      `│           │ ${link('lo ')} │ ${link('p:/')} │`,
+      `│           │ ${link('Lin')} │ ${link('/ex')} │`,
+      `│           │ ${link('k')}   │ ${link('amp')} │`,
+      `│           │     │ ${link('le.')} │`,
+      `│           │     │ ${link('com')} │`,
+      '├───────────┴─────┴─────┤',
+      `│ ${link('http://example.com')}    │`,
+      '└───────────────────────┘',
+    ];
+    return [makeTable, expected];
+  });
 };
 
 /* Expectation - ready to be copy/pasted and filled in. DO NOT DELETE THIS
@@ -250,3 +285,4 @@ module.exports = function (runTest) {
  , '└──┴───┴──┴──┘'
  ];
  */
+// Jest Snapshot v1, https://goo.gl/fbAQLP
