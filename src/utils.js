@@ -314,10 +314,14 @@ function colorizeLines(input) {
 }
 
 /**
- * Placeholder for failing tests.
+ * Credit: Matheus Sampaio https://github.com/matheussampaio
  */
 function hyperlink(url, text) {
-  return url || text; // inverse of what it should be
+  const OSC = '\u001B]';
+  const BEL = '\u0007';
+  const SEP = ';';
+
+  return [OSC, '8', SEP, SEP, url || text, BEL, text, OSC, '8', SEP, SEP, BEL].join('');
 }
 
 module.exports = {

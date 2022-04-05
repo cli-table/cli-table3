@@ -30,12 +30,19 @@ class Cell {
     if (['boolean', 'number', 'string'].indexOf(typeof content) !== -1) {
       this.content = String(content);
     } else if (!content) {
-      this.content = '';
+      this.content = this.options.href || '';
     } else {
       throw new Error('Content needs to be a primitive, got: ' + typeof content);
     }
     this.colSpan = options.colSpan || 1;
     this.rowSpan = options.rowSpan || 1;
+    if (this.options.href) {
+      Object.defineProperty(this, 'href', {
+        get() {
+          return this.options.href;
+        },
+      });
+    }
   }
 
   mergeTableOptions(tableOptions, cells) {
@@ -57,24 +64,35 @@ class Cell {
     this.head = style.head || tableStyle.head;
     this.border = style.border || tableStyle.border;
 
-    let fixedWidth = tableOptions.colWidths[this.x];
-    if ((tableOptions.wordWrap || tableOptions.textWrap) && fixedWidth) {
-      fixedWidth -= this.paddingLeft + this.paddingRight;
+    this.fixedWidth = tableOptions.colWidths[this.x];
+    this.lines = this.computeLines(tableOptions);
+
+    this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
+    this.desiredHeight = this.lines.length;
+  }
+
+  computeLines(tableOptions) {
+    if (this.fixedWidth && (tableOptions.wordWrap || tableOptions.textWrap)) {
+      this.fixedWidth -= this.paddingLeft + this.paddingRight;
       if (this.colSpan) {
         let i = 1;
         while (i < this.colSpan) {
-          fixedWidth += tableOptions.colWidths[this.x + i];
+          this.fixedWidth += tableOptions.colWidths[this.x + i];
           i++;
         }
       }
       const { wrapOnWordBoundary = true } = tableOptions;
-      this.lines = utils.colorizeLines(utils.wordWrap(fixedWidth, this.content, wrapOnWordBoundary));
-    } else {
-      this.lines = utils.colorizeLines(this.content.split('\n'));
+      return this.wrapLines(utils.wordWrap(this.fixedWidth, this.content, wrapOnWordBoundary));
     }
+    return this.wrapLines(this.content.split('\n'));
+  }
 
-    this.desiredWidth = utils.strlen(this.content) + this.paddingLeft + this.paddingRight;
-    this.desiredHeight = this.lines.length;
+  wrapLines(computedLines) {
+    const lines = utils.colorizeLines(computedLines);
+    if (this.href) {
+      return lines.map((line) => utils.hyperlink(this.href, line));
+    }
+    return lines;
   }
 
   /**
@@ -371,6 +389,7 @@ let CHAR_NAMES = [
   'right-mid',
   'middle',
 ];
+
 module.exports = Cell;
 module.exports.ColSpanCell = ColSpanCell;
 module.exports.RowSpanCell = RowSpanCell;
