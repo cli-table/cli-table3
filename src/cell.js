@@ -1,3 +1,4 @@
+const { info, debug } = require('./debug');
 const utils = require('./utils');
 
 class Cell {
@@ -111,6 +112,12 @@ class Cell {
   draw(lineNum, spanningCell) {
     if (lineNum == 'top') return this.drawTop(this.drawRight);
     if (lineNum == 'bottom') return this.drawBottom(this.drawRight);
+    let content = utils.truncate(this.content, 10, this.truncate);
+    if (!lineNum) {
+      info(`${this.y}-${this.x}: ${this.rowSpan - lineNum}x${this.colSpan} Cell ${content}`);
+    } else {
+      // debug(`${lineNum}-${this.x}: 1x${this.colSpan} RowSpanCell ${content}`);
+    }
     let padLen = Math.max(this.height - this.lines.length, 0);
     let padTop;
     switch (this.vAlign) {
@@ -286,7 +293,10 @@ class ColSpanCell {
    */
   constructor() {}
 
-  draw() {
+  draw(lineNum) {
+    if (typeof lineNum === 'number') {
+      debug(`${this.y}-${this.x}: 1x1 ColSpanCell`);
+    }
     return '';
   }
 
@@ -320,6 +330,7 @@ class RowSpanCell {
     if (lineNum == 'bottom') {
       return this.originalCell.draw('bottom');
     }
+    debug(`${this.y}-${this.x}: 1x${this.colSpan} RowSpanCell for ${this.originalCell.content}`);
     return this.originalCell.draw(this.offset + 1 + lineNum);
   }
 

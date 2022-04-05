@@ -129,6 +129,41 @@ describe('@api Table ', function () {
     ];
     expect(table.toString()).toEqual(expected.join('\n'));
   });
+  describe('debugging', () => {
+    afterEach(() => Table.reset());
+    it('is not accessible when disabled', () => {
+      let table = new Table();
+      expect(table.messages).toBeUndefined();
+    });
+    it('warns of missing cells', () => {
+      let table = new Table({ debug: true });
+      table.push([{ rowSpan: 2 }], [{}]);
+      table.toString();
+      expect(table.messages).toEqual(['Missing cell at 0-1.']);
+    });
+    it('provides cell info', () => {
+      let table = new Table({ debug: 2 });
+      table.push(['a', 'b', { content: 'c', rowSpan: 2 }], [{ content: 'd', colSpan: 2 }]);
+      table.toString();
+      expect(table.messages).toContain('0-0: 1x1 Cell a');
+      expect(table.messages).toContain('0-1: 1x1 Cell b');
+      expect(table.messages).toContain('0-2: 2x1 Cell c');
+      expect(table.messages).toContain('1-0: 1x2 Cell d');
+    });
+    it('provides rowSpan and colSpan cell debug info', () => {
+      let table = new Table({ debug: 3 });
+      table.push(['a', 'b', { content: 'c', rowSpan: 2 }], [{ content: 'd', colSpan: 2 }]);
+      table.toString();
+      expect(table.messages).toContain('1-1: 1x1 ColSpanCell');
+      expect(table.messages).toContain('1-2: 1x1 RowSpanCell for c');
+    });
+    it('provides debug info', () => {
+      let table = new Table({ debug: 3 });
+      table.push([{}, {}], [{}, {}]);
+      table.toString();
+      expect(table.messages).toContain('Max rows: 2; Max cols: 2');
+    });
+  });
 });
 
 /*

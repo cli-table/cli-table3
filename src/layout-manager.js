@@ -1,3 +1,4 @@
+const { warn, debug } = require('./debug');
 const Cell = require('./cell');
 const { ColSpanCell, RowSpanCell } = Cell;
 
@@ -126,6 +127,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
   function fillInTable(table) {
     let h_max = maxHeight(table);
     let w_max = maxWidth(table);
+    debug(`Max rows: ${h_max}; Max cols: ${w_max}`);
     for (let y = 0; y < h_max; y++) {
       for (let x = 0; x < w_max; x++) {
         if (!conflictExists(table, x, y)) {
@@ -140,10 +142,10 @@ const { ColSpanCell, RowSpanCell } = Cell;
             opts.rowSpan++;
             y2++;
           }
-
           let cell = new Cell(opts);
           cell.x = opts.x;
           cell.y = opts.y;
+          warn(`Missing cell at ${cell.y}-${cell.x}.`);
           insertCell(cell, table[y]);
         }
       }
