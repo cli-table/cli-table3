@@ -167,6 +167,23 @@ console.log(table.toString());
 //frobnicate bar quuz
 ```
 
+## Debugging
+
+Later versions of cli-table3 supporting debugging your table data.
+
+Enable and use debugging:
+
+```
+var table = new Table({ debug: 1 });
+table.push([{}, {},}); // etc.
+
+console.log(table.toString());
+table.messages.forEach((message) => console.log(message));
+```
+
+If you are rendering multiple tables with debugging on run `Table.reset()` after
+rendering each table.
+
 ## Build Targets
 
 Clone the repository and run `yarn install` to install all its submodules, then run one of the following commands:
