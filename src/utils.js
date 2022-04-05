@@ -313,6 +313,13 @@ function colorizeLines(input) {
   return output;
 }
 
+/**
+ * Placeholder for failing tests.
+ */
+function hyperlink(url, text) {
+  return url || text; // inverse of what it should be
+}
+
 module.exports = {
   strlen: strlen,
   repeat: repeat,
@@ -321,4 +328,5 @@ module.exports = {
   mergeOptions: mergeOptions,
   wordWrap: multiLineWordWrap,
   colorizeLines: colorizeLines,
+  hyperlink,
 };
