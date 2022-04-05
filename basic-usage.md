@@ -166,3 +166,31 @@
       table.push(['Wrap', 'Text']);
 ```
 
+
+##### Supports hyperlinking cell content using the href option
+    ┌───────────┬─────┬─────┐
+    │ Text Link │ Hel │ htt │
+    │           │ lo  │ p:/ │
+    │           │ Lin │ /ex │
+    │           │ k   │ amp │
+    │           │     │ le. │
+    │           │     │ com │
+    ├───────────┴─────┴─────┤
+    │ http://example.com    │
+    └───────────────────────┘
+    
+    Note: Links are not displayed in documentation examples.
+```javascript
+      const table = new Table({
+        colWidths: [11, 5, 5],
+        style: { border: [], head: [] },
+        wordWrap: true,
+        wrapOnWordBoundary: false,
+      });
+      const href = 'http://example.com';
+      table.push(
+        [{ content: 'Text Link', href }, { content: 'Hello Link', href }, { href }],
+        [{ href, colSpan: 3 }]
+      );
+```
+
