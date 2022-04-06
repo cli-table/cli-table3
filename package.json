@@ -13,7 +13,7 @@
     "test": "test"
   },
   "dependencies": {
-    "string-width": "^4.2.0"
+    "string-width": "^5.1.2"
   },
   "devDependencies": {
     "cli-table": "^0.3.1",
