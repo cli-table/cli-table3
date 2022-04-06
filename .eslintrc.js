@@ -14,10 +14,18 @@ module.exports = {
   overrides: [
     {
       // tests
-      files: ['test/**/*.js'],
+      files: ['test/**/*.js', 'test/**/*.ts'],
       env: {
+        node: true,
         jest: true,
       },
     },
+    {
+      files: ['test/**/*.ts', 'index.d.ts'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        sourceType: "module",
+      },
+    }
   ],
 };

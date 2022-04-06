@@ -13,9 +13,11 @@
     "test": "test"
   },
   "dependencies": {
-    "string-width": "^4.2.0"
+    "string-width": "^4.2.0",
+    "typescript": "<5"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^4.33.0",
     "cli-table": "^0.3.1",
     "eslint": "^6.0.0",
     "eslint-config-prettier": "^6.0.0",
@@ -31,7 +33,7 @@
   "scripts": {
     "changelog": "lerna-changelog",
     "docs": "node ./scripts/update-docs.js",
-    "prettier": "prettier --write '{examples,lib,scripts,src,test}/**/*.js'",
+    "prettier": "prettier --write index.js index.d.ts '{examples,lib,scripts,src,test}/**/*.js'",
     "test": "jest --color",
     "test:watch": "jest --color --watchAll --notify"
   },
@@ -82,11 +84,8 @@
         "runner": "jest-runner-eslint",
         "displayName": "lint",
         "testMatch": [
-          "<rootDir>/examples/**/*.js",
-          "<rootDir>/lib/**/*.js",
-          "<rootDir>/scripts/**/*.js",
-          "<rootDir>/src/**/*.js",
-          "<rootDir>/test/**/*.js"
+          "<rootDir>/**/*.js",
+          "<rootDir>/**/*.ts"
         ]
       }
     ]
