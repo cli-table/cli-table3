@@ -83,11 +83,9 @@ declare namespace CliTable3 {
   }
 }
 
-interface CliTable3 {
+interface ICliTable3 {
   new (options?: CliTable3.TableConstructorOptions): CliTable3.Table;
   readonly prototype: CliTable3.Table;
 }
 
-declare const CliTable3: CliTable3;
-
-export = CliTable3;
+export const table: ICliTable3;

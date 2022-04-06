@@ -23,8 +23,13 @@ module.exports = {
     {
       files: ['test/**/*.ts', 'index.d.ts'],
       parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
       parserOptions: {
-        sourceType: "module",
+        sourceType: 'module',
+      },
+      rules: {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['error'],
       },
     }
   ],

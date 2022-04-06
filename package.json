@@ -13,10 +13,10 @@
     "test": "test"
   },
   "dependencies": {
-    "string-width": "^4.2.0",
-    "typescript": "<5"
+    "string-width": "^4.2.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "cli-table": "^0.3.1",
     "eslint": "^6.0.0",
@@ -25,7 +25,8 @@
     "jest": "^25.2.4",
     "jest-runner-eslint": "^0.7.0",
     "lerna-changelog": "^1.0.1",
-    "prettier": "2.3.2"
+    "prettier": "2.3.2",
+    "typescript": "<5"
   },
   "optionalDependencies": {
     "@colors/colors": "1.5.0"
