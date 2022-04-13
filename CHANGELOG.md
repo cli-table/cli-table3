@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.6.2 (2022-04-11)
+
+#### :rocket: Enhancement
+* [#292](https://github.com/cli-table/cli-table3/pull/292) Hyperlink support for cells ([@speedytwenty](https://github.com/speedytwenty))
+* [#288](https://github.com/cli-table/cli-table3/pull/288) Add debugging capabilities ([@speedytwenty](https://github.com/speedytwenty))
+* [#217](https://github.com/cli-table/cli-table3/pull/217) Add wrapOnWordBoundary option for consistently readable word wrapping ([@speedytwenty](https://github.com/speedytwenty))
+
+#### :bug: Bug Fix
+* [#290](https://github.com/cli-table/cli-table3/pull/290) Fix to erroneous column truncation when using colSpan ([@speedytwenty](https://github.com/speedytwenty))
+* [#287](https://github.com/cli-table/cli-table3/pull/287) Correctly set cell padding for zero values ([@speedytwenty](https://github.com/speedytwenty))
+* [#278](https://github.com/cli-table/cli-table3/pull/278) Refactored table layouts + Layout fix for #269 ([@speedytwenty](https://github.com/speedytwenty))
+
+#### :memo: Documentation
+* [#286](https://github.com/cli-table/cli-table3/pull/286) Regenerate docs ([@speedytwenty](https://github.com/speedytwenty))
+
+#### :house: Internal
+* [#276](https://github.com/cli-table/cli-table3/pull/276) Move CI to Github Actions ([@speedytwenty](https://github.com/speedytwenty))
+* [#283](https://github.com/cli-table/cli-table3/pull/283) #196 - Fix to failing unit tests ([@speedytwenty](https://github.com/speedytwenty))
+
 ## v0.6.1 (2022-01-09)
 
 * [#251](https://github.com/cli-table/cli-table3/pull/251) Pin `colors` to 1.4.0 ([@JJ](https://github.com/JJ))
