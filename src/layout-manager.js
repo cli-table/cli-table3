@@ -110,7 +110,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
           let colSpanCell = new ColSpanCell();
           colSpanCell.x = cell.x + k;
           colSpanCell.y = cell.y;
-          cellColumns.splice(columnIndex + 1, 0, colSpanCell);
+          cellColumns.splice(colSpanCell.x, 0, colSpanCell);
         }
       }
     }
