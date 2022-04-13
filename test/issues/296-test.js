@@ -19,7 +19,7 @@ test('it should not loop infinitely with invalid table data', async () => {
 });
 
 test('it should not error on invalid table data', () => {
-  const table = new Table();
+  const table = new Table({ debug: true });
   table.push(
     [
       { content: 'A', colSpan: 2 },
@@ -28,4 +28,6 @@ test('it should not error on invalid table data', () => {
     [{ content: 'C', colSpan: 3 }]
   );
   expect(() => table.toString()).not.toThrow();
+  // This expectation can be dropped if the expectation in the code changes
+  expect(table.messages).toContain('2-2: Expected empty array for row 1 (line 2).');
 });
