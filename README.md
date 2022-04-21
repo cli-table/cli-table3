@@ -2,7 +2,7 @@ cli-table3
 ===============================================================================
 
 [![npm version](https://img.shields.io/npm/v/cli-table3.svg)](https://www.npmjs.com/package/cli-table3)
-![Build Status](https://github.com/cli-table/cli-table3/actions/workflows/test.yml/badge.svg?branch=master)
+[![Build Status](https://github.com/cli-table/cli-table3/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/cli-table/cli-table3/actions/workflows/test.yml)
 
 This utility allows you to render unicode-aided tables on the command line from
 your node.js scripts.
