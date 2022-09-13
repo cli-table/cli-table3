@@ -2,11 +2,22 @@ describe('Cell', function () {
   const colors = require('@colors/colors');
   const Cell = require('../src/cell');
   const { ColSpanCell, RowSpanCell } = Cell;
-  const { mergeOptions } = require('../src/utils');
+  const utils = require('../src/utils');
+  const { wordWrap: actualWordWrap } = jest.requireActual('../src/utils');
+
+  jest.mock('../src/utils', () => ({
+    ...jest.requireActual('../src/utils'),
+    wordWrap: jest.fn(), // only mock this
+  }));
+
+  beforeEach(() => {
+    // use the default implementation, unless we override
+    utils.wordWrap.mockImplementation((...args) => actualWordWrap(...args));
+  });
 
   function defaultOptions() {
     //overwrite coloring of head and border by default for easier testing.
-    return mergeOptions({ style: { head: [], border: [] } });
+    return utils.mergeOptions({ style: { head: [], border: [] } });
   }
 
   function defaultChars() {
@@ -89,6 +100,69 @@ describe('Cell', function () {
   });
 
   describe('mergeTableOptions', function () {
+    describe('wordwrap', function () {
+      let tableOptions, cell;
+
+      function initCell({ wordWrap, wrapOnWordBoundary } = {}) {
+        cell = new Cell({ content: 'some text', wordWrap, wrapOnWordBoundary });
+        cell.x = cell.y = 0;
+      }
+
+      beforeEach(() => {
+        utils.wordWrap.mockClear();
+        tableOptions = { ...defaultOptions(), colWidths: [50] };
+      });
+
+      it('no cell wordWrap override (tableOptions.wordWrap=true)', function () {
+        tableOptions.wordWrap = true; // wrapOnWordBoundary is true by default
+        initCell();
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).toHaveBeenCalledWith(expect.any(Number), cell.content, true /*wrapOnWordBoundary*/);
+      });
+
+      it('no cell wordWrap override (tableOptions.wordWrap=false)', function () {
+        tableOptions.wordWrap = false; // wrapOnWordBoundary is true by default
+        initCell();
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).not.toHaveBeenCalled();
+      });
+
+      it('cell wordWrap override (cell.options.wordWrap=false)', function () {
+        tableOptions.wordWrap = true; // wrapOnWordBoundary is true by default
+        initCell({ wordWrap: false });
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).not.toHaveBeenCalled(); // no wrapping done
+      });
+
+      it('cell wordWrap override (cell.options.wordWrap=true)', function () {
+        tableOptions.wordWrap = false; // wrapOnWordBoundary is true by default
+        initCell({ wordWrap: true });
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).toHaveBeenCalled();
+      });
+
+      it('cell wrapOnWordBoundary override (cell.options.wrapOnWordBoundary=false)', function () {
+        tableOptions.wordWrap = true; // wrapOnWordBoundary is true by default
+        initCell({ wrapOnWordBoundary: false });
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).toHaveBeenCalledWith(expect.any(Number), cell.content, false /*wrapOnWordBoundary*/);
+      });
+
+      it('cell wrapOnWordBoundary override (cell.options.wrapOnWordBoundary=true)', function () {
+        tableOptions.wordWrap = true;
+        tableOptions.wrapOnWordBoundary = false;
+        initCell({ wrapOnWordBoundary: true });
+
+        cell.mergeTableOptions(tableOptions);
+        expect(utils.wordWrap).toHaveBeenCalledWith(expect.any(Number), cell.content, true /*wrapOnWordBoundary*/);
+      });
+    });
+
     describe('chars', function () {
       it('unset chars take on value of table', function () {
         let cell = new Cell();
