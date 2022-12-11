@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.3 (2022-09-15)
+
+#### :rocket: Enhancement
+
+* [#303](https://github.com/cli-table/cli-table3/pull/303) Add ability to set/override wordWrap and wrapOnWordBoundary options per cell ([@shazron](https://github.com/shazron))
+
 ## v0.6.2 (2022-04-11)
 
 #### :rocket: Enhancement
