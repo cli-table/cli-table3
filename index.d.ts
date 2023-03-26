@@ -56,6 +56,7 @@ declare namespace CliTable3 {
         rowSpan?: number;
         hAlign?: HorizontalAlignment;
         vAlign?: VerticalAlignment;
+        href?: string;
         style?: {
             "padding-left"?: number;
             "padding-right"?: number;
