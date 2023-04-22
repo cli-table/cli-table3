@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "cli-table": "^0.3.1",
-    "eslint": "^6.0.0",
+    "eslint": "^8.18.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "jest": "^25.2.4",
