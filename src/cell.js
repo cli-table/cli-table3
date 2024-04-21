@@ -22,13 +22,13 @@ class Cell {
   }
 
   setOptions(options) {
-    if (['boolean', 'number', 'string'].indexOf(typeof options) !== -1) {
+    if (['boolean', 'number', 'bigint', 'string'].indexOf(typeof options) !== -1) {
       options = { content: '' + options };
     }
     options = options || {};
     this.options = options;
     let content = options.content;
-    if (['boolean', 'number', 'string'].indexOf(typeof content) !== -1) {
+    if (['boolean', 'number', 'bigint', 'string'].indexOf(typeof content) !== -1) {
       this.content = String(content);
     } else if (!content) {
       this.content = this.options.href || '';
