@@ -46,7 +46,7 @@ declare namespace CliTable3 {
         style?: Partial<TableInstanceOptions["style"]>;
     }
 
-    type CellValue = boolean | number | string | null | undefined;
+    type CellValue = boolean | number | bigint | string | null | undefined;
 
     interface CellOptions {
         content: CellValue;

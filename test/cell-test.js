@@ -88,6 +88,16 @@ describe('Cell', function () {
       expect(cell.content).toEqual('0');
     });
 
+    it('new Cell(1n) will have "1" as content', function () {
+      let cell = new Cell(1n);
+      expect(cell.content).toEqual('1');
+    });
+
+    it('new Cell({content: 1n}) will have "1" as content', function () {
+      let cell = new Cell({ content: 1n });
+      expect(cell.content).toEqual('1');
+    });
+
     it('new Cell(false) will have "false" as content', function () {
       let cell = new Cell(false);
       expect(cell.content).toEqual('false');
