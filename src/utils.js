@@ -193,7 +193,15 @@ function truncate(str, desiredLength, truncateChar) {
 
   let ret = truncateWidthWithAnsi(str, desiredLength);
 
-  return ret + truncateChar;
+  ret += truncateChar;
+
+  const hrefTag = '\x1B]8;;\x07';
+
+  if (str.includes(hrefTag) && !ret.includes(hrefTag)) {
+    ret += hrefTag;
+  }
+
+  return ret;
 }
 
 function defaultOptions() {
