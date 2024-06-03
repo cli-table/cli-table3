@@ -4044,6 +4044,11 @@ string-length@^3.1.0:
     astral-regex "^1.0.0"
     strip-ansi "^5.2.0"
 
+string-width-cjs@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/string-width-cjs/-/string-width-cjs-5.1.1.tgz#9db7e00211027471870621778b089402cf9bdee3"
+  integrity sha512-N5/f0RNFtXPNDLtEvo8Y/+mH4xZWzIAnnqXPzCB4BBAQL8P3sHlz0dqDzTkGQoVsL56aCsORFFlyvA70k5yq3A==
+
 string-width@^3.0.0, string-width@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/string-width/-/string-width-3.1.0.tgz"
