@@ -88,14 +88,19 @@ const { ColSpanCell, RowSpanCell } = Cell;
   }
 
   function addRowSpanCells(table) {
-    table.forEach(function (row, rowIndex) {
+    table.forEach(function (row) {
       row.forEach(function (cell) {
         for (let i = 1; i < cell.rowSpan; i++) {
           let rowSpanCell = new RowSpanCell(cell);
+          const line = cell.y + i;
           rowSpanCell.x = cell.x;
-          rowSpanCell.y = cell.y + i;
+          rowSpanCell.y = line;
           rowSpanCell.colSpan = cell.colSpan;
-          insertCell(rowSpanCell, table[rowIndex + i]);
+          if (!table[line]) {
+            const { x, y } = rowSpanCell;
+            warn(`${x}-${y}: Expected empty array for row ${line - 1} (line ${line}).`);
+          }
+          insertCell(rowSpanCell, table[rowSpanCell.y] || []);
         }
       });
     });
@@ -110,7 +115,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
           let colSpanCell = new ColSpanCell();
           colSpanCell.x = cell.x + k;
           colSpanCell.y = cell.y;
-          cellColumns.splice(columnIndex + 1, 0, colSpanCell);
+          cellColumns.splice(colSpanCell.x, 0, colSpanCell);
         }
       }
     }
@@ -146,7 +151,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
           cell.x = opts.x;
           cell.y = opts.y;
           warn(`Missing cell at ${cell.y}-${cell.x}.`);
-          insertCell(cell, table[y]);
+          insertCell(cell, table[y] || []);
         }
       }
     }
