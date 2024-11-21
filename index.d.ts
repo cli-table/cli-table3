@@ -25,7 +25,7 @@ declare namespace CliTable3 {
         rowHeights: Array<number | null>;
         colAligns: HorizontalAlignment[];
         rowAligns: VerticalAlignment[];
-        head: string[];
+        head: Cell[];
         wordWrap: boolean;
         wrapOnWordBoundary: boolean;
     }
