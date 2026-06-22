@@ -91,11 +91,17 @@ const { ColSpanCell, RowSpanCell } = Cell;
     table.forEach(function (row, rowIndex) {
       row.forEach(function (cell) {
         for (let i = 1; i < cell.rowSpan; i++) {
+          let targetRow = table[rowIndex + i];
+          if (!targetRow) {
+            // rowSpan extends past the last row; clamp it instead of indexing
+            // a missing row (mirrors how colSpan past the table width degrades).
+            break;
+          }
           let rowSpanCell = new RowSpanCell(cell);
           rowSpanCell.x = cell.x;
           rowSpanCell.y = cell.y + i;
           rowSpanCell.colSpan = cell.colSpan;
-          insertCell(rowSpanCell, table[rowIndex + i]);
+          insertCell(rowSpanCell, targetRow);
         }
       });
     });
