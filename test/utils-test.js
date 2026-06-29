@@ -179,6 +179,22 @@ describe('utils', function () {
       let expected = '漢字\x1b[31m漢字\x1b[0m漢…';
       expect(truncate(original, 11)).toEqual(expected);
     });
+
+    // CJK Extension B character (U+20BB7, e.g. the surname 𠮷田) is a surrogate
+    // pair: 2 code units and 2 columns wide. Truncating between the two columns
+    // must not split it into a lone surrogate.
+    it('does not split a surrogate-pair wide char (CJK Ext B)', function () {
+      let kanji = String.fromCodePoint(0x20bb7);
+      expect(truncate('a' + kanji + 'bc', 4)).toEqual('a' + kanji + '…');
+      expect(truncate('a' + kanji + 'bc', 3)).toEqual('a…');
+      expect(truncate(kanji + kanji, 3)).toEqual(kanji + '…');
+    });
+
+    it('does not split a surrogate-pair wide char (emoji)', function () {
+      let emoji = String.fromCodePoint(0x1f600);
+      expect(truncate('a' + emoji + 'bc', 3)).toEqual('a…');
+      expect(truncate('x' + emoji + emoji + 'y', 4)).toEqual('x' + emoji + '…');
+    });
   });
 
   function defaultOptions() {

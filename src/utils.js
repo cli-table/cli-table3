@@ -141,15 +141,20 @@ function rewindState(state, ret) {
 }
 
 function truncateWidth(str, desiredLength) {
-  if (str.length === strlen(str)) {
+  // `str.length === strlen(str)` is also true for surrogate-pair characters
+  // (e.g. CJK Extension B or emoji), which count as 2 code units and 2 columns.
+  // `substr`/`slice` cut by code unit, so exclude them here and trim by code
+  // point below to avoid splitting a surrogate pair into a lone surrogate.
+  if (str.length === strlen(str) && !/[\uD800-\uDBFF]/.test(str)) {
     return str.substr(0, desiredLength);
   }
 
-  while (strlen(str) > desiredLength) {
-    str = str.slice(0, -1);
+  let chars = Array.from(str);
+  while (strlen(chars.join('')) > desiredLength) {
+    chars.pop();
   }
 
-  return str;
+  return chars.join('');
 }
 
 function truncateWidthWithAnsi(str, desiredLength) {
