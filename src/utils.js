@@ -6,7 +6,8 @@ function codeRegex(capture) {
 
 function strlen(str) {
   let code = codeRegex();
-  let stripped = ('' + str).replace(code, '');
+  // Hyperlink control sequences have no display width, regardless of the URL.
+  let stripped = ('' + str).replace(/\u001b\]8;;[^\u0007]*\u0007/g, '').replace(code, '');
   let split = stripped.split('\n');
   return split.reduce(function (memo, s) {
     return stringWidth(s) > memo ? stringWidth(s) : memo;

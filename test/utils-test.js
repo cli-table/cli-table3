@@ -36,6 +36,15 @@ describe('utils', function () {
     it('length of "한글" is 4', function () {
       expect(strlen('한글')).toEqual(4);
     });
+
+    it('ignores hyperlink URLs when measuring colored text', function () {
+      expect(strlen(utils.hyperlink('http://example.com/!', colors.red('hello')))).toEqual(5);
+    });
+
+    it('measures the widest line of full-width hyperlink text', function () {
+      const lines = ['中文字符', 'hi'].map((line) => utils.hyperlink('http://example.com/!', line));
+      expect(strlen(lines.join('\n'))).toEqual(8);
+    });
   });
 
   describe('repeat', function () {
