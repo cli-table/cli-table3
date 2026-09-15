@@ -3,7 +3,7 @@ let level = 0;
 
 const debug = (msg, min) => {
   if (level >= min) {
-    messages.push(msg);
+    messages.push(typeof msg === 'function' ? msg() : msg);
   }
 };
 
