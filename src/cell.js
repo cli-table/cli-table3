@@ -164,6 +164,17 @@ class Cell {
    * @returns {String}
    */
   drawTop(drawRight) {
+    // Spanning cells can use top/bottom junctions for internal row separators.
+    // Do not let those junctions restore a separator that was explicitly hidden.
+    if (
+      this.y > 0 &&
+      this.chars.mid === '' &&
+      this.chars.leftMid === '' &&
+      this.chars.midMid === '' &&
+      this.chars.rightMid === ''
+    ) {
+      return '';
+    }
     let content = [];
     if (this.cells) {
       //TODO: cells should always exist - some tests don't fill it in though
