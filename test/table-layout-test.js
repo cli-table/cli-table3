@@ -122,6 +122,110 @@ describe('tableLayout', function () {
       return cell;
     }
 
+    it('does not repeatedly inspect preceding rows when checking occupied cells', function () {
+      let spanReads = 0;
+      let cells = Array.from({ length: 50 }, (_, y) =>
+        Array.from({ length: 5 }, (_, x) => {
+          let cell = mc('value', y, x);
+          Object.defineProperty(cell, 'rowSpan', {
+            get() {
+              spanReads++;
+              return 1;
+            },
+          });
+          return cell;
+        })
+      );
+
+      fillInTable(cells);
+
+      // Bound work by the number of cells, rather than by machine-dependent timings.
+      expect(spanReads).toBeLessThanOrEqual(50 * 5 * 10);
+      expect(cells.every((row) => row.length === 5)).toBe(true);
+    });
+
+    it('preserves gap rectangles and warning order around staggered spans', function () {
+      const debug = require('../src/debug');
+      let cells = [
+        [mc({ content: 'a', rowSpan: 3 }, 0, 0), mc({ content: 'b', colSpan: 2 }, 0, 3)],
+        [mc({ content: 'c', rowSpan: 2 }, 1, 2)],
+        [],
+        [mc('d', 3, 1)],
+      ];
+
+      debug.reset();
+      debug.setDebugLevel(1);
+      try {
+        fillInTable(cells);
+
+        expect(
+          cells.map((row) => row.map((cell) => [cell.x, cell.y, cell.colSpan, cell.rowSpan, cell.content]))
+        ).toEqual([
+          [
+            [0, 0, 1, 3, 'a'],
+            [1, 0, 2, 1, ''],
+            [3, 0, 2, 1, 'b'],
+          ],
+          [
+            [1, 1, 1, 2, ''],
+            [2, 1, 1, 2, 'c'],
+            [3, 1, 2, 3, ''],
+          ],
+          [],
+          [
+            [0, 3, 1, 1, ''],
+            [1, 3, 1, 1, 'd'],
+            [2, 3, 1, 1, ''],
+          ],
+        ]);
+        expect(debug.debugMessages()).toEqual([
+          'Missing cell at 0-1.',
+          'Missing cell at 1-1.',
+          'Missing cell at 1-3.',
+          'Missing cell at 3-0.',
+          'Missing cell at 3-2.',
+        ]);
+      } finally {
+        debug.setDebugLevel(0);
+        debug.reset();
+      }
+    });
+
+    it('preserves the existing fractional-span conflict behavior', function () {
+      let cells = [[mc({ content: 'a', rowSpan: 1.5 }, 0, 0)], [mc('b', 1, 1)]];
+
+      fillInTable(cells);
+
+      expect(cells.map((row) => row.map((cell) => [cell.x, cell.y, cell.content]))).toEqual([
+        [
+          [0, 0, 'a'],
+          [1, 0, ''],
+        ],
+        [
+          [0, 1, ''],
+          [1, 1, 'b'],
+        ],
+      ]);
+      expect(cells[0][0].rowSpan).toBe(1.5);
+    });
+
+    it('only checks existing rows when a span extends below the table', function () {
+      let cells = [[mc({ content: 'a', rowSpan: 4 }, 0, 0)], [], []];
+
+      fillInTable(cells);
+
+      expect(cells.map((row) => row.length)).toEqual([1, 0, 0]);
+      expect(cells[0][0].rowSpan).toBe(4);
+    });
+
+    it('leaves an empty table unchanged', function () {
+      let cells = [[], []];
+
+      fillInTable(cells);
+
+      expect(cells).toEqual([[], []]);
+    });
+
     it('will blank out individual cells', function () {
       let cells = [[mc('a', 0, 1)], [mc('b', 1, 0)]];
       fillInTable(cells);

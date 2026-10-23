@@ -64,7 +64,10 @@ const { ColSpanCell, RowSpanCell } = Cell;
     return yConflict && xConflict;
   }
 
-  function conflictExists(rows, x, y) {
+  function conflictExists(rows, x, y, occupied) {
+    if (occupied) {
+      return occupied[y][x] === 1;
+    }
     let i_max = Math.min(rows.length - 1, y);
     let cell = { x: x, y: y };
     for (let i = 0; i <= i_max; i++) {
@@ -78,9 +81,9 @@ const { ColSpanCell, RowSpanCell } = Cell;
     return false;
   }
 
-  function allBlank(rows, y, xMin, xMax) {
+  function allBlank(rows, y, xMin, xMax, occupied) {
     for (let x = xMin; x < xMax; x++) {
-      if (conflictExists(rows, x, y)) {
+      if (conflictExists(rows, x, y, occupied)) {
         return false;
       }
     }
@@ -124,21 +127,57 @@ const { ColSpanCell, RowSpanCell } = Cell;
     row.splice(x, 0, cell);
   }
 
+  function markOccupied(occupied, cell) {
+    if (occupied) {
+      let yMax = Math.min(occupied.length, cell.y + (cell.rowSpan || 1));
+      for (let y = cell.y; y < yMax; y++) {
+        occupied[y].fill(1, cell.x, cell.x + (cell.colSpan || 1));
+      }
+    }
+  }
+
+  function indexOccupiedCells(table, width) {
+    // Preserve the existing conflict checks for malformed coordinates or spans.
+    if (
+      width === 0 ||
+      !Number.isInteger(width) ||
+      !table.every((row, y) =>
+        row.every(
+          (cell) =>
+            cell.y === y &&
+            Number.isInteger(cell.x) &&
+            cell.x >= 0 &&
+            Number.isInteger(cell.rowSpan || 1) &&
+            (cell.rowSpan || 1) > 0 &&
+            Number.isInteger(cell.colSpan || 1) &&
+            (cell.colSpan || 1) > 0
+        )
+      )
+    ) {
+      return null;
+    }
+
+    let occupied = table.map(() => Buffer.alloc(width));
+    table.forEach((row) => row.forEach((cell) => markOccupied(occupied, cell)));
+    return occupied;
+  }
+
   function fillInTable(table) {
     let h_max = maxHeight(table);
     let w_max = maxWidth(table);
+    let occupied = indexOccupiedCells(table, w_max);
     debug(`Max rows: ${h_max}; Max cols: ${w_max}`);
     for (let y = 0; y < h_max; y++) {
       for (let x = 0; x < w_max; x++) {
-        if (!conflictExists(table, x, y)) {
+        if (!conflictExists(table, x, y, occupied)) {
           let opts = { x: x, y: y, colSpan: 1, rowSpan: 1 };
           x++;
-          while (x < w_max && !conflictExists(table, x, y)) {
+          while (x < w_max && !conflictExists(table, x, y, occupied)) {
             opts.colSpan++;
             x++;
           }
           let y2 = y + 1;
-          while (y2 < h_max && allBlank(table, y2, opts.x, opts.x + opts.colSpan)) {
+          while (y2 < h_max && allBlank(table, y2, opts.x, opts.x + opts.colSpan, occupied)) {
             opts.rowSpan++;
             y2++;
           }
@@ -147,6 +186,7 @@ const { ColSpanCell, RowSpanCell } = Cell;
           cell.y = opts.y;
           warn(`Missing cell at ${cell.y}-${cell.x}.`);
           insertCell(cell, table[y]);
+          markOccupied(occupied, cell);
         }
       }
     }
