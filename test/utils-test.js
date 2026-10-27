@@ -333,6 +333,19 @@ describe('utils', function () {
           'stuv wx yz',
         ]);
       });
+
+      it('wraps long full-width words by display width', function () {
+        // 12 columns fit 6 full-width chars, not 12
+        expect(wordWrap(12, '가나다라마바사아자차카타파하', false)).toEqual(['가나다라마바', '사아자차카타', '파하']);
+        expect(wordWrap(12, '这是一段没有空格的中文', false)).toEqual(['这是一段没有', '空格的中文']);
+      });
+
+      it('never returns a line wider than maxLength', function () {
+        let lines = wordWrap(12, '가나다라마바사아자차카타파하', false);
+        lines.forEach(function (line) {
+          expect(strlen(line)).toBeLessThanOrEqual(12);
+        });
+      });
     });
   });
 

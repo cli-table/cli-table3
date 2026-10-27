@@ -19,6 +19,26 @@ describe('@api Table ', function () {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
+  it('wordWrap without word boundaries does not drop full-width chars', function () {
+    let table = new Table({ colWidths: [14], wordWrap: true, wrapOnWordBoundary: false });
+
+    table.push(['가나다라마바사아자차카타파하']);
+
+    let expected = ['┌──────────────┐', '│ 가나다라마바 │', '│ 사아자차카타 │', '│ 파하         │', '└──────────────┘'];
+
+    expect(table.toString()).toEqual(expected.join('\n'));
+  });
+
+  it('wordWrap without word boundaries keeps ascii behaviour', function () {
+    let table = new Table({ colWidths: [14], wordWrap: true, wrapOnWordBoundary: false });
+
+    table.push(['abcdefghijklmnopqrstuvwx']);
+
+    let expected = ['┌──────────────┐', '│ abcdefghijkl │', '│ mnopqrstuvwx │', '└──────────────┘'];
+
+    expect(table.toString()).toEqual(expected.join('\n'));
+  });
+
   it('allows numbers as `content` property of cells defined using object notation', function () {
     let table = new Table({ style: { border: [], head: [] } });
 

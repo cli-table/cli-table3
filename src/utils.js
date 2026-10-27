@@ -286,9 +286,12 @@ function textWrap(maxLength, input) {
   function pushLine(str, ws) {
     if (line.length && ws) line += ws;
     line += str;
-    while (line.length > maxLength) {
-      lines.push(line.slice(0, maxLength));
-      line = line.slice(maxLength);
+    while (strlen(line) > maxLength) {
+      let head = truncateWidth(line, maxLength);
+      // a full-width char cannot fit in a single column, take it anyway so the loop makes progress
+      if (!head.length) head = line.slice(0, 1);
+      lines.push(head);
+      line = line.slice(head.length);
     }
   }
   let split = input.split(/(\s+)/g);
