@@ -80,7 +80,10 @@ class Cell {
       if (this.colSpan) {
         let i = 1;
         while (i < this.colSpan) {
-          this.fixedWidth += tableOptions.colWidths[this.x + i];
+          // Each additional spanned column contributes its width plus one
+          // column for the separator between it and the previous column,
+          // matching how init computes this.width (sumPlusOne).
+          this.fixedWidth += tableOptions.colWidths[this.x + i] + 1;
           i++;
         }
       }
