@@ -19,6 +19,31 @@ describe('@api Table ', function () {
     expect(table.toString()).toEqual(expected.join('\n'));
   });
 
+  it('wordWrap accounts for column separators in colSpan cells', function () {
+    // A cell spanning 2 columns of width 5 has an inner content width of
+    // 5 + 1 (column separator) + 5 - 2 (padding) = 9 columns, so
+    // 9 columns of text must not wrap. It used to wrap at 8.
+    let table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [5, 5] });
+
+    table.push([{ content: 'abcd efgh', colSpan: 2 }]);
+
+    let expected = ['┌───────────┐', '│ abcd efgh │', '└───────────┘'];
+
+    expect(table.toString()).toEqual(expected.join('\n'));
+  });
+
+  it('wordWrap accounts for one separator per extra spanned column', function () {
+    // Inner content width is 5 + 1 + 5 + 1 + 5 - 2 = 15 columns,
+    // so 14 columns of text must not wrap. It used to wrap at 13.
+    let table = new Table({ style: { border: [], head: [] }, wordWrap: true, colWidths: [5, 5, 5] });
+
+    table.push([{ content: 'aaaaaa bbbbbbb', colSpan: 3 }]);
+
+    let expected = ['┌─────────────────┐', '│ aaaaaa bbbbbbb  │', '└─────────────────┘'];
+
+    expect(table.toString()).toEqual(expected.join('\n'));
+  });
+
   it('allows numbers as `content` property of cells defined using object notation', function () {
     let table = new Table({ style: { border: [], head: [] } });
 
