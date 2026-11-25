@@ -17,6 +17,16 @@ describe('utils', function () {
       expect(strlen(colors.red('hello'))).toEqual(5);
     });
 
+    it('length of hyperlinked text ignores the hyperlink sequences', function () {
+      // https://github.com/cli-table/cli-table3/issues/322
+      // string-width does not strip OSC 8 sequences whose URL contains
+      // characters outside the ansi-regex parameter charset (e.g. '!'),
+      // so strlen must remove the hyperlink sequences itself.
+      expect(strlen(utils.hyperlink('http://example.com', 'hello'))).toEqual(5);
+      expect(strlen(utils.hyperlink('http://example.com/!', 'hello'))).toEqual(5);
+      expect(strlen(utils.hyperlink('http://example.com/a!b?c=d&e=f', 'hello'))).toEqual(5);
+    });
+
     it('length of "hello" in bold is 5', function () {
       expect(strlen(colors.bold('hello'))).toEqual(5);
     });
