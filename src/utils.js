@@ -4,9 +4,15 @@ function codeRegex(capture) {
   return capture ? /\u001b\[((?:\d*;){0,5}\d*)m/g : /\u001b\[(?:\d*;){0,5}\d*m/g;
 }
 
+// OSC 8 hyperlink sequences as produced by hyperlink() below. string-width
+// only strips them when the URL is limited to the ansi-regex parameter
+// charset, which excludes valid URL characters like '!', so remove them
+// here before measuring.
+const hyperlinkRegex = /\u001b\]8;;[^\u0007]*\u0007/g;
+
 function strlen(str) {
   let code = codeRegex();
-  let stripped = ('' + str).replace(code, '');
+  let stripped = ('' + str).replace(hyperlinkRegex, '').replace(code, '');
   let split = stripped.split('\n');
   return split.reduce(function (memo, s) {
     return stringWidth(s) > memo ? stringWidth(s) : memo;
