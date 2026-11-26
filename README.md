@@ -322,16 +322,15 @@ Outputs:
 
 ## Debugging
 
-Later versions of cli-table3 supporting debugging your table data.
+Enable debugging to collect warnings while rendering. This table has a missing cell in its first row:
 
-Enable and use debugging:
-
-```
+```js
+var Table = require('cli-table3');
 var table = new Table({ debug: 1 });
-table.push([{}, {},}); // etc.
+table.push([{ content: 'A', rowSpan: 2 }], ['B']);
 
 console.log(table.toString());
-table.messages.forEach((message) => console.log(message));
+table.messages.forEach((message) => console.log(message)); // Missing cell at 0-1.
 ```
 
 If you are rendering multiple tables with debugging on run `Table.reset()` after
